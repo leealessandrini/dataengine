@@ -1,6 +1,9 @@
 import io
 import os
 import datetime
+import yaml
+import zipfile
+from urllib.parse import urlparse
 import boto3
 import pandas as pd
 
@@ -20,6 +23,22 @@ def get_date_range(d0, d1):
     """
     return [
         d0 + datetime.timedelta(days=i) for i in range((d1 - d0).days + 1)]
+
+
+def parse_s3_url(s3_url):
+    """
+        This method will parse an s3 url.
+
+        Args:
+            s3_url (str): s3 url
+
+        Returns:
+            s3 bucket name and s3 key
+    """
+    # Parse proper output url
+    parse_result = urlparse(s3_url)
+    # Return bucket name and s3 key
+    return parse_result.netloc, parse_result.path[1:]
 
 
 def read_file_from_s3(s3_key, bucket='ccp-stbloglanding2'):
@@ -52,6 +71,94 @@ def read_df_from_s3(s3_key, bucket='ccp-stbloglanding2', **kwargs):
         io.StringIO(str(read_file_from_s3(s3_key, bucket), "utf-8")),
         # Pass additional keyword arguments to pandas read_csv method
         **kwargs)
+
+
+def _write_bytes_to_s3(bytes_object, bucket_name, s3_key):
+    """
+        This method will write a bytes object to s3 provided a prefix.
+
+        Args:
+            bytes_object (bytes): object that will be written
+            bucket_name (str): s3 bucket name
+            s3_key (str): location to save file to s3
+
+        Returns:
+            Success boolean
+    """
+    # Setup boto3 s3 client
+    client = boto3.client(
+        's3', aws_access_key_id=S3_ACCESS_KEY,
+        aws_secret_access_key=S3_SECRET_KEY)
+    # Write object to s3
+    response = client.put_object(
+        Body=bytes_object, Bucket=bucket_name, Key=s3_key)
+    # Return success
+    return response["ResponseMetadata"]["HTTPStatusCode"] == 200
+
+
+def write_df_to_s3(df, s3_url, separator=","):
+    """
+        This method will save a DataFrame to S3 provided the filename.
+
+        Args:
+            df (pandas.DataFrame): DataFrame that will be written to s3
+            s3_url (str): s3 url where data will be written
+            separator (str): Separator character for the csv
+
+        Returns:
+            success boolean
+    """
+    return _write_bytes_to_s3(
+        # Encode pandas DataFrame to bytes object 
+        df.to_csv(None, index=False, sep=separator).encode(),
+        # Parse s3 URL for bucket name and s3 key
+        *parse_s3_url(s3_url))
+
+
+def write_dict_to_s3(dict_object, s3_url):
+    """
+        This method will convert a dict to bytes using YAML and write them to
+        a specified s3 location.
+
+        Args:
+            dict_object (dict): python dictionary
+            s3_url (str): s3 url where data will be written
+
+        Returns:
+            success boolean
+    """
+    return _write_bytes_to_s3(
+        # Encode dictionary
+        yaml.dump(dict_object).encode(),
+        # Parse s3 URL for bucket name and s3 key
+        *parse_s3_url(s3_url))
+
+
+def write_zip_to_s3(file_dict, s3_url):
+    """
+        This method will zip a dictionary of byte objects and save the file
+        on s3.
+
+        Args:
+            file_dict (dict): filenames and their corresponding bytes
+            s3_url (str): s3 url where data will be written
+            
+        Returns:
+            success boolean
+    """
+    # Write bytes in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(
+        zip_buffer, "a", zipfile.ZIP_DEFLATED, allowZip64=True
+    ) as zip_file:
+        for key, value in file_dict.items():
+            zip_file.writestr(key, value)
+    # Write bytes buffer to file
+    success = _write_bytes_to_s3(zip_buffer.getvalue(), *parse_s3_url(s3_url))
+    # Close buffer
+    zip_buffer.close()
+
+    return success
 
 
 def get_distinct_values(spark_df, column_header):
