@@ -67,3 +67,32 @@ def get_distinct_values(spark_df, column_header):
         lambda x: x).collect()
 
     return distinct_values
+
+
+def check_s3_path(bucket_name, s3_path):
+    """
+        This method will check whether the provided s3 path is valid.
+
+        Args:
+            bucket_name (str): name of s3 bucket
+            s3_path (str): path to s3 file
+
+        Returns:
+            boolean for whether the path exists
+    """
+    s3 = boto3.client(
+        's3', aws_access_key_id=S3_ACCESS_KEY,
+        aws_secret_access_key=S3_SECRET_KEY)
+    # --- Setup key ---
+    # Remove bucket from path to get prefix if applicable
+    if bucket_name in s3_path:
+        s3_prefix = s3_path.split(bucket_name)[1][1:]
+    else:
+        s3_prefix = s3_path
+    # Get prefix to the left of the glob character
+    if "*" in s3_prefix:
+        s3_prefix = s3_prefix.split("*")[0]
+    # Get list response
+    resp = s3.list_objects(Bucket=bucket_name, Prefix=s3_prefix, MaxKeys=1)
+
+    return "Contents" in resp
