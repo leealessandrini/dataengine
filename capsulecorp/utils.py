@@ -113,7 +113,7 @@ def write_df_to_s3(df, s3_url, sep=",", header=True):
     """
     return _write_bytes_to_s3(
         # Encode pandas DataFrame to bytes object 
-        df.to_csv(None, index=False, sep=separator, header=header).encode(),
+        df.to_csv(None, index=False, sep=sep, header=header).encode(),
         # Parse s3 URL for bucket name and s3 key
         *parse_s3_url(s3_url))
 
