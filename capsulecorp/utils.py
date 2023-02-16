@@ -7,6 +7,9 @@ from urllib.parse import urlparse
 import boto3
 import pandas as pd
 
+# https://stackoverflow.com/questions/51272814
+yaml.Dumper.ignore_aliases = lambda *args: True
+
 # Setup s3 keys
 S3_ACCESS_KEY = os.getenv('S3_ACCESS_KEY')
 S3_SECRET_KEY = os.getenv('S3_SECRET_KEY')
@@ -96,7 +99,7 @@ def _write_bytes_to_s3(bytes_object, bucket_name, s3_key):
     return response["ResponseMetadata"]["HTTPStatusCode"] == 200
 
 
-def write_df_to_s3(df, s3_url, separator=","):
+def write_df_to_s3(df, s3_url, sep=",", header=True):
     """
         This method will save a DataFrame to S3 provided the filename.
 
@@ -110,7 +113,7 @@ def write_df_to_s3(df, s3_url, separator=","):
     """
     return _write_bytes_to_s3(
         # Encode pandas DataFrame to bytes object 
-        df.to_csv(None, index=False, sep=separator).encode(),
+        df.to_csv(None, index=False, sep=separator, header=header).encode(),
         # Parse s3 URL for bucket name and s3 key
         *parse_s3_url(s3_url))
 
