@@ -58,17 +58,24 @@ def get_dict_permutations(raw_dict):
         Returns:
             list of unique key value dict permutations
     """
-    # Make sure all values are lists
-    dict_of_lists = {}
-    for key, value in raw_dict.items():
-        if type(value) != list:
-            dict_of_lists[key] = [value]
-        else:
-            dict_of_lists[key] = value
-    # Create all unique permutations
-    keys, values = zip(*dict_of_lists.items())
+    # Set default
+    dict_permutations = [{}]
+    # Check whether input is valid nonempty dictionary
+    if (type(raw_dict) == dict) and (len(raw_dict) > 0):
+        # Make sure all values are lists
+        dict_of_lists = {}
+        for key, value in raw_dict.items():
+            if type(value) != list:
+                dict_of_lists[key] = [value]
+            else:
+                dict_of_lists[key] = value
+        # Create all unique permutations
+        keys, values = zip(*dict_of_lists.items())
+        dict_permutations = [
+            dict(zip(keys, v)) for v in itertools.product(*values)]
 
-    return [dict(zip(keys, v)) for v in itertools.product(*values)]
+    return dict_permutations
+
 
 
 def read_file_from_s3(s3_key, bucket='ccp-stbloglanding2'):
