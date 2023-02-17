@@ -6,6 +6,7 @@ import zipfile
 from urllib.parse import urlparse
 import boto3
 import pandas as pd
+import itertools
 
 # https://stackoverflow.com/questions/51272814
 yaml.Dumper.ignore_aliases = lambda *args: True
@@ -42,6 +43,32 @@ def parse_s3_url(s3_url):
     parse_result = urlparse(s3_url)
     # Return bucket name and s3 key
     return parse_result.netloc, parse_result.path[1:]
+
+
+def get_dict_permutations(raw_dict):
+    """
+        This method will take a raw dictionary and create all unique
+        permutations of key value pairs.
+
+        Source: https://codereview.stackexchange.com/questions/171173
+
+        Args:
+            raw_dict (dict): raw dictionary
+
+        Returns:
+            list of unique key value dict permutations
+    """
+    # Make sure all values are lists
+    dict_of_lists = {}
+    for key, value in raw_dict.items():
+        if type(value) != list:
+            dict_of_lists[key] = [value]
+        else:
+            dict_of_lists[key] = value
+    # Create all unique permutations
+    keys, values = zip(*dict_of_lists.items())
+
+    return [dict(zip(keys, v)) for v in itertools.product(*values)]
 
 
 def read_file_from_s3(s3_key, bucket='ccp-stbloglanding2'):
