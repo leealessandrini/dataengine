@@ -1,12 +1,22 @@
+""" Capsule Corp Utilities Module """
 import io
 import os
 import datetime
-import yaml
+import itertools
+from concurrent.futures import ThreadPoolExecutor
 import zipfile
 from urllib.parse import urlparse
+import logging
+import yaml
 import boto3
+import numpy as np
 import pandas as pd
-import itertools
+
+# Setup logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s:%(message)s")
+logging.getLogger("py4j").setLevel(logging.ERROR)
 
 # https://stackoverflow.com/questions/51272814
 yaml.Dumper.ignore_aliases = lambda *args: True
@@ -16,17 +26,19 @@ S3_ACCESS_KEY = os.getenv('S3_ACCESS_KEY')
 S3_SECRET_KEY = os.getenv('S3_SECRET_KEY')
 
 
-def get_date_range(d0, d1):
+def get_date_range(date_0, date_1):
     """
         This method creates a list of dates from d0 to d1.
+
         Args:
-            d0 (datetime.date): start date
-            d1 (datetime.date): end date
+            date_0 (datetime.date): start date
+            date_1 (datetime.date): end date
         Returns:
             date range
     """
     return [
-        d0 + datetime.timedelta(days=i) for i in range((d1 - d0).days + 1)]
+        date_0 + datetime.timedelta(days=i)
+        for i in range((date_1 - date_0).days + 1)]
 
 
 def parse_s3_url(s3_url):
@@ -78,12 +90,14 @@ def get_dict_permutations(raw_dict):
 
 
 
-def read_file_from_s3(s3_key, bucket='ccp-stbloglanding2'):
+def read_file_from_s3(s3_key, bucket):
     """
         This method will read files from s3 using a boto3 client.
+
         Args:
             s3_key (str): s3 prefix to file
             bucket (str): s3 bucket name
+
         Returns:
             bytes object
     """
@@ -95,12 +109,14 @@ def read_file_from_s3(s3_key, bucket='ccp-stbloglanding2'):
     return file['Body'].read()
 
 
-def read_df_from_s3(s3_key, bucket='ccp-stbloglanding2', **kwargs):
+def read_df_from_s3(s3_key, bucket, **kwargs):
     """
         This method will read in data from s3 into a pandas DataFrame.
+
         Args:
             s3_key (str): s3 prefix to file
             bucket (str): s3 bucket name
+
         Returns:
             bytes object
     """
@@ -146,7 +162,7 @@ def write_df_to_s3(df, s3_url, sep=",", header=True):
             success boolean
     """
     return _write_bytes_to_s3(
-        # Encode pandas DataFrame to bytes object 
+        # Encode pandas DataFrame to bytes object
         df.to_csv(None, index=False, sep=sep, header=header).encode(),
         # Parse s3 URL for bucket name and s3 key
         *parse_s3_url(s3_url))
@@ -179,7 +195,7 @@ def write_zip_to_s3(file_dict, s3_url):
         Args:
             file_dict (dict): filenames and their corresponding bytes
             s3_url (str): s3 url where data will be written
-            
+
         Returns:
             success boolean
     """
@@ -201,9 +217,11 @@ def write_zip_to_s3(file_dict, s3_url):
 def get_distinct_values(spark_df, column_header):
     """
         Get the list of distinct values within a DataFrame column.
+
         Args:
             spark_df (pyspark.sql.dataframe.DataFrame): data table
             column_header (str): header string for desired column
+
         Returns:
             list of distinct values from the column
     """
@@ -240,3 +258,130 @@ def check_s3_path(bucket_name, s3_path):
     resp = s3.list_objects(Bucket=bucket_name, Prefix=s3_prefix, MaxKeys=1)
 
     return "Contents" in resp
+
+
+def get_responses(
+        bucket, prefix, s3_access_key=S3_ACCESS_KEY,
+        s3_secret_key=S3_SECRET_KEY):
+    """
+        This method will get the file information for a given directory on s3.
+
+        Args:
+            bucket (str): name of s3 bucket
+            prefix (str): directory within s3 bucket
+
+        Returns:
+            list of json responses from S3
+    """
+    client = boto3.session.Session().client(
+        "s3", aws_access_key_id=s3_access_key,
+        aws_secret_access_key=s3_secret_key)
+    continuation_token = None
+    responses = []
+    # List objects within the given directory until the response is truncated
+    while True:
+        list_kwargs = dict(
+            Bucket=bucket, Prefix=prefix, MaxKeys=1000)
+        # Add continuation token if not None
+        if continuation_token:
+            list_kwargs['ContinuationToken'] = continuation_token
+        response = client.list_objects_v2(**list_kwargs)
+        # Add valid reponses and update continuation token
+        if 'Contents' in response:
+            responses += response['Contents']
+        # Exit while loop if at the end of the objects
+        if not response.get('IsTruncated'):
+            break
+        continuation_token = response.get('NextContinuationToken')
+
+    return responses
+
+
+def get_s3_prefix_size(prefix_list, bucket):
+    """
+        This method will get the size of a list of s3 prefixes.
+
+        Args:
+            prefix_list (list): list of s3 prefixes
+            bucket (str): name of s3 bucket
+
+        Returns:
+            size (in Gb)
+    """
+    responses = []
+    for prefix in prefix_list:
+        responses += get_responses(bucket, prefix)
+
+    return round(sum([i["Size"] for i in responses]) / np.power(10, 9), 2)
+
+
+def copy_file(bucket, old_key, new_key):
+    """
+        This method will copy a file in s3 given a task definition.
+
+        Args:
+            bucket (str): s3 bucket name
+            old_key (str): old s3 prefix
+            new_key (str): new s3 prefix
+
+        Returns:
+            success boolean and exception message
+    """
+    success = True
+    s3 = boto3.resource(
+        's3', aws_access_key_id=S3_ACCESS_KEY,
+        aws_secret_access_key=S3_SECRET_KEY)
+    # Try to copy file
+    try:
+        s3.Object(bucket, new_key).copy_from(
+            CopySource=f"{bucket}/" + old_key)
+    # If the copy fails for any reason set success to False
+    except Exception as e:
+        success = False
+
+    return success
+
+
+def copy_s3_files(key_map, bucket, worker_count=8, max_retries=1):
+    """
+        This method will function as a threaded s3 copy a set of key value
+        pairs of old s3 keys and new s3 keys.
+
+        Args:
+            key_map (dict): map of old to new s3 prefixes
+            bucket (str): s3 bucket
+            worker_count (int): number of workers to spin up for copying
+            max_retries (int): maximum number of copy retries for failed tasks
+
+        Returns:
+            success boolean
+    """
+    success = True
+    old_keys = list(key_map.keys())
+    new_keys = list(key_map.values())
+    # Create a thread pood to multiprocess tasks
+    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+        # Run initial tasks
+        results = list(executor.map(
+            copy_file, [bucket] * len(old_keys), old_keys, new_keys))
+        failed_tasks = [i for i in range(len(results)) if not results[i]]
+        # Retry at most the number of max retries
+        retries = 0
+        while len(failed_tasks) > 0 and retries < max_retries:
+            # Resubmit failed tasks
+            futures = [i.result() for i in [
+                executor.submit(copy_file, bucket, old_keys[i], new_keys[i])
+                for i in failed_tasks]]
+            # Get updated failed tasks
+            failed_tasks = [
+                i for i in range(len(futures)) if not futures[i]]
+            # Iterate retries
+            retries += 1
+        # If there are still failed tasks log error and reset success
+        copies_failed = len(failed_tasks)
+        if copies_failed > 0:
+            logging.error(
+                f"WARNING: {copies_failed} copies failed.")
+            success = False
+
+    return success

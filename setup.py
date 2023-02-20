@@ -58,6 +58,7 @@ setup(
     # Dependencies
     install_requires=[
         'PyYAML>=5.3',
+        'numpy>=1.20.3',
         'pandas>=1.3.4',
         'boto3==1.24.75'
     ],
