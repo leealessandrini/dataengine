@@ -1,5 +1,6 @@
 """ This module will contain any query related functionality """
 import logging
+import pandas as pd
 
 
 def connect_to_db(driver, driver_args):
