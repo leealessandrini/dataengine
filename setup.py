@@ -57,10 +57,12 @@ setup(
     python_requires='>=3.9',
     # Dependencies
     install_requires=[
-        'PyYAML>=5.3',
-        'numpy>=1.20.3',
-        'pandas>=1.3.4',
-        'boto3==1.26.76'
+        'PyYAML',
+        'numpy',
+        'pandas',
+        'boto3',
+        'psycopg2-binary==2.9.3',
+        'PyMySQL'
     ],
     include_package_data=True
 )

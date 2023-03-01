@@ -1,5 +1,8 @@
 """ This module will contain any query related functionality """
 import logging
+import pymysql
+from pymysql.constants import CLIENT
+import psycopg2
 import pandas as pd
 
 
@@ -55,6 +58,116 @@ def execute_query(conn, cur, query, message=None):
             logging.error(message + " failed.", exc_info=True)
 
     return success
+
+
+def delete(
+        conn, cur, table_name, load_location, delete_all=False, days=None,
+        column_header=None):
+    """
+        This method will delete and optimize a table provided inputs.
+
+        Args:
+            conn (pymysql.connections.Connection): database connection
+            table_name (str): name of database table
+            load_location (str): database type
+            delete_all (bool): whether to delete all rows
+            days (int): number of days out to delete
+            column_header (str): header for day filter
+
+        Returns:
+            deletion success boolean
+    """
+    delete_success = False
+    # Construct delete query string
+    delete_query = f"DELETE FROM {table_name}"
+    if delete_all:
+        delete_query += ";"
+    elif ((days is not None) and (column_header is not None)):
+        delete_query += (
+            f" WHERE DATE({column_header}) <= "
+            f"CURDATE() - INTERVAL {days} DAY;")
+    else:
+        logging.error(
+            "Either provide delete_all True or both days and column_header")
+        return delete_success
+    # TODO: Change this to a keyword arg and remove load location
+    # Add table optimization if load location is Aurora
+    if "aurora" in load_location.lower():
+        delete_query += f"\nOPTIMIZE TABLE {table_name};"
+
+    return execute_query(
+        conn, cur, delete_query,
+        f"Deletion of rows beyond {days} days from {table_name}")
+
+
+def copy_from_s3(
+        load_location, db_arg, table_name, s3_location, file_format="csv",
+        separator=",", header=True, delete_info={}, replace=False,
+        header_list=[]):
+    """
+        This method will load a provided set of data from s3 to Aurora.
+        Args:
+            load_location (str): database type
+            db_arg (string): database schema
+            table_name (string): database table name
+            s3_location (string): prefix of dataset on s3
+            separator (string): csv separator
+            header_list (list): list of table headers in-order
+
+        Returns:
+            success boolean
+    """
+    load_success = False
+    # Setup query
+    if "aurora" in load_location.lower():
+        driver = pymysql
+        # Set ignore row string given header boolean
+        ignore_rows = "\n    IGNORE 1 ROWS" if header else ""
+        replace_rows = "REPLACE " if replace else ""
+        # Setup list of headers if applicable
+        header_info = ""
+        if header_list:
+            header_info = " " + str(tuple(f"`{i}`" for i in header_list))
+        # Fill parameters
+        query = f"""
+            LOAD DATA FROM S3 PREFIX '{s3_location}'
+            {replace_rows}INTO TABLE {table_name}
+            FIELDS TERMINATED BY '{separator}'{ignore_rows}{header_info};
+        """
+    elif "redshift" in load_location.lower():
+        driver = psycopg2
+        # Setup conversion parameters for csv
+        # TODO: implement header_info argument into redshift query format
+        ignore_header = " IGNOREHEADER 1 " if header else " "
+        conversion_params = (
+            f"DELIMITER '{separator}'{ignore_header}MAXERROR AS 10000;")
+        if file_format == "parquet":
+            conversion_params = "FORMAT AS PARQUET;"
+        # Fill parameters
+        query = f"""
+            COPY {table_name}
+            FROM '{s3_location}'
+            ACCESS_KEY_ID '{S3_ACCESS_KEY}'
+            SECRET_ACCESS_KEY '{S3_SECRET_KEY}'
+            {conversion_params}
+        """
+    # Establish database connection
+    conn, cur, success = connect_to_db(driver, db_arg)
+    # If connection is valid, load data
+    if success:
+        # Execute delete query if applicable
+        delete_success = True
+        if delete_info:
+            delete_success = delete(
+                conn, cur, table_name, load_location, **delete_info)
+        # Copy data from s3 to Database / Data Warehouse
+        load_success = execute_query(
+            conn, cur, query,
+            f"Loading of {s3_location} into {db_arg}.{table_name}")
+        # Close connection
+        conn.close()
+
+    return load_success
 
 
 def collect_query_result(conn, query, message):
