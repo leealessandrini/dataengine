@@ -65,6 +65,7 @@ def delete(
         column_header=None):
     """
         This method will delete and optimize a table provided inputs.
+        TODO: Update message for delete all condition
 
         Args:
             conn (pymysql.connections.Connection): database connection
@@ -82,10 +83,12 @@ def delete(
     delete_query = f"DELETE FROM {table_name}"
     if delete_all:
         delete_query += ";"
+        msg = f"Deletion of all rows from {table_name}."
     elif ((days is not None) and (column_header is not None)):
         delete_query += (
             f" WHERE DATE({column_header}) <= "
             f"CURDATE() - INTERVAL {days} DAY;")
+        msg = f"Deletion of rows beyond {days} days from {table_name}."
     else:
         logging.error(
             "Either provide delete_all True or both days and column_header")
@@ -95,20 +98,20 @@ def delete(
     if "aurora" in load_location.lower():
         delete_query += f"\nOPTIMIZE TABLE {table_name};"
 
-    return execute_query(
-        conn, cur, delete_query,
-        f"Deletion of rows beyond {days} days from {table_name}")
+    return execute_query(conn, cur, delete_query, msg)
 
 
 def copy_from_s3(
-        load_location, db_arg, table_name, s3_location, file_format="csv",
-        separator=",", header=True, delete_info={}, replace=False,
-        header_list=[]):
+        load_location, driver_args, table_name, s3_location,
+        file_format="csv", separator=",", header=True, delete_info={},
+        replace=False, header_list=[]):
     """
-        This method will load a provided set of data from s3 to Aurora.
+        This method will allow you to copy data of different formats from s3
+        to a database or data warehouse like AWS Aurora or AWS Redshift.
+
         Args:
             load_location (str): database type
-            db_arg (string): database schema
+            driver_args (string): database connection arguments
             table_name (string): database table name
             s3_location (string): prefix of dataset on s3
             separator (string): csv separator
@@ -152,7 +155,7 @@ def copy_from_s3(
             {conversion_params}
         """
     # Establish database connection
-    conn, cur, success = connect_to_db(driver, db_arg)
+    conn, cur, success = connect_to_db(driver, driver_args)
     # If connection is valid, load data
     if success:
         # Execute delete query if applicable
@@ -162,8 +165,7 @@ def copy_from_s3(
                 conn, cur, table_name, load_location, **delete_info)
         # Copy data from s3 to Database / Data Warehouse
         load_success = execute_query(
-            conn, cur, query,
-            f"Loading of {s3_location} into {db_arg}.{table_name}")
+            conn, cur, query, f"Loading of {s3_location} into {table_name}")
         # Close connection
         conn.close()
 
