@@ -5,6 +5,10 @@ from pymysql.constants import CLIENT
 import psycopg2
 import pandas as pd
 
+# Setup s3 keys
+S3_ACCESS_KEY = os.getenv('S3_ACCESS_KEY')
+S3_SECRET_KEY = os.getenv('S3_SECRET_KEY')
+
 
 def connect_to_db(driver, driver_args):
     """
@@ -133,7 +137,7 @@ def copy_from_s3(
         # Fill parameters
         query = f"""
             LOAD DATA FROM S3 PREFIX '{s3_location}'
-            {replace_rows}INTO TABLE {table_name}
+            {replace_rows}INTO TABLE `{table_name}`
             FIELDS TERMINATED BY '{separator}'{ignore_rows}{header_info};
         """
     elif "redshift" in load_location.lower():
