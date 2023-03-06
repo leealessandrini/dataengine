@@ -1,4 +1,5 @@
 """ This module will contain any query related functionality """
+import os
 import logging
 import pymysql
 from pymysql.constants import CLIENT
