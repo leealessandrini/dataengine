@@ -65,7 +65,6 @@ def delete(
         column_header=None):
     """
         This method will delete and optimize a table provided inputs.
-        TODO: Update message for delete all condition
 
         Args:
             conn (pymysql.connections.Connection): database connection
