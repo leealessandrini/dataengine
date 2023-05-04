@@ -24,8 +24,19 @@ def connect_to_db(driver, driver_args):
     """
     connection_success = True
     try:
-        conn = driver.connect(**driver_args)
-        cur = conn.cursor()
+        if driver.__name__ in ('pymysql', 'psycopg2'):
+            conn = driver.connect(**driver_args)
+            cur = conn.cursor()
+        elif driver.__name__ == "sqlalchemy":
+            conn = driver.create_engine(
+                "mysql+pymysql://{}:{}@{}:{}/{}".format(
+                    driver_args['user'], driver_args['password'],
+                    driver_args['host'], driver_args['port'],
+                    driver_args['database']))
+            cur = None
+        else:
+            logging.error("Invalid driver provided.")
+            raise Exception
         logging.info("Database connection successful.")
     except Exception:
         conn = None

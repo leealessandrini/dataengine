@@ -130,3 +130,6 @@ dmypy.json
 
 # Ignore DS Store
 .DS_Store
+
+# Ignore Jupyter Notebooks for now
+*.ipynb
