@@ -28,11 +28,14 @@ def connect_to_db(driver, driver_args):
             conn = driver.connect(**driver_args)
             cur = conn.cursor()
         elif driver.__name__ == "sqlalchemy":
-            conn = driver.create_engine(
+            # Create the engine object
+            engine = driver.create_engine(
                 "mysql+pymysql://{}:{}@{}:{}/{}".format(
                     driver_args['user'], driver_args['password'],
                     driver_args['host'], driver_args['port'],
                     driver_args['database']))
+            # Create a connection
+            conn = engine.connect()
             cur = None
         else:
             logging.error("Invalid driver provided.")
