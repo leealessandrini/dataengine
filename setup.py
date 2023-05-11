@@ -62,7 +62,9 @@ setup(
         'pandas',
         'boto3',
         'psycopg2-binary==2.9.3',
-        'PyMySQL'
+        'PyMySQL',
+        'slack-sdk',
+        'tabulate'
     ],
     include_package_data=True
 )
