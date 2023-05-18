@@ -23,7 +23,8 @@ def post_dataframe_as_message(channel, token, pandas_df, message):
         # Place the message above the DataFrame
         message + "\n\n" +
         # Convert the DataFrame to a string surrounded by backticks
-        "``` \n" + pandas_df.to_markdown(index=False) + "\n ```")
+        # Source for formatting: https://stackoverflow.com/questions/66713432
+        "``` \n" + pandas_df.to_markdown(index=False, floatfmt='') + "\n ```")
     # Initialize a Slack WebClient instance
     client = WebClient(token=token)
     # Post the message to Slack
