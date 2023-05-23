@@ -1,6 +1,7 @@
 """
 This module contains all DataBricks interactive functionality.
 """
+import os
 import base64
 import json
 import requests
@@ -21,7 +22,8 @@ def update_global_init_script(script_text, workspace, token, script_id, name):
             success boolean
     """
     response = requests.request(
-        "PATCH", f"{workspace}/api/2.0/global-init-scripts/{script_id}",
+        "PATCH",
+        os.path.join(workspace, "api/2.0/global-init-scripts", script_id),
         data=json.dumps({
             "name": name, "script": base64.b64encode(
                 bytes(script_text, "utf-8")).decode("ascii")}),
