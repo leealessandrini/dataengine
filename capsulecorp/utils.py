@@ -1,4 +1,9 @@
-""" Capsule Corp Utilities Module """
+"""
+Capsule Corp Utilities Module
+
+TODO: Break this up into a subpackage and separate the methods logically into
+different modules.
+"""
 import io
 import os
 import datetime
@@ -11,6 +16,7 @@ import yaml
 import boto3
 import numpy as np
 import pandas as pd
+from scipy.stats import shapiro, normaltest
 
 # Setup logging
 logging.basicConfig(
@@ -73,11 +79,11 @@ def get_dict_permutations(raw_dict):
     # Set default
     dict_permutations = [{}]
     # Check whether input is valid nonempty dictionary
-    if (type(raw_dict) == dict) and (len(raw_dict) > 0):
+    if isinstance(raw_dict, dict) and (len(raw_dict) > 0):
         # Make sure all values are lists
         dict_of_lists = {}
         for key, value in raw_dict.items():
-            if type(value) != list:
+            if not isinstance(value, list):
                 dict_of_lists[key] = [value]
             else:
                 dict_of_lists[key] = value
@@ -242,7 +248,7 @@ def check_s3_path(bucket_name, s3_path):
         Returns:
             boolean for whether the path exists
     """
-    s3 = boto3.client(
+    s3_client = boto3.client(
         's3', aws_access_key_id=S3_ACCESS_KEY,
         aws_secret_access_key=S3_SECRET_KEY)
     # --- Setup key ---
@@ -255,7 +261,8 @@ def check_s3_path(bucket_name, s3_path):
     if "*" in s3_prefix:
         s3_prefix = s3_prefix.split("*")[0]
     # Get list response
-    resp = s3.list_objects(Bucket=bucket_name, Prefix=s3_prefix, MaxKeys=1)
+    resp = s3_client.list_objects(
+        Bucket=bucket_name, Prefix=s3_prefix, MaxKeys=1)
 
     return "Contents" in resp
 
@@ -328,12 +335,12 @@ def copy_file(bucket, old_key, new_key):
             success boolean and exception message
     """
     success = True
-    s3 = boto3.resource(
+    s3_client = boto3.resource(
         's3', aws_access_key_id=S3_ACCESS_KEY,
         aws_secret_access_key=S3_SECRET_KEY)
     # Try to copy file
     try:
-        s3.Object(bucket, new_key).copy_from(
+        s3_client.Object(bucket, new_key).copy_from(
             CopySource=f"{bucket}/" + old_key)
     # If the copy fails for any reason set success to False
     except Exception as e:
@@ -385,3 +392,115 @@ def copy_s3_files(key_map, bucket, worker_count=8, max_retries=1):
             success = False
 
     return success
+
+
+def pooled_stddev(stddevs, n):
+    """
+        This method will calculate the pooled standard deviation across a
+        group of samples given each samples standard deviation and size.
+
+        Source: https://www.statisticshowto.com/pooled-standard-deviation/
+
+        Args:
+            stddevs (numpy.ndarray): standard deviations of samples
+            n (numpy.ndarray): samples sizes
+
+        Returns:
+            pooled stddev
+    """
+    return np.sqrt(np.sum([
+        (n[i] - 1) * np.power(stddevs[i], 2)
+        for i in range(len(n))]) / (np.sum(n) - len(n)))
+
+
+def get_null_columns(df):
+    """
+        This function will get null columns.
+
+        Args:
+            df (pandas.core.frame.DataFrame): pandas DataFrame
+
+        Returns:
+            list of non null columns
+    """
+    return [
+        column_header
+        for column_header, is_null in df.isnull().all().iteritems()
+        if is_null]
+
+
+def get_non_null_columns(df):
+    """
+        This function will get non null columns.
+
+        Args:
+            df (pandas.core.frame.DataFrame): pandas DataFrame
+
+        Returns:
+            list of non null columns
+    """
+    return [
+        column_header
+        for column_header, is_null in df.isnull().all().iteritems()
+        if not is_null]
+
+
+def test_normal(values, alpha=0.05):
+    """
+        This method will test whether distributions are guassian.
+
+        Args:
+            values (np.array):
+
+        Return:
+            boolean result
+    """
+    shapiro_stat, shapiro_p = shapiro(values)
+    normal_stat, normal_p = normaltest(values)
+    is_normal = np.all([p < alpha for p in (shapiro_p, normal_p)])
+
+    return is_normal
+
+
+def collapse_dataframe_columns(df):
+    """
+        This method will collapse DataFrame column values into a list.
+
+        Args:
+            df (pandas.DataFrame): pandas DataFrame
+
+        Returns:
+            list of unique column values
+    """
+    return list(set(itertools.chain.from_iterable([
+        df[~df[col].isnull()][col].values.tolist() for col in df.columns])))
+
+
+def filter_dataframe(
+        df, cols, filter_out=False, use_substring=False,
+        use_startswith=False):
+    """
+        This method will filter a DataFrame by a list of columns.
+
+        Args:
+            df (pandas.DataFrame): pandas DataFrame
+            cols (list): list of desired columns
+            filter_out (bool): switch to filter columns out of DataFrame
+            use_substring (bool): switch to use substring logic
+            use_startswith (bool): switch to use startswith logic
+
+        Returns:
+            filtered DataFrame
+    """
+    # Create condition lambda function
+    if use_substring:
+        f = lambda c: any(str(substring) in c for substring in cols)
+    elif use_startswith:
+        f = lambda c: any(c.startswith(substring) for substring in cols)
+    else:
+        f = lambda c: c in cols
+    # Return DataFrame with filtered columns
+    if filter_out:
+        return df.loc[:, [c for c in df.columns if not f(c)]]
+    else:
+        return df.loc[:, [c for c in df.columns if f(c)]]
