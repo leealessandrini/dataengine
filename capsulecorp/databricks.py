@@ -79,5 +79,61 @@ def get_run_status(host, token, run_id):
             request response
     """
     return requests.get(
-        os.path.join(host, 'api/2.0/jobs/runs/get'),
-        headers={"Authorization": f"Bearer {token}"}, json={"run_id": run_id})
+        os.path.join(host, 'api/2.0/jobs/runs/get'), json={"run_id": run_id},
+        headers={"Authorization": f"Bearer {token}"})
+
+
+def get_job_info(host, token, job_id):
+    """
+        Get DataBricks job information given a job id.
+
+        Args:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
+            run_id (int): respective run id
+
+        Returns:
+            request response
+    """
+    return requests.get(
+        os.path.join(host, 'api/2.0/jobs/get'), json={"job_id": job_id},
+        headers={"Authorization": f"Bearer {token}"})
+
+
+def get_task_params(host, token, job_id):
+    """
+        This method will get the existing task parameters given a job id.
+
+        Args:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
+            job_id (int): respective job id
+
+        Returns:
+            task parameter list and success boolean
+    """
+    # Initialize values
+    success = False
+    task_params = []
+    # Get all job information
+    response = get_job_info(host, token, job_id)
+    # If a successful response has been retrieved pull the task parameters
+    if response.status_code == 200:
+        success = True
+        # Parse response
+        content = response.json()
+        # If there are multiple tasks build the list
+        if "tasks" in content["settings"]:
+            task_params = [
+                {
+                    key: value for key, value in i.items()
+                    if key in ["task_key", "notebook_task"]
+                }
+                for i in content["settings"]["tasks"]]
+        # Otherwise, use notebook_task field and fill task key with empty str
+        else:
+            task_params = [{
+                "task_key": "",
+                "notebook_task": content["settings"]["notebook_task"]}]
+
+    return task_params, success
