@@ -64,7 +64,8 @@ setup(
         'psycopg2-binary==2.9.3',
         'PyMySQL',
         'slack-sdk',
-        'tabulate'
+        'tabulate',
+        'databricks-cli'
     ],
     include_package_data=True
 )

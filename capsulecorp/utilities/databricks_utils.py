@@ -5,6 +5,8 @@ import os
 import base64
 import json
 import requests
+from databricks_cli.sdk.api_client import ApiClient
+from databricks_cli.sdk.service import WorkspaceService
 
 
 def update_global_init_script(host, token, script_text, script_id, name):
@@ -137,3 +139,46 @@ def get_task_params(host, token, job_id):
                 "notebook_task": content["settings"]["notebook_task"]}]
 
     return task_params, success
+
+
+def export_notebook(host, token, notebook_path):
+    """
+        This method will export a DataBricks notebook to a python source file
+        locally stored.
+
+        Arguments:
+            notebook_path (str): local DataBricks path to notebook
+
+        Returns:
+            source code string
+    """
+    # Initialize DataBricks API Client and Workspace API
+    databricks_client = ApiClient(host=host, token=token, verify=True)
+    workspace_service = WorkspaceService(databricks_client)
+    # Export Workspace
+    output = workspace_service.export_workspace(notebook_path, 'SOURCE')
+    # Return decoded source code as a string
+    return base64.b64decode(output["content"]).decode()
+
+
+def import_notebook(host, token, source_code, notebook_path):
+    """
+        Import source code into DataBricks given a location.
+
+        TODO: Add success boolean as return vaue
+
+        Arguments:
+            source_code (str): string of python source code
+            notebook_path (str): location of notebook
+
+        Returns:
+            None
+    """
+    # Initialize DataBricks API Client and Workspace API
+    databricks_client = ApiClient(host=host, token=token, verify=True)
+    workspace_service = WorkspaceService(databricks_client)
+    # Import the source code as the new DataBricks notebook
+    workspace_service.import_workspace(
+        notebook_path, "SOURCE", "PYTHON", source_code, True)
+
+    return
