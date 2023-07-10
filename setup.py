@@ -65,7 +65,8 @@ setup(
         'PyMySQL',
         'slack-sdk',
         'tabulate',
-        'databricks-cli'
+        'databricks-cli',
+        'PyGithub'
     ],
     include_package_data=True
 )

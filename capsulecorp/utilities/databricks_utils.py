@@ -147,6 +147,8 @@ def export_notebook(host, token, notebook_path):
         locally stored.
 
         Arguments:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
             notebook_path (str): local DataBricks path to notebook
 
         Returns:
@@ -168,6 +170,8 @@ def import_notebook(host, token, source_code, notebook_path):
         TODO: Add success boolean as return vaue
 
         Arguments:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
             source_code (str): string of python source code
             notebook_path (str): location of notebook
 
