@@ -66,7 +66,8 @@ setup(
         'slack-sdk',
         'tabulate',
         'databricks-cli',
-        'PyGithub'
+        'PyGithub',
+        'scipy'
     ],
     include_package_data=True
 )
