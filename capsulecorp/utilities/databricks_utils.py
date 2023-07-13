@@ -186,3 +186,54 @@ def import_notebook(host, token, source_code, notebook_path):
         notebook_path, "SOURCE", "PYTHON", source_code, True)
 
     return
+
+
+def does_dir_exist(host, token, user, notebook_path):
+    """
+        This method will determine whether the directory in a notebook path
+        exists.
+
+        Args:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
+            user (str): databricks user path
+            notebook_path (str): location of notebook
+
+        Returns:
+            boolean
+    """
+    # Parse the directory name from the full notebook path
+    dir_name = os.path.dirname(notebook_path.split(user)[1])
+    # Initialize DataBricks API Client and Workspace API
+    databricks_client = ApiClient(host=host, token=token, verify=True)
+    workspace_service = WorkspaceService(databricks_client)
+    # Grab the workspace objects for the provided user
+    workspace_objects = workspace_service.list(user)
+    # Return a boolean for whether the directory exists iin the workspace
+    return any([
+        user + dir_name == i["path"]
+        for i in workspace_objects["objects"]
+        if i["object_type"] == "DIRECTORY"])
+
+
+def make_dir(host, token, user, notebook_path):
+    """
+        This method will make a databricks directory given user and notebook
+        path information.
+
+        Args:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
+            user (str): databricks user path
+            notebook_path (str): location of notebook
+
+        Returns:
+
+    """
+    # Parse the directory name from the full notebook path
+    dir_name = os.path.dirname(notebook_path.split(user)[1])
+    # Initialize DataBricks API Client and Workspace API
+    databricks_client = ApiClient(host=host, token=token, verify=True)
+    workspace_service = WorkspaceService(databricks_client)
+    # Make the directory
+    return workspace_service.mkdirs(user + dir_name)
