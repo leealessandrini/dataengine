@@ -237,3 +237,33 @@ def make_dir(host, token, user, notebook_path):
     workspace_service = WorkspaceService(databricks_client)
     # Make the directory
     return workspace_service.mkdirs(user + dir_name)
+
+
+def put_file(host, token, src_path, dbfs_path):
+    """
+        Uploads a file from the local filesystem to Databricks File System.
+
+        Args:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
+            src_path (str): The path of the file on the local filesystem.
+            dbfs_path (str): DBFS path where the file will be uploaded.
+
+        Returns:
+            TODO: Add success boolean
+    """
+    # Connect to databricks
+    databricks_client = ApiClient(host=host, token=token, verify=True)
+    dbfs_api = DbfsApi(databricks_client)
+    # Read file and upload to dbfs
+    handle = dbfs_api.client.create(dbfs_path, True)['handle']
+    with open(src_path, 'rb') as local_file:
+        while True:
+            contents = local_file.read(2 ** 20)
+            if len(contents) == 0:
+                break
+            # add_block should not take a bytes object.
+            dbfs_api.client.add_block(handle, b64encode(contents).decode())
+        dbfs_api.client.close(handle)
+
+    return
