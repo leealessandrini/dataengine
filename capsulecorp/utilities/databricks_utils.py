@@ -7,6 +7,7 @@ import json
 import requests
 from databricks_cli.sdk.api_client import ApiClient
 from databricks_cli.sdk.service import WorkspaceService
+from databricks_cli.dbfs.cli import DbfsApi
 
 
 def update_global_init_script(host, token, script_text, script_id, name):
