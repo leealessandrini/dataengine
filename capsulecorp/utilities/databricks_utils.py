@@ -264,7 +264,8 @@ def put_file(host, token, src_path, dbfs_path):
             if len(contents) == 0:
                 break
             # add_block should not take a bytes object.
-            dbfs_api.client.add_block(handle, b64encode(contents).decode())
+            dbfs_api.client.add_block(
+                handle, base64.b64encode(contents).decode())
         dbfs_api.client.close(handle)
 
     return
