@@ -64,7 +64,7 @@ def run_job(host, token, job_id, **kwargs):
             request response
     """
     return requests.post(
-        os.path.join(databricks_host, 'api/2.0/jobs/run-now'),
+        os.path.join(host, 'api/2.0/jobs/run-now'),
         headers={"Authorization": f"Bearer {token}"},
         json={"job_id": job_id, **kwargs})
 
