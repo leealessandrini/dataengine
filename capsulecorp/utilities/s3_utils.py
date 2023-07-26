@@ -29,12 +29,12 @@ def parse_url(s3_url):
             s3_url (str): s3 url
 
         Returns:
-            s3 bucket name and s3 key
+            prefix and bucket name
     """
     # Parse proper output url
     parse_result = urlparse(s3_url)
-    # Return bucket name and s3 key
-    return parse_result.netloc, parse_result.path[1:]
+    # Return prefix and bucket name 
+    return parse_result.path[1:], parse_result.netloc, 
 
 
 def read_file(access_key, secret_key, s3_prefix, bucket_name):
