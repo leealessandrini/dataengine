@@ -103,6 +103,24 @@ def get_job_info(host, token, job_id):
         headers={"Authorization": f"Bearer {token}"})
 
 
+def delete_job_run(host, token, run_id):
+    """
+        This method will delete a specified run of a job configuration.
+
+        Args:
+            host (str): URL of DataBricks workspace
+            token (str): DataBricks API token
+            run_id (int): respective run id
+
+        Returns:
+            request response
+    """
+    return requests.post(
+        os.path.join(host, "api/2.0/jobs/runs/delete"),
+        headers={"Authorization": f"Bearer {token}"},
+        json={"run_id": run_id})
+
+
 def get_task_params(host, token, job_id):
     """
         This method will get the existing task parameters given a job id.
