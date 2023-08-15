@@ -6,9 +6,8 @@ class DatabaseSchema(Schema):
     """
     Schema for specifying database specs.
     """
-    name = fields.String(required=True)
-    database_type = fields.String(required=True)
     database_name = fields.String(required=True)
+    database_type = fields.String(required=True)
     host = fields.String(required=True)
     port = fields.Integer(required=True)
     user = fields.String(required=True)
@@ -34,27 +33,24 @@ class Database(object):
     """
 
     def __init__(
-            self, name, database_type, database_name, host, port, user, password):
+            self, database_name, database_type, host, port, user, password):
         """
         Setup database interface arguments.
         """
-        self.name = name
-        self.database_type = database_type
         self.database_name = database_name
+        self.database_type = database_type
         self.host = host
         self.port = port
         self.user = user
         self.password = password
 
-    def get_connection(self):
+    def get_connection(self, schema_name):
         """
         This wrapper function will get a database connection.
         """
         if self.database_type == "mysql":
             return mysql_utils.get_connection(
-                self.database_name, self.host, self.port, self.user,
-                self.password)
+                schema_name, self.host, self.port, self.user, self.password)
         else:
             return postgresql.get_connection(
-                self.database_name, self.host, self.port, self.user,
-                self.password)
+                schema_name, self.host, self.port, self.user, self.password)
