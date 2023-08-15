@@ -1,0 +1,12 @@
+PyYAML
+numpy
+pandas
+boto3
+psycopg2-binary==2.9.3
+PyMySQL
+slack-sdk
+tabulate
+databricks-cli
+PyGithub
+scipy
+marshmallow

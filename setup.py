@@ -39,6 +39,11 @@ here = path.abspath(path.dirname(__file__))
 
 exec(open('capsulecorp/version.py').read())
 
+# Read requirements
+required_packages = []
+with open('requirements.txt') as f:
+    required_packages = f.read().splitlines()
+
 setup(
     name='capsulecorp',
     version=__version__,
@@ -56,18 +61,6 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     python_requires='>=3.9',
     # Dependencies
-    install_requires=[
-        'PyYAML',
-        'numpy',
-        'pandas',
-        'boto3',
-        'psycopg2-binary==2.9.3',
-        'PyMySQL',
-        'slack-sdk',
-        'tabulate',
-        'databricks-cli',
-        'PyGithub',
-        'scipy'
-    ],
+    install_requires=required_packages,
     include_package_data=True
 )
