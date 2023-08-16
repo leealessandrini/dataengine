@@ -52,5 +52,5 @@ class Database(object):
             return mysql_utils.get_connection(
                 schema_name, self.host, self.port, self.user, self.password)
         else:
-            return postgresql.get_connection(
+            return postgresql_utils.get_connection(
                 schema_name, self.host, self.port, self.user, self.password)
