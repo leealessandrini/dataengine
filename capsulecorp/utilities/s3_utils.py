@@ -33,8 +33,8 @@ def parse_url(s3_url):
     """
     # Parse proper output url
     parse_result = urlparse(s3_url)
-    # Return prefix and bucket name 
-    return parse_result.path[1:], parse_result.netloc, 
+    # Return prefix and bucket name
+    return parse_result.path[1:], parse_result.netloc
 
 
 def read_file(access_key, secret_key, s3_prefix, bucket_name):
@@ -102,25 +102,34 @@ def write_bytes(access_key, secret_key, s3_prefix, bucket_name, bytes_object):
 
 
 def write_pandas_df(
-        access_key, secret_key, s3_url, pandas_df, **kwargs):
+        access_key, secret_key, s3_url, pandas_df, file_format="csv",
+        **kwargs):
     """
-        This method will save a DataFrame to S3 provided the filename.
+    This method will save a DataFrame to S3 provided the filename.
 
-        Args:
-            access_key (str): AWS s3 Access Key
-            secret_key (str): AWS s3 Secret Key
-            s3_url (str): s3 url where data will be written
-            pandas_df (pandas.DataFrame): DataFrame object
+    Args:
+        access_key (str): AWS s3 Access Key
+        secret_key (str): AWS s3 Secret Key
+        s3_url (str): s3 url where data will be written
+        pandas_df (pandas.DataFrame): DataFrame object
+        file_format (str): desired file format, default is csv
 
-        Returns:
-            success boolean
+    Returns:
+        success boolean
     """
+    # Encode pandas DataFrame to bytes object
+    if file_format == "csv":
+        bytes_object = pandas_df.to_csv(None, index=False, **kwargs).encode()
+    elif file_format == "parquet":
+        bytes_object = pandas_df.to_parquet(None, index=False)
+    else:
+        return False
+    # Write bytes to s3
     return write_bytes(
         access_key, secret_key,
         # Parse s3 URL for bucket name and s3 key
         *parse_url(s3_url),
-        # Encode pandas DataFrame to bytes object
-        pandas_df.to_csv(None, index=False, **kwargs).encode())
+        bytes_object)
 
 
 def write_dict(access_key, secret_key, s3_url, dict_object):
