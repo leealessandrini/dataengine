@@ -114,10 +114,15 @@ class Database:
         # Wrap load data method
         if self.database_type == "mysql":
             success = mysql_utils.load_from_s3(
-                conn, table_name, s3_location, **kwargs)
+                conn, table_name, s3_location, **{
+                    key: value for key, value in kwargs.items()
+                    if key in (
+                        "separator", "header", "replace", "header_list")})
         else:
             success = postgresql_utils.load_from_s3(
-                conn, table_name, s3_location, **kwargs)
+                conn, table_name, s3_location, **{
+                    key: value for key, value in kwargs.items()
+                    if key in ("separator", "header", "file_format")})
         # Log either success or failure
         if success:
             logging.info(
