@@ -44,6 +44,10 @@ required_packages = []
 with open('requirements.txt') as f:
     required_packages = f.read().splitlines()
 
+# Use the README as the long description
+with open("README.md") as f:
+    readme_text = f.read()
+
 setup(
     name='capsulecorp',
     version=__version__,
@@ -51,6 +55,7 @@ setup(
         'General python utilities package for working with public cloud '
         'services and big data'
     ),
+    long_description=readme_text,
     url='https://github.com/leealessandrini/capsulecorp',
     author='Daniel Lee Alessandrini',
     author_email='alessandrinil@gmail.com',
