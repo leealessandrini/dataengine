@@ -18,7 +18,8 @@ class DatabaseSchema(Schema):
     password = fields.String(required=True)
 
     @validates("database_type")
-    def validate_delta_type(self, database_type):
+    def validate_database_type(self, database_type):
+        """ This function will validate the database type """
         valid_args = ["postgresql", "mysql"]
         if database_type not in valid_args:
             raise ValidationError(
@@ -126,11 +127,11 @@ class Database:
         # Log either success or failure
         if success:
             logging.info(
-                f"Successfully loaded into the {self.database_name}"
+                f"Successfully loaded into the {self.database_name} "
                 f"table {schema_name}.{table_name}")
         else:
             logging.error(
-                f"Failed loading into the {self.database_name}"
+                f"Failed loading into the {self.database_name} "
                 f"table {schema_name}.{table_name}")
         # Close connection
         conn.close()
