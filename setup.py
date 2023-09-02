@@ -62,5 +62,5 @@ setup(
     python_requires='>=3.9',
     # Dependencies
     install_requires=required_packages,
-    include_package_data=True
+    include_package_data=True,
 )
