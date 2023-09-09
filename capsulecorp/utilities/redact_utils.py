@@ -19,14 +19,18 @@ def find_unique_macs(text, case=None):
     # Search for all MAC addresses in the text
     mac_addresses = re.findall(MAC_REGEX, text)
     # Since re.findall() returns tuples, convert them back to the original
-    # list of unique mac addresses
-    unique_macs = list({"".join(mac) for mac in mac_addresses})
+    # mac addresses
+    mac_addresses = ["".join(mac) for mac in mac_addresses]
     # Cast to provided case if applicable
     if case == "upper":
-        unique_macs = [mac.upper() for mac in unique_macs]
+        mac_addresses = [mac.upper() for mac in mac_addresses]
     elif case == "lower":
-        unique_macs = [mac.lower() for mac in unique_macs]
-    
+        mac_addresses = [mac.lower() for mac in mac_addresses]
+    # Cast to a set in order to recude the list to unique macs
+    unique_macs = list(set(mac_addresses))
+    # Sort the list before returning it
+    unique_macs.sort()
+
     return unique_macs
 
 
