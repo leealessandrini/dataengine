@@ -1,3 +1,5 @@
+pytest
+pytest-cov
 PyYAML
 numpy
 pandas

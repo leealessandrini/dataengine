@@ -2,7 +2,7 @@ import re
 import random
 
 
-MAC_REGEX = r"((?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2})"
+MAC_REGEX = re.compile(r"((?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2})")
 
 
 def find_unique_macs(text, case=None):
