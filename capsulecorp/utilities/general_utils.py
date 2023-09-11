@@ -2,6 +2,8 @@
 Utility metohds that aren't directly related to some sort of software package
 or service.
 """
+import tarfile
+import io
 import datetime
 import itertools
 import logging
@@ -236,3 +238,31 @@ def test_normal(values, alpha=0.05):
     _, normal_p = normaltest(values)
 
     return np.all([p < alpha for p in (shapiro_p, normal_p)])
+
+
+def read_tar_from_bytes(tar_bytes):
+    """
+    Reads a tar archive from a bytes object and returns a dictionary.
+    The dict keys are file names and values are the file content as strings.
+    
+    Parameters:
+        tar_bytes (bytes): The bytes object containing the tar archive.
+        
+    Returns:
+        dict: A dictionary with file names as keys and file content as values.
+    """
+    file_contents = {}
+    # Create a BytesIO object from the bytes
+    tar_stream = io.BytesIO(tar_bytes)
+    # Open the tar file from the BytesIO stream
+    with tarfile.open(fileobj=tar_stream) as tar:
+        # Loop over each file in the archive
+        for member in tar.getmembers():
+            # Make sure it's actually a file (not a directory, etc.)
+            if member.isfile():
+                # Extract the file object
+                f = tar.extractfile(member)
+                # Read the file content and decode it to string
+                file_contents[member.name] = f.read().decode("utf-8")
+                
+    return file_contents
