@@ -266,3 +266,29 @@ def read_tar_from_bytes(tar_bytes):
                 file_contents[member.name] = f.read().decode("utf-8")
                 
     return file_contents
+
+
+def write_dict_to_tar_bytes(file_dict):
+    """
+    Writes a dictionary to a tar archive as a bytes object.
+    The dictionary keys are treated as file names, and the values as file content.
+    
+    Parameters:
+        file_dict (dict): A dictionary with file names as keys and file content as values.
+        
+    Returns:
+        bytes: The bytes object containing the tar archive.
+    """
+    tar_stream = io.BytesIO()
+    # Create a tar archive in memory
+    with tarfile.open(fileobj=tar_stream, mode='w') as tar:
+        for file_name, file_content in file_dict.items():
+            # Convert string content to bytes
+            file_data = file_content.encode("utf-8")
+            # Create a TarInfo object for the file
+            file_info = tarfile.TarInfo(name=file_name)
+            file_info.size = len(file_data)
+            # Add the file to the tar archive
+            tar.addfile(file_info, io.BytesIO(file_data))
+    # Return the byte content of the tar archive
+    return tar_stream.getvalue()
