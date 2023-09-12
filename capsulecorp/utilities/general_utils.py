@@ -281,7 +281,7 @@ def write_dict_to_tar_bytes(file_dict):
     """
     tar_stream = io.BytesIO()
     # Create a tar archive in memory
-    with tarfile.open(fileobj=tar_stream, mode='w') as tar:
+    with tarfile.open(fileobj=tar_stream, mode='w:gz') as tar:
         for file_name, file_content in file_dict.items():
             # Convert string content to bytes
             file_data = file_content.encode("utf-8")
