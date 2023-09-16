@@ -21,6 +21,24 @@ logging.getLogger("py4j").setLevel(logging.ERROR)
 yaml.Dumper.ignore_aliases = lambda *args: True
 
 
+def is_valid_s3_url(s3_url):
+    """
+    Check if the given URL is a valid S3 URL.
+
+    Args:
+        s3_url (str): The URL to check.
+
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+    try:
+        parsed = urlparse(s3_url)
+    except ValueError:
+        return False
+    
+    return parsed.scheme == 's3' and bool(parsed.netloc) and bool(parsed.path)
+
+
 def parse_url(s3_url):
     """
         This method will parse an s3 url.
@@ -31,6 +49,8 @@ def parse_url(s3_url):
         Returns:
             prefix and bucket name
     """
+    if not is_valid_s3_url(s3_url):
+        return None, None
     # Parse proper output url
     parse_result = urlparse(s3_url)
     # Return prefix and bucket name
@@ -60,6 +80,7 @@ def read_file(access_key, secret_key, s3_prefix, bucket_name):
 def read_df(access_key, secret_key, s3_prefix, bucket_name, **kwargs):
     """
         This method will read in data from s3 into a pandas DataFrame.
+        TODO: Add support for parquet
 
         Args:
             access_key (str): AWS s3 Access Key

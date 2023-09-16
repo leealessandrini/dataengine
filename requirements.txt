@@ -3,6 +3,8 @@ pytest-cov
 PyYAML
 numpy
 pandas
+pyarrow
+moto
 boto3
 psycopg2-binary==2.9.3
 PyMySQL
