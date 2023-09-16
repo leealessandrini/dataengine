@@ -4,6 +4,7 @@ or service.
 """
 import tarfile
 import io
+import re
 import datetime
 import itertools
 import logging
@@ -47,7 +48,7 @@ def leading_zero(hour):
 
 def get_dt_range(dt, days=1, hours=0, weeks=0):
     """
-    This method will generate the date range between the provided datetime
+    This method will generate the datetime range between the provided datetime
     and days / hours. Subtract hours / days when negative, otherwise add
     them.
 
@@ -109,37 +110,58 @@ def exclude_hours_from_range(dt_range, exclude_hours):
     hours = []
     # Assemble list of hours
     for arg in exclude_hours:
-        # Get range if - in argument
-        if "-" in arg:
-            hours += np.arange(
-                *[int(i) for i in arg.split("-")]).tolist()
-        # Otherwise cast the character to an int and append
-        else:
-            hours.append(int(arg))
+        # If the type is an int just add it to the list
+        if isinstance(arg, int):
+            hours.append(arg)
+        # Otherwise check if the argument is a string
+        elif isinstance(arg, str):
+            # If the argument string of digits, cast to int first
+            if re.compile(r"[0-9]+").fullmatch(arg):
+                hours.append(int(arg))
+            # If the argument is a range of digits parse the range and add it
+            elif re.compile(r"[0-9]+-[0-9]+").fullmatch(arg):
+                start, end = [int(i) for i in arg.split("-")]
+                hours += list(range(start, end + 1))
     # Update the dt range to exclude these hours and return
     return [i for i in dt_range if i.hour not in hours]
 
 
-def create_time_string(total_time):
+def create_time_string(total_seconds):
     """
     This method will create a time string given total seconds.
 
     Args:
-        total_time (str): total time in seconds
+        total_seconds (int|str): total time in seconds
 
     Returns:
         time string
     """
-    minutes = math.floor(total_time / 60.0)
+    # If the input is a string cast to an int
+    if (
+        isinstance(total_seconds, str) and
+        re.compile(r"-*[0-9]+").fullmatch(total_seconds)
+    ):
+        total_seconds = int(total_seconds)
+    # If total_seconds is still not an int set it to zero
+    if not isinstance(total_seconds, int):
+        total_seconds = 0
+    # Determine whether total seconds is negative
+    is_negative = total_seconds < 0
+    # Take the absolute value of total seconds
+    total_seconds = abs(total_seconds)
+    # Break down the total seconds into minutes and seconds
+    minutes = math.floor(total_seconds / 60.0)
+    seconds = total_seconds % 60
+    # Format the final string
     minutes_str = "{minutes} minute{s}".format(
         minutes=minutes, s="s" * (minutes != 1))
-    seconds = total_time % 60
     seconds_str = "{seconds} second{s}".format(
         seconds=seconds, s="s" * (seconds != 1))
     time_str = (
+        "-" * is_negative +
         minutes_str * (minutes != 0) +
         " and " * (minutes != 0 and seconds != 0) +
-        seconds_str * (seconds != 0))
+        seconds_str * (not (seconds == 0 and minutes > 0)))
 
     return time_str
 
@@ -218,6 +240,13 @@ def pooled_stddev(stddevs, sample_sizes):
     Returns:
         pooled stddev
     """
+    # Return null if both arrays are empty or different lengths
+    if (
+        not(stddevs.any() and sample_sizes.any()) or
+        (len(stddevs) != len(sample_sizes))
+    ):
+        return np.nan
+    # Otherwise calculate the pooled standard deviation
     return np.sqrt(np.sum([
         (sample_sizes[i] - 1) * np.power(stddevs[i], 2)
         for i in range(len(sample_sizes))
@@ -227,6 +256,7 @@ def pooled_stddev(stddevs, sample_sizes):
 def test_normal(values, alpha=0.05):
     """
     This method will test whether distributions are guassian.
+    TODO: This needs to be flipped
 
     Args:
         values (np.array):
