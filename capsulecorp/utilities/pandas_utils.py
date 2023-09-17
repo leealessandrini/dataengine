@@ -16,7 +16,7 @@ def get_null_columns(pandas_df):
     """
     return [
         column_header
-        for column_header, is_null in pandas_df.isnull().all().iteritems()
+        for column_header, is_null in pandas_df.isnull().all().items()
         if is_null]
 
 
@@ -32,7 +32,7 @@ def get_non_null_columns(pandas_df):
     """
     return [
         column_header
-        for column_header, is_null in pandas_df.isnull().all().iteritems()
+        for column_header, is_null in pandas_df.isnull().all().items()
         if not is_null]
 
 
