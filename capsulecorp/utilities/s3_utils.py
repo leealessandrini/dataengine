@@ -155,17 +155,19 @@ def write_pandas_df(
 
 def write_dict(access_key, secret_key, s3_url, dict_object):
     """
-        This method will convert a dict to bytes using YAML and write them to
-        a specified s3 location.
+    This method will convert a dict to bytes using YAML and write them to
+    a specified s3 location.
 
-        Args:
-            access_key (str): AWS s3 Access Key
-            secret_key (str): AWS s3 Secret Key
-            s3_url (str): s3 url where data will be written
-            dict_object (dict): python dictionary
+    TODO: Add other file format options like JSON
 
-        Returns:
-            success boolean
+    Args:
+        access_key (str): AWS s3 Access Key
+        secret_key (str): AWS s3 Secret Key
+        s3_url (str): s3 url where data will be written
+        dict_object (dict): python dictionary
+
+    Returns:
+        success boolean
     """
     return write_bytes(
         access_key, secret_key,
@@ -177,17 +179,17 @@ def write_dict(access_key, secret_key, s3_url, dict_object):
 
 def write_zip(access_key, secret_key, s3_url, file_dict):
     """
-        This method will zip a dictionary of byte objects and save the file
-        on s3.
+    This method will zip a dictionary of byte objects and save the file
+    on s3.
 
-        Args:
-            access_key (str): AWS s3 Access Key
-            secret_key (str): AWS s3 Secret Key
-            s3_url (str): s3 url where data will be written
-            file_dict (dict): filenames and their corresponding bytes
+    Args:
+        access_key (str): AWS s3 Access Key
+        secret_key (str): AWS s3 Secret Key
+        s3_url (str): s3 url where data will be written
+        file_dict (dict): filenames and their corresponding bytes
 
-        Returns:
-            success boolean
+    Returns:
+        success boolean
     """
     # Write bytes in memory
     zip_buffer = io.BytesIO()
@@ -208,17 +210,17 @@ def write_zip(access_key, secret_key, s3_url, file_dict):
 def write_local_file(
         access_key, secret_key, s3_prefix, bucket_name, local_filepath):
     """
-        This method will write a local file to s3.
+    This method will write a local file to s3.
 
-        Args:
-            access_key (str): AWS s3 Access Key
-            secret_key (str): AWS s3 Secret Key
-            s3_prefix (str): AWS s3 prefix to file
-            bucket_name (str): AWS s3 bucket name
-            local_filepath (str): local filepath
+    Args:
+        access_key (str): AWS s3 Access Key
+        secret_key (str): AWS s3 Secret Key
+        s3_prefix (str): AWS s3 prefix to file
+        bucket_name (str): AWS s3 bucket name
+        local_filepath (str): local filepath
 
-        Returns:
-            success
+    Returns:
+        success
     """
     success = False
     with open(local_filepath, "rb") as bytes_object:
@@ -230,16 +232,16 @@ def write_local_file(
 
 def check_s3_path(access_key, secret_key, s3_path, bucket_name):
     """
-        This method will check whether the provided s3 path is valid.
+    This method will check whether the provided s3 path is valid.
 
-        Args:
-            access_key (str): AWS s3 Access Key
-            secret_key (str): AWS s3 Secret Key
-            s3_path (str): path to s3 file
-            bucket_name (str): name of s3 bucket
+    Args:
+        access_key (str): AWS s3 Access Key
+        secret_key (str): AWS s3 Secret Key
+        s3_path (str): path to s3 file
+        bucket_name (str): name of s3 bucket
 
-        Returns:
-            boolean for whether the path exists
+    Returns:
+        boolean for whether the path exists
     """
     s3_client = boto3.client(
         's3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
@@ -297,22 +299,21 @@ def get_responses(
 
 def get_s3_prefix_size(access_key, secret_key, s3_prefix_list, bucket_name):
     """
-        This method will get the size of a list of s3 prefixes.
+    This method will get the size of a list of s3 prefixes.
 
-        Args:
-            access_key (str): AWS s3 Access Key
-            secret_key (str): AWS s3 Secret Key
-            prefix_list (list): list of s3 prefixes
-            bucket (str): name of s3 bucket
+    Args:
+        access_key (str): AWS s3 Access Key
+        secret_key (str): AWS s3 Secret Key
+        prefix_list (list): list of s3 prefixes
+        bucket (str): name of s3 bucket
 
-        Returns:
-            size (in Gb)
+    Returns:
+        size (in Gb)
     """
     responses = []
     for s3_prefix in s3_prefix_list:
         responses += get_responses(
             access_key, secret_key, s3_prefix, bucket_name)
-
     return round(sum([i["Size"] for i in responses]) / np.power(10, 9), 2)
 
 

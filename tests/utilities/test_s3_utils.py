@@ -1,6 +1,8 @@
+import tempfile
 import pytest
 import boto3
 from moto import mock_s3
+import numpy as np
 import pandas as pd
 from capsulecorp.utilities import s3_utils
 
@@ -33,6 +35,8 @@ def setup_s3_bucket(s3_client):
         Bucket=BUCKET_NAME, Key='test_textfile', Body=b'test_content')
     s3_client.put_object(
         Bucket=BUCKET_NAME, Key='test_csv', Body="col1,col2\n1,2\n3,4")
+    s3_client.put_object(
+        Bucket=BUCKET_NAME, Key='test_size', Body=b'a' * 1024 * 10000)
 
 
 def test_is_valid_s3_url():
@@ -162,3 +166,138 @@ def test_write_pandas_df_unsupported_format(s3_client):
         ACCESS_KEY, SECRET_KEY, f's3://{BUCKET_NAME}/{prefix}',
         df, file_format="unsupported")
     assert success == False
+
+
+def test_write_dict(s3_client):
+    setup_s3_bucket(s3_client)
+    # Setup args
+    prefix = "test_dict.yaml"
+    test_dict = {'key': 'value', 'another_key': 123}
+    # Write dict to s3
+    success = s3_utils.write_dict(
+        ACCESS_KEY, SECRET_KEY, f's3://{BUCKET_NAME}/{prefix}', test_dict)
+
+    assert success == True
+
+
+def test_write_zip(s3_client):
+    setup_s3_bucket(s3_client)
+    # Setup args
+    prefix = "test_zip.zip"
+    test_files = {
+        'file1.txt': b'This is file1', 'file2.txt': b'This is file2'}
+    # Write zip to s3
+    success = s3_utils.write_zip(
+        ACCESS_KEY, SECRET_KEY, f's3://{BUCKET_NAME}/{prefix}', test_files)
+
+    assert success == True
+
+
+def test_write_local_file(s3_client):
+    setup_s3_bucket(s3_client)
+    # Create a temporary file
+    with tempfile.NamedTemporaryFile() as tmpfile:
+        tmpfile.write(b"Some content")
+        tmpfile.seek(0)  # Reset file pointer to beginning
+        # Write temprary file
+        success = s3_utils.write_local_file(
+            ACCESS_KEY, SECRET_KEY, 'test_local_file', BUCKET_NAME,
+            tmpfile.name)
+
+    assert success == True
+
+
+def test_check_s3_path_valid(s3_client):
+    setup_s3_bucket(s3_client)
+    assert s3_utils.check_s3_path(
+        ACCESS_KEY, SECRET_KEY, 'test_textfile', BUCKET_NAME
+    ) == True
+
+
+def test_check_s3_path_invalid(s3_client):
+    setup_s3_bucket(s3_client)
+    assert s3_utils.check_s3_path(
+        ACCESS_KEY, SECRET_KEY, 'nonexistent_file.txt', BUCKET_NAME
+    ) == False
+
+
+def test_check_s3_path_with_glob(s3_client):
+    setup_s3_bucket(s3_client)
+    assert s3_utils.check_s3_path(
+        ACCESS_KEY, SECRET_KEY, 'test_*', BUCKET_NAME
+    ) == True
+
+
+def test_check_s3_path_invalid_glob(s3_client):
+    setup_s3_bucket(s3_client)
+    assert s3_utils.check_s3_path(
+        ACCESS_KEY, SECRET_KEY, 'nonexistent*', BUCKET_NAME
+    ) == False
+
+
+def test_get_responses(s3_client):
+    setup_s3_bucket(s3_client)
+    responses = s3_utils.get_responses(
+        ACCESS_KEY, SECRET_KEY, 'test', BUCKET_NAME)
+    assert len(responses) == 3
+    assert [file["Key"] for file in responses] == [
+        'test_csv', 'test_size', 'test_textfile']
+
+
+def test_get_responses_empty(s3_client):
+    setup_s3_bucket(s3_client)
+    responses = s3_utils.get_responses(
+        ACCESS_KEY, SECRET_KEY, 'nonexistent_file', BUCKET_NAME)
+    assert len(responses) == 0
+
+
+def test_get_s3_prefix_size(s3_client):
+    setup_s3_bucket(s3_client)
+    size_gb = s3_utils.get_s3_prefix_size(
+        ACCESS_KEY, SECRET_KEY, ['test_size'], BUCKET_NAME)
+    assert np.isclose(size_gb, 0.01, atol=1e-9)
+
+
+def test_get_s3_prefix_size_empty(s3_client):
+    setup_s3_bucket(s3_client)
+    size_gb = s3_utils.get_s3_prefix_size(
+        ACCESS_KEY, SECRET_KEY, ['nonexistent_file'], BUCKET_NAME)
+    assert size_gb == 0.0
+
+
+def test_copy_file_success(s3_client):
+    setup_s3_bucket(s3_client)
+    assert s3_utils.copy_file(
+        ACCESS_KEY, SECRET_KEY, 'test_textfile', 'test_textfile_copy',
+        BUCKET_NAME
+    ) == True
+
+
+def test_copy_file_fail(s3_client):
+    setup_s3_bucket(s3_client)
+    assert s3_utils.copy_file(
+        ACCESS_KEY, SECRET_KEY, 'nonexistent_file', 'nonexistent_file_copy',
+        BUCKET_NAME
+    ) == False
+
+
+def test_copy_s3_files_success(s3_client):
+    setup_s3_bucket(s3_client)
+    key_map = {
+        'test_textfile': 'test_textfile_copy',
+        'test_csv': 'test_csv_copy'}
+    assert s3_utils.copy_s3_files(
+        ACCESS_KEY, SECRET_KEY, key_map, BUCKET_NAME, worker_count=2,
+        max_retries=1
+    ) == True
+
+
+def test_copy_s3_files_partial_failure(s3_client):
+    setup_s3_bucket(s3_client)
+    key_map = {
+        'test_textfile': 'test_textfile_copy',
+        'nonexistent_file': 'nonexistent_file_copy'}
+    assert s3_utils.copy_s3_files(
+        ACCESS_KEY, SECRET_KEY, key_map, BUCKET_NAME, worker_count=2,
+        max_retries=1
+    ) == False
