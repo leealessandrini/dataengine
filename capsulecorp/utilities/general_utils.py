@@ -293,7 +293,7 @@ def read_tar_from_bytes(tar_bytes):
                 # Extract the file object
                 f = tar.extractfile(member)
                 # Read the file content and decode it to string
-                file_contents[member.name] = f.read().decode("utf-8")
+                file_contents[member.name] = f.read().decode("latin1")
                 
     return file_contents
 
@@ -314,7 +314,7 @@ def write_dict_to_tar_bytes(file_dict):
     with tarfile.open(fileobj=tar_stream, mode='w:gz') as tar:
         for file_name, file_content in file_dict.items():
             # Convert string content to bytes
-            file_data = file_content.encode("utf-8")
+            file_data = file_content.encode("latin1")
             # Create a TarInfo object for the file
             file_info = tarfile.TarInfo(name=file_name)
             file_info.size = len(file_data)
