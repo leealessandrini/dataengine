@@ -1,7 +1,9 @@
 """
 This class will function as a general purpose DataBase API.
 """
+import os
 import logging
+import yaml
 from marshmallow import Schema, fields, post_load, validates, ValidationError
 from .utilities import mysql_utils, postgresql_utils
 
@@ -137,3 +139,40 @@ class Database:
         conn.close()
 
         return success
+
+
+def load_databases(yaml_paths):
+    """
+    Load database objects from multiple YAML files.
+
+    This function takes a list of paths to YAML files that contain database
+    configurations. It returns a dictionary mapping database names to their
+    corresponding DatabaseSchema objects.
+
+    Args:
+        yaml_paths (list of str):
+            List of paths to YAML files containing database configs.
+
+    Returns:
+        dict:
+            A dictionary where the keys are database names and the values are
+            DatabaseSchema objects.
+    """
+    database_map = {}
+    for path in yaml_paths:
+        # Use a context manager for file I/O
+        with open(path, "r") as f:
+            database_config = yaml.safe_load(f)
+        # Iterate through databases
+        for database_name, config in database_config.items():
+            # Update database name and credentials
+            config["database_name"] = database_name
+            for i in ["host", "port", "user", "password"]:
+                env_var = os.getenv(config[i], "" if i != "port" else 0)
+                if i == "port" and env_var:
+                    env_var = int(env_var)
+                config[i] = env_var
+            # Load database object
+            database_map[database_name] = DatabaseSchema().load(config)
+
+    return database_map

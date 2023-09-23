@@ -1,0 +1,6 @@
+db2:
+  database_type: postgresql
+  host: DB2_HOST
+  port: DB2_PORT
+  user: DB2_USER
+  password: DB2_PASSWORD

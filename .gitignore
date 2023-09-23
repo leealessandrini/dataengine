@@ -133,3 +133,6 @@ dmypy.json
 
 # Ignore Jupyter Notebooks for now
 *.ipynb
+
+# Ignore test output
+output/*
