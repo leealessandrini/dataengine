@@ -2,7 +2,11 @@ import re
 import random
 
 
-MAC_REGEX = re.compile(r"((?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2})")
+MAC_REGEX = re.compile(r"((?:[0-9A-Fa-f]{2}[:-]?){5}[0-9A-Fa-f]{2})")
+LOCAL_MAC_REGEX = re.compile(
+    # First octet's second least significant bit must be 1
+    r"((?:[0-9a-f][13579BbDdFf][:-]?){1}"
+    r"([0-9A-Fa-f]{2}[:-]?){4}[0-9A-Fa-f]{2})")
 IPv4_REGEX = re.compile(
     r"(?<![.\w])"  # Negative lookbehind
     r"(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
@@ -42,6 +46,33 @@ IPv6_REGEX = re.compile(
 )
 
 
+def add_colons_to_mac(mac):
+    """Add colons to a MAC address string.
+
+    Args:
+        mac (str):
+            A 12-character MAC address string without any separators.
+
+    Returns:
+        str:
+            The MAC address string with colons added between every two
+            characters.
+
+    Raises:
+        ValueError: If the length of the input MAC address is not 12.
+
+    Examples:
+        >>> add_colons_to_mac("0123456789AB")
+        "01:23:45:67:89:AB"
+
+        >>> add_colons_to_mac("A1B2C3D4E5F6")
+        "A1:B2:C3:D4:E5:F6"
+    """
+    if len(mac) != 12:
+        raise ValueError("Invalid MAC address length")
+    
+    return ':'.join(mac[i:i+2] for i in range(0, 12, 2))
+
 
 def find_unique_macs(text, case=None):
     """
@@ -59,6 +90,10 @@ def find_unique_macs(text, case=None):
     # Since re.findall() returns tuples, convert them back to the original
     # mac addresses
     mac_addresses = ["".join(mac) for mac in mac_addresses]
+    # Add colons to mac addresses if applicable
+    mac_addresses = [
+        add_colons_to_mac(mac) if ":" not in mac else mac
+        for mac in mac_addresses]
     # Cast to provided case if applicable
     if case == "upper":
         mac_addresses = [mac.upper() for mac in mac_addresses]
@@ -82,6 +117,34 @@ def generate_random_mac():
     return ":".join("{:02x}".format(random.randint(0, 255)) for _ in range(6))
 
 
+def generate_local_mac_address():
+    """
+    Generate a random local MAC address.
+
+    The function generates a random MAC address and ensures that it is a local
+    MAC address by setting the second least significant bit of the first octet
+    to 1.
+
+    Returns:
+        str:
+            A MAC address string in the format "XX:XX:XX:XX:XX:XX", where each
+            "XX" is a two-digit hexadecimal number.
+
+    Examples:
+        >>> generate_local_mac_address()
+        "01:23:45:67:89:AB"
+
+        >>> generate_local_mac_address()
+        "1A:2B:3C:4D:5E:6F"
+    """
+    # Local MAC addresses have the second least significant bit of the first
+    # octet set to 1. To achieve that, we randomly generate the lower 7 bits
+    # and then set the second least significant bit to 1
+    first_octet = random.randint(0, 127) << 1 | 1
+    mac_address = [first_octet] + [random.randint(0, 255) for _ in range(5)]
+    return ':'.join(f'{octet:02x}' for octet in mac_address)
+
+
 def redact_macs_from_text(text, mac_map=None, case=None):
     """
     Provided some text, redact the original macs.
@@ -98,12 +161,20 @@ def redact_macs_from_text(text, mac_map=None, case=None):
     mac_list = find_unique_macs(text, case=case)
     # If existing map is passed update it
     if mac_map:
-        mac_map.update({
-            og_mac: generate_random_mac()
-            for og_mac in mac_list if og_mac not in mac_map})
+        for og_mac in mac_list:
+            if og_mac not in mac_map:
+                # If the mac is a local mac just map it to itself
+                if LOCAL_MAC_REGEX.fullmatch(og_mac):
+                    mac_map.update({og_mac: og_mac})
+                # Otherwise map the op mac to a randomly generated local mac
+                else:
+                    mac_map.update({og_mac: generate_local_mac_address()})
     # Otherwise create map of original mac address to random mac address
     else:
-        mac_map = {og_mac: generate_random_mac() for og_mac in mac_list}
+        mac_map = {
+            og_mac: og_mac if LOCAL_MAC_REGEX.fullmatch(og_mac)
+            else generate_local_mac_address()
+            for og_mac in mac_list}
     # Replace instances of macs in text
     redacted_text = text
     # Replace each original mac with a redacted mac

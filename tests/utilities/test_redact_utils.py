@@ -1,3 +1,4 @@
+import re
 import pytest
 from capsulecorp.utilities import redact_utils
 
@@ -6,7 +7,8 @@ from capsulecorp.utilities import redact_utils
     "00:1A:2B:3C:4D:5E",
     "00-1A-2B-3C-4D-5E",
     "a0:b1:c2:d3:e4:f5",
-    "A0:B1:C2:D3:E4:F5"
+    "A0:B1:C2:D3:E4:F5",
+    "A0B1C2D3E4F5"
 ])
 def test_mac_regex_positive_cases(test_input):
     """Test cases that should match the MAC address regex."""
@@ -23,6 +25,48 @@ def test_mac_regex_positive_cases(test_input):
 def test_mac_regex_negative_cases(test_input):
     """Test cases that should not match the MAC address regex."""
     assert redact_utils.MAC_REGEX.fullmatch(test_input) is None
+
+
+@pytest.mark.parametrize("mac_address,expected", [
+    # Test with a generated local MAC address
+    (redact_utils.generate_local_mac_address(), True),
+    # Test with a known local MAC address
+    ("01:23:45:67:89:AB", True),
+    # Test with a known non-local MAC address
+    ("00:23:45:67:89:AB", False),
+])
+def test_local_mac_regex(mac_address, expected):
+    # Check if the MAC address matches the regex
+    if expected:
+        assert (
+            redact_utils.LOCAL_MAC_REGEX.fullmatch(mac_address) is not None,
+            f"MAC address {mac_address} did not match the regex")
+    else:
+        assert (
+            redact_utils.LOCAL_MAC_REGEX.fullmatch(mac_address) is None,
+            f"MAC address {mac_address} incorrectly matched the regex")
+
+
+def test_add_colons_to_mac():
+    # Test with valid MAC addresses without separators
+    mac_without_separator = "0123456789AB"
+    mac_with_colon = redact_utils.add_colons_to_mac(mac_without_separator)
+    # Check if colons have been added correctly
+    assert (
+        mac_with_colon == "01:23:45:67:89:AB",
+        "Failed to correctly add colons")
+    # Check if the format is correct using regex
+    assert re.fullmatch(
+        r"([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}",
+        mac_with_colon) is not None, "Invalid MAC address format"
+    # Test with an invalid MAC address (length not equal to 12)
+    invalid_mac = "0123456789A"
+    try:
+        redact_utils.add_colons_to_mac(invalid_mac)
+    except ValueError as e:
+        assert (
+            str(e) == "Invalid MAC address length",
+            "Did not raise correct exception for invalid MAC address")
 
 
 def test_find_unique_macs_no_macs():
@@ -43,6 +87,18 @@ def test_find_unique_macs_multiple_unique_macs():
 def test_find_unique_macs_duplicate_macs():
     assert redact_utils.find_unique_macs(
         "Duplicate MACs: 00:1A:2B:3C:4D:5E and 00:1A:2B:3C:4D:5E"
+    ) == ["00:1A:2B:3C:4D:5E"]
+
+
+def test_find_unique_macs_duplicate_macs_no_colons():
+    assert redact_utils.find_unique_macs(
+        "Duplicate MACs: 00:1A:2B:3C:4D:5E and 001A2B3C4D5E"
+    ) == ["00:1A:2B:3C:4D:5E"]
+
+
+def test_find_mac_in_filename():
+    assert redact_utils.find_unique_macs(
+        "The filename is 001A2B3C4D5E_something.tgz"
     ) == ["00:1A:2B:3C:4D:5E"]
 
 
@@ -91,6 +147,13 @@ def test_redact_macs_from_text_single_mac():
     assert "00:1A:2B:3C:4D:5E" in mac_map
     assert redact_utils.find_unique_macs(text) == [
         mac_map["00:1A:2B:3C:4D:5E"]]
+
+
+def test_redact_macs_from_text_local_mac():
+    original_text = "Here's a MAC address: 01:23:45:67:89:AB"
+    text, mac_map = redact_utils.redact_macs_from_text(original_text)
+    assert text == original_text
+    assert mac_map == {"01:23:45:67:89:AB": "01:23:45:67:89:AB"}
 
 
 def test_redact_macs_from_text_multiple_macs():
