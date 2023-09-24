@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import patch
-from capsulecorp import database
+from capsulecorp import assets
 
 
 # Mock environment variables
@@ -24,17 +24,16 @@ def mock_env_vars():
         del os.environ[key]
 
 
-def test_load_databases(mock_env_vars):
+def test_load_assets(mock_env_vars):
     yaml_paths = [
         './tests/sample_configs/sample_config1.yaml',
         './tests/sample_configs/sample_config2.yaml']
-    db_map = database.load_databases(yaml_paths)
+    db_map = assets.load_assets(yaml_paths)
     # Validate that the databases are loaded correctly
-    assert 'db1' in db_map
-    assert 'db2' in db_map
-    print(db_map["db1"])
+    assert 'db1' in db_map["databases"]
+    assert 'db2' in db_map["databases"]
     # Validate that the environment variables are applied
-    assert db_map['db1'].host == 'localhost1'
-    assert db_map['db1'].port == 5431
-    assert db_map['db2'].host == 'localhost2'
-    assert db_map['db2'].port == 5432
+    assert db_map["databases"]['db1'].host == 'localhost1'
+    assert db_map["databases"]['db1'].port == 5431
+    assert db_map["databases"]['db2'].host == 'localhost2'
+    assert db_map["databases"]['db2'].port == 5432

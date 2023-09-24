@@ -1,6 +1,7 @@
 db1:
+  asset_type: database
   database_type: mysql
-  host: DB1_HOST
-  port: DB1_PORT
-  user: DB1_USER
-  password: DB1_PASSWORD
+  host: "{{DB1_HOST}}"
+  port: "{{DB1_PORT}}"
+  user: "{{DB1_USER}}"
+  password: "{{DB1_PASSWORD}}"
