@@ -1,4 +1,17 @@
-# capsulecorp
-General python utilities package for working with public cloud services and big data
 
-[![codecov](https://codecov.io/gh/leealessandrini/capsulecorp/branch/main/graph/badge.svg)](https://codecov.io/gh/leealessandrini/capsulecorp)
+      ___           ___           ___           ___                    ___           ___           ___                       ___           ___     
+     /\  \         /\  \         /\  \         /\  \                  /\  \         /\__\         /\  \          ___        /\__\         /\  \    
+    /::\  \       /::\  \        \:\  \       /::\  \                /::\  \       /::|  |       /::\  \        /\  \      /::|  |       /::\  \   
+   /:/\:\  \     /:/\:\  \        \:\  \     /:/\:\  \              /:/\:\  \     /:|:|  |      /:/\:\  \       \:\  \    /:|:|  |      /:/\:\  \  
+  /:/  \:\__\   /::\~\:\  \       /::\  \   /::\~\:\  \            /::\~\:\  \   /:/|:|  |__   /:/  \:\  \      /::\__\  /:/|:|  |__   /::\~\:\  \ 
+ /:/__/ \:|__| /:/\:\ \:\__\     /:/\:\__\ /:/\:\ \:\__\          /:/\:\ \:\__\ /:/ |:| /\__\ /:/__/_\:\__\  __/:/\/__/ /:/ |:| /\__\ /:/\:\ \:\__\
+ \:\  \ /:/  / \/__\:\/:/  /    /:/  \/__/ \/__\:\/:/  /          \:\~\:\ \/__/ \/__|:|/:/  / \:\  /\ \/__/ /\/:/  /    \/__|:|/:/  / \:\~\:\ \/__/
+  \:\  /:/  /       \::/  /    /:/  /           \::/  /            \:\ \:\__\       |:/:/  /   \:\ \:\__\   \::/__/         |:/:/  /   \:\ \:\__\  
+   \:\/:/  /        /:/  /     \/__/            /:/  /              \:\ \/__/       |::/  /     \:\/:/  /    \:\__\         |::/  /     \:\ \/__/  
+    \::/__/        /:/  /                      /:/  /                \:\__\         /:/  /       \::/  /      \/__/         /:/  /       \:\__\    
+     ~~            \/__/                       \/__/                  \/__/         \/__/         \/__/                     \/__/         \/__/    
+
+
+Data Engine is a general purpose python package for data engineering.
+
+[![codecov](https://codecov.io/gh/leealessandrini/dataengine/branch/main/graph/badge.svg)](https://codecov.io/gh/leealessandrini/dataengine)
