@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, Mock, MagicMock
-from capsulecorp.utilities import mysql_utils
+from dataengine.utilities import mysql_utils
 import pymysql
 
 

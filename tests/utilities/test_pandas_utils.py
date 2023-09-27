@@ -1,5 +1,5 @@
 import pandas as pd
-from capsulecorp.utilities import pandas_utils
+from dataengine.utilities import pandas_utils
 
 
 def test_get_null_columns_no_null():

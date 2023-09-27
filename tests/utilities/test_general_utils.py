@@ -3,7 +3,7 @@ import tarfile
 import io
 import pytest
 import numpy as np
-from capsulecorp.utilities import general_utils
+from dataengine.utilities import general_utils
 
 
 def test_get_date_range():

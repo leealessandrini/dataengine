@@ -4,7 +4,7 @@ import boto3
 from moto import mock_s3
 import numpy as np
 import pandas as pd
-from capsulecorp.utilities import s3_utils
+from dataengine.utilities import s3_utils
 
 # Setup global variables
 ACCESS_KEY = "testing"

@@ -1,6 +1,6 @@
 import re
 import pytest
-from capsulecorp.utilities import redact_utils
+from dataengine.utilities import redact_utils
 
 
 @pytest.mark.parametrize("test_input", [

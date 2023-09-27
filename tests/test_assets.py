@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import patch
-from capsulecorp import assets
+from dataengine import assets
 
 
 # Mock environment variables
