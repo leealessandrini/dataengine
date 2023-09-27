@@ -5,7 +5,7 @@ import random
 MAC_REGEX = re.compile(r"((?:[0-9A-Fa-f]{2}[:-]?){5}[0-9A-Fa-f]{2})")
 LOCAL_MAC_REGEX = re.compile(
     # First octet's second least significant bit must be 1
-    r"((?:[0-9a-f][13579BbDdFf][:-]?){1}"
+    r"((?:[0-9a-f][2637AaEeBbFf][:-]?){1}"
     r"([0-9A-Fa-f]{2}[:-]?){4}[0-9A-Fa-f]{2})")
 IPv4_REGEX = re.compile(
     r"(?<![.\w])"  # Negative lookbehind
@@ -117,7 +117,7 @@ def generate_random_mac():
     return ":".join("{:02x}".format(random.randint(0, 255)) for _ in range(6))
 
 
-def generate_local_mac_address():
+def generate_random_local_mac():
     """
     Generate a random local MAC address.
 
@@ -131,17 +131,19 @@ def generate_local_mac_address():
             "XX" is a two-digit hexadecimal number.
 
     Examples:
-        >>> generate_local_mac_address()
+        >>> generate_random_local_mac()
         "01:23:45:67:89:AB"
 
-        >>> generate_local_mac_address()
+        >>> generate_random_local_mac()
         "1A:2B:3C:4D:5E:6F"
     """
-    # Local MAC addresses have the second least significant bit of the first
-    # octet set to 1. To achieve that, we randomly generate the lower 7 bits
-    # and then set the second least significant bit to 1
-    first_octet = random.randint(0, 127) << 1 | 1
+    # Generate a random 8-bit number (0-255)
+    first_octet = random.randint(0, 255)
+    # Set the second least significant bit to 1
+    first_octet |= 2
+    # Generate the remaining octets
     mac_address = [first_octet] + [random.randint(0, 255) for _ in range(5)]
+    # Convert to hexadecimal and join with colons
     return ':'.join(f'{octet:02x}' for octet in mac_address)
 
 
@@ -168,12 +170,12 @@ def redact_macs_from_text(text, mac_map=None, case=None):
                     mac_map.update({og_mac: og_mac})
                 # Otherwise map the op mac to a randomly generated local mac
                 else:
-                    mac_map.update({og_mac: generate_local_mac_address()})
+                    mac_map.update({og_mac: generate_random_local_mac()})
     # Otherwise create map of original mac address to random mac address
     else:
         mac_map = {
             og_mac: og_mac if LOCAL_MAC_REGEX.fullmatch(og_mac)
-            else generate_local_mac_address()
+            else generate_random_local_mac()
             for og_mac in mac_list}
     # Replace instances of macs in text
     redacted_text = text

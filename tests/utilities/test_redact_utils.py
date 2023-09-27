@@ -29,7 +29,7 @@ def test_mac_regex_negative_cases(test_input):
 
 @pytest.mark.parametrize("mac_address,expected", [
     # Test with a generated local MAC address
-    (redact_utils.generate_local_mac_address(), True),
+    (redact_utils.generate_random_local_mac(), True),
     # Test with a known local MAC address
     ("01:23:45:67:89:AB", True),
     # Test with a known non-local MAC address
@@ -133,6 +133,15 @@ def test_generate_random_mac_uniqueness():
     assert len(macs) == 100
 
 
+def test_generate_random_local_mac():
+    local_mac_sum = sum([
+        True if redact_utils.LOCAL_MAC_REGEX.fullmatch(
+            redact_utils.generate_random_local_mac()
+        ) else False
+        for _ in range(100)])
+    assert local_mac_sum == 100
+
+
 def test_redact_macs_from_text_no_macs():
     text, mac_map = redact_utils.redact_macs_from_text(
         "No MAC addresses here!")
@@ -150,10 +159,10 @@ def test_redact_macs_from_text_single_mac():
 
 
 def test_redact_macs_from_text_local_mac():
-    original_text = "Here's a MAC address: 01:23:45:67:89:AB"
+    original_text = "Here's a MAC address: 02:23:45:67:89:AB"
     text, mac_map = redact_utils.redact_macs_from_text(original_text)
     assert text == original_text
-    assert mac_map == {"01:23:45:67:89:AB": "01:23:45:67:89:AB"}
+    assert mac_map == {"02:23:45:67:89:AB": "02:23:45:67:89:AB"}
 
 
 def test_redact_macs_from_text_multiple_macs():
