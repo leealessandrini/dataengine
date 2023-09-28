@@ -2,7 +2,16 @@ import re
 import random
 
 
-MAC_REGEX = re.compile(r"((?:[0-9A-Fa-f]{2}[:-]?){5}[0-9A-Fa-f]{2})")
+MAC_REGEX = re.compile(
+    # Mac with colons
+    r"((?:[0-9A-Fa-f]{2}:{1}){5}[0-9A-Fa-f]{2})|"
+    # Mac with dashes
+    r"((?:[0-9A-Fa-f]{2}-{1}){5}[0-9A-Fa-f]{2})|"
+    # Mac with no colons or dashes
+    # Note: This will flag every 12 digit string as a mac because it is
+    # technically valid
+    r"([0-9A-Fa-f]{12})"
+)
 LOCAL_MAC_REGEX = re.compile(
     # First octet's second least significant bit must be 1
     r"((?:[0-9a-f][2637AaEeBbFf][:-]?){1}"
@@ -90,9 +99,12 @@ def find_unique_macs(text, case=None):
     # Since re.findall() returns tuples, convert them back to the original
     # mac addresses
     mac_addresses = ["".join(mac) for mac in mac_addresses]
+    print(mac_addresses)
     # Add colons to mac addresses if applicable
     mac_addresses = [
-        add_colons_to_mac(mac) if ":" not in mac else mac
+        add_colons_to_mac(mac) if ((":" not in mac) and ("-" not in mac))
+        else mac.replace("-", ":") if ("-" in mac)
+        else mac
         for mac in mac_addresses]
     # Cast to provided case if applicable
     if case == "upper":

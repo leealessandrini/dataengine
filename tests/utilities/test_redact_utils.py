@@ -20,7 +20,10 @@ def test_mac_regex_positive_cases(test_input):
     "00-1A-2B-3C",
     "001A2B3C4D",
     "00;1A;2B;3C;4D;5E",
-    "A0:B1:C2:D3:E4:G5"
+    "A0:B1:C2:D3:E4:G5",
+    "A0:B1-C2:D3:E4-F5",
+    "20230718-0426",
+    "1234567890123"
 ])
 def test_mac_regex_negative_cases(test_input):
     """Test cases that should not match the MAC address regex."""
@@ -116,6 +119,13 @@ def test_find_unique_macs_mixed_case():
     assert redact_utils.find_unique_macs(
         "Mixed Case: 00:1a:2B:3C:4d:5E and 00:1A:2b:3c:4D:5e", case="lower"
     ) == ["00:1a:2b:3c:4d:5e"]
+
+
+def test_find_unique_macs_mixed_separator():
+    assert redact_utils.find_unique_macs(
+        "00:1a:2B:3C:4d:5E and 00-1a-2B-3C-4d-5E and 001a2B3C4d5E",
+        case="upper"
+    ) == ["00:1A:2B:3C:4D:5E"]
 
 
 def test_generate_random_mac_type():
