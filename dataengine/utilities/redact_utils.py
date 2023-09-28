@@ -99,7 +99,6 @@ def find_unique_macs(text, case=None):
     # Since re.findall() returns tuples, convert them back to the original
     # mac addresses
     mac_addresses = ["".join(mac) for mac in mac_addresses]
-    print(mac_addresses)
     # Add colons to mac addresses if applicable
     mac_addresses = [
         add_colons_to_mac(mac) if ((":" not in mac) and ("-" not in mac))
