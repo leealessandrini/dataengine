@@ -192,10 +192,18 @@ def redact_macs_from_text(text, mac_map=None, case=None):
     redacted_text = text
     # Replace each original mac with a redacted mac
     for og_mac, redacted_mac in mac_map.items():
+        # Conduct replacement for all possible permutations
+        for permuation in [None, "-", ""]:
+            if permuation:
+                mac_permutation = og_mac.replace(":", permuation)
+            else:
+                mac_permutation = og_mac
         # Replace uppercase
-        redacted_text = redacted_text.replace(og_mac.upper(), redacted_mac)
+        redacted_text = redacted_text.replace(
+            mac_permutation.upper(), redacted_mac)
         # Replace lowercase
-        redacted_text = redacted_text.replace(og_mac.lower(), redacted_mac)
+        redacted_text = redacted_text.replace(
+            mac_permutation.lower(), redacted_mac)
 
     return redacted_text, mac_map
 
