@@ -1,5 +1,6 @@
 import re
 import random
+import itertools
 
 
 MAC_REGEX = re.compile(
@@ -53,6 +54,83 @@ IPv6_REGEX = re.compile(
     r")"
     r"(?!\w)"  # Negative lookahead for only word characters
 )
+
+
+def generate_combinations(s, start=0, current="", result=[]):
+    if start == len(s):
+        result.append(current)
+        return
+    generate_combinations(s, start + 1, current + s[start].lower(), result)
+    generate_combinations(s, start + 1, current + s[start].upper(), result)
+
+    return list(set(result))
+
+
+def generate_alphanumeric_regex(alphanumeric_string: str) -> str:
+    """
+    Generate a regular expression for a given alphanumeric string.
+
+    The function takes an alphanumeric string consisting of alphabetic
+    characters and digits, and generates a corresponding regular expression.
+    For each alphabetic character, a range consisting of the uppercase and
+    lowercase versions is created. Digits are included as-is in the regex.
+
+    Args:
+        alphanumeric_string (str):
+            The input alphanumeric string consisting of alphabetic characters
+            and digits.
+
+    Returns:
+        str:
+            A regular expression string that can be used to match the given
+            alphanumeric string.
+
+    Example:
+        >>> generate_alphanumeric_regex("Ab1")
+        '[Aa]{1}[Bb]{1}1'
+    """
+    return "".join(
+        f"[{char.upper()}{char.lower()}]{{1}}" if char.isalpha() else char
+        for char in alphanumeric_string)
+
+
+def generate_mac_regex(mac_address: str) -> re.Pattern:
+    """
+    Generate a regular expression for matching a given MAC address.
+
+    This function takes a MAC address as input, normalizes it by removing
+    any colons or dashes, and then generates a regular expression that can
+    match the MAC address in various formats (plain, colon-separated, and
+    dash-separated).
+
+    Args:
+        mac_address (str):
+            The input MAC address as a string. It can contain colons or dashes
+            as separators.
+
+    Returns:
+        re.Pattern:
+            A compiled regular expression pattern that can be used to match
+            the given MAC address in its various formats.
+
+    Example:
+        >>> pattern = generate_mac_regex("AA:BB:CC:DD:EE:FF")
+        >>> bool(pattern.match("aabbccddeeff"))
+        True
+        >>> bool(pattern.match("AA:BB:CC:DD:EE:FF"))
+        True
+        >>> bool(pattern.match("AA-BB-CC-DD-EE-FF"))
+        True
+    """
+    # Normalize the mac address
+    normal_mac = mac_address.replace(":", "").replace("-", "")
+    # Split the normalized mac into it's respective octets and cast each to a
+    # regex that handles case sensitivity
+    octets = [
+        generate_alphanumeric_regex(normal_mac[i:i + 2])
+        for i in range(0, 12, 2)]
+    # Generate final mac regex that handles all possible valid permutations
+    return re.compile("|".join([i.join(octets) for i in ["", ":", "-"]]))
 
 
 def add_colons_to_mac(mac):
@@ -192,18 +270,8 @@ def redact_macs_from_text(text, mac_map=None, case=None):
     redacted_text = text
     # Replace each original mac with a redacted mac
     for og_mac, redacted_mac in mac_map.items():
-        # Conduct replacement for all possible permutations
-        for permuation in [None, "-", ""]:
-            if permuation:
-                mac_permutation = og_mac.replace(":", permuation)
-            else:
-                mac_permutation = og_mac
-        # Replace uppercase
-        redacted_text = redacted_text.replace(
-            mac_permutation.upper(), redacted_mac)
-        # Replace lowercase
-        redacted_text = redacted_text.replace(
-            mac_permutation.lower(), redacted_mac)
+        redacted_text = re.sub(
+            generate_mac_regex(og_mac), redacted_mac, redacted_text)
 
     return redacted_text, mac_map
 

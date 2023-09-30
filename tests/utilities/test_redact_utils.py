@@ -50,6 +50,47 @@ def test_local_mac_regex(mac_address, expected):
             f"MAC address {mac_address} incorrectly matched the regex")
 
 
+def test_generate_alphanumeric_regex_alpha():
+    result = redact_utils.generate_alphanumeric_regex("Ab")
+    pattern = re.compile(result)
+    assert pattern.match("Ab")
+    assert pattern.match("aB")
+    assert not pattern.match("12")
+
+
+def test_generate_alphanumeric_regex_digits():
+    result = redact_utils.generate_alphanumeric_regex("12")
+    pattern = re.compile(result)
+    assert pattern.match("12")
+    assert not pattern.match("Ab")
+
+
+def test_generate_alphanumeric_regex_mixed():
+    result = redact_utils.generate_alphanumeric_regex("A1")
+    pattern = re.compile(result)
+    assert pattern.match("A1")
+    assert pattern.match("a1")
+    assert not pattern.match("B1")
+
+
+def test_generate_alphanumeric_regex_empty():
+    result = redact_utils.generate_alphanumeric_regex("")
+    assert result == ""
+
+
+@pytest.mark.parametrize("input_str, match_str", [
+    ("Ab", "Ab"),
+    ("Ab", "aB"),
+    ("12", "12"),
+    ("A1", "A1"),
+    ("A1", "a1"),
+])
+def test_generate_alphanumeric_regex_parametrized(input_str, match_str):
+    result = redact_utils.generate_alphanumeric_regex(input_str)
+    pattern = re.compile(result)
+    assert pattern.match(match_str)
+
+
 def test_add_colons_to_mac():
     # Test with valid MAC addresses without separators
     mac_without_separator = "0123456789AB"
@@ -162,6 +203,17 @@ def test_redact_macs_from_text_no_macs():
 def test_redact_macs_from_text_single_mac():
     text, mac_map = redact_utils.redact_macs_from_text(
         "Here's a MAC address: 00:1A:2B:3C:4D:5E")
+    assert len(mac_map) == 1
+    assert "00:1A:2B:3C:4D:5E" in mac_map
+    assert redact_utils.find_unique_macs(text) == [
+        mac_map["00:1A:2B:3C:4D:5E"]]
+
+def test_redact_macs_from_text_mixed_format():
+    text, mac_map = redact_utils.redact_macs_from_text(
+        "Here's the MAC address: 00:1A:2B:3C:4D:5E\n"
+        "Here's the Mac without colons: 001A2B3C4D5E")
+    print(mac_map)
+    print(text)
     assert len(mac_map) == 1
     assert "00:1A:2B:3C:4D:5E" in mac_map
     assert redact_utils.find_unique_macs(text) == [
