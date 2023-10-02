@@ -248,24 +248,19 @@ def redact_macs_from_text(text, mac_map=None, case=None):
     Returns:
         redacted text and updated mac map
     """
+    base_str = "[REDACTED:MAC:{}]"
     # Pull unique mac lists
     mac_list = find_unique_macs(text, case=case)
     # If existing map is passed update it
     if mac_map:
         for og_mac in mac_list:
             if og_mac not in mac_map:
-                # If the mac is a local mac just map it to itself
-                if LOCAL_MAC_REGEX.fullmatch(og_mac):
-                    mac_map.update({og_mac: og_mac})
-                # Otherwise map the op mac to a randomly generated local mac
-                else:
-                    mac_map.update({og_mac: generate_random_local_mac()})
+                mac_map[og_mac] = base_str.format(len(mac_map) + 1)
     # Otherwise create map of original mac address to random mac address
     else:
         mac_map = {
-            og_mac: og_mac if LOCAL_MAC_REGEX.fullmatch(og_mac)
-            else generate_random_local_mac()
-            for og_mac in mac_list}
+            og_mac: base_str.format(index + 1)
+            for index, og_mac in enumerate(mac_list)}
     # Replace instances of macs in text
     redacted_text = text
     # Replace each original mac with a redacted mac
