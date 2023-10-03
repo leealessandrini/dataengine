@@ -66,6 +66,56 @@ def generate_combinations(s, start=0, current="", result=[]):
     return list(set(result))
 
 
+def convert_to_hex(decimal):
+    """
+    Convert to hexadecimal with leading zeros.
+    """
+    return "{:02x}".format(decimal)
+
+
+def left_pad_zeros(word: str) -> str:
+    """
+    Left-pad zeros to a string based on the initial zeros in the input word.
+
+    This function takes a word, counts the number of leading zeros, and
+    returns a string that represents the left-padding format to be used for
+    similar words.
+
+    Args:
+        word (str):
+            The input word containing initial zeros and other characters.
+
+    Returns:
+        str:
+            A string representing the left-padding format, e.g., "0{0,2}".
+        
+    Examples:
+        >>> left_pad_zeros("0045")
+        '0{0,2}45'
+        
+        >>> left_pad_zeros("45")
+        '45'
+        
+        >>> left_pad_zeros("000")
+        '0{1,3}'
+    """
+    if word == "0":
+        return word
+    elif re.compile("0+").fullmatch(word):
+        return f"0{{1,{len(word)}}}"
+    zeros = 0
+    for i in word:
+        if i == "0":
+            zeros += 1
+        else:
+            break
+    # Return regex for the word
+    if zeros:
+        return f"0{{0,{zeros}}}" + word[zeros:]
+    else:
+        return word
+
+
 def generate_alphanumeric_regex(alphanumeric_string: str) -> str:
     """
     Generate a regular expression for a given alphanumeric string.
@@ -131,6 +181,95 @@ def generate_mac_regex(mac_address: str) -> re.Pattern:
         for i in range(0, 12, 2)]
     # Generate final mac regex that handles all possible valid permutations
     return re.compile("|".join([i.join(octets) for i in ["", ":", "-"]]))
+
+
+def generate_ipv4_regex(ipv4_address: str) -> re.Pattern:
+    """
+    Generate a regex pattern to match the given IPv4 address and its
+    equivalent IPv6 representations.
+
+    This function takes an IPv4 address, converts it to its IPv6 hexadecimal
+    block form, and constructs a regex pattern to match all valid permutations
+    of the address.
+
+    Args:
+        ipv4_address (str):
+            The IPv4 address to be converted, e.g., "192.168.1.1".
+
+    Returns:
+        re.Pattern:
+            A regex pattern that matches the IPv4 address and its IPv6
+            equivalents.
+    """
+    base_str = "((::[Ff]{4}:)|(0:0:0:0:0:[Ff]{4}:)){1}"
+    # Pull octets from ip address and cast them to hexadecimal
+    octets = [
+        convert_to_hex(int(decimal)) for decimal in ipv4_address.split(".")]
+    # Get last two 16-bit words in final 32 bits of IPv6 Address
+    word_1 = left_pad_zeros(generate_alphanumeric_regex("".join(octets[0:2])))
+    word_2 = left_pad_zeros(generate_alphanumeric_regex("".join(octets[2:])))
+    # Return IPv4 regex that supports all valid permutations
+    return re.compile(
+        ipv4_address + "|" + base_str + "((" + ipv4_address +
+        ")|(" + ":".join([word_1, word_2]) + ")){1}")
+
+
+def generate_ipv6_regex(ipv6_address: str) -> re.Pattern:
+    """
+    Generates a regex pattern to match the given a decompressed IPv6 address.
+    
+    Args:
+        ipv6_address (str): The IPv6 address to generate a regex for.
+        
+    Returns:
+        re.Pattern:
+            A compiled regex pattern that can match the IPv6
+            address and its compressed forms.
+                      
+    Examples:
+        >>> generate_ipv6_regex("2001:0db8::ff00:0042:8329")
+        <regex object>
+    """
+    # Split the ip address into 16 bit blocks
+    blocks = ipv6_address.split(":")
+    # Get the initial permutation
+    permutations = [
+        ":".join([
+            left_pad_zeros(
+                generate_alphanumeric_regex(block)
+            ) for block in blocks])]
+    # Generate zero ranges for ip address
+    zero_ranges = []
+    in_range = False
+    for index, word in enumerate(blocks):
+        if (
+            (not in_range) and
+            (re.compile(r"0{1,4}").fullmatch(word))
+        ):
+            zero_ranges.append([index])
+            in_range = True
+        elif (
+            (in_range) and
+            (not re.compile(r"0{1,4}").fullmatch(word))
+        ):
+            zero_ranges[-1].append(index)
+            in_range = False
+    # Generate compressed permutations
+    permutations += [
+        ":".join([
+            i for i in [
+                left_pad_zeros(
+                    generate_alphanumeric_regex(word)
+                ) if not (
+                    index >= zero_range[0] and
+                    index < zero_range[1]
+                ) else ""
+                if index == (zero_range[1] - 1) else None
+                for index, word in enumerate(blocks)
+            ] if i is not None])
+        for zero_range in zero_ranges]
+
+    return re.compile("|".join(permutations))
 
 
 def add_colons_to_mac(mac):
@@ -342,39 +481,52 @@ def redact_ip_addresses_from_text(text, ip_address_map=None, case=None):
     Returns:
         redacted text and updated ip address map
     """
+    # Replace instances of macs in text
+    redacted_text = text
+    # Setup base redaction strings
+    ipv4_base_str = "[REDACTED:IPv4:{}]"
+    ipv6_base_str = "[REDACTED:IPv6:{}]"
     # Pull unique mac lists
     ipv4_addresses = find_unique_ipv4(text)
     ipv6_addresses = find_unique_ipv6(text, case=case)
-    # If existing map is passed update it
-    if ip_address_map:
-        # Update IPv4 Addresses
-        ip_address_map.update({
-            og_ip_address: generate_random_ipv4()
-            for og_ip_address in ipv4_addresses
-            if og_ip_address not in ip_address_map})
-        # Update IPv6 Addresses
-        ip_address_map.update({
-            og_ip_address: generate_random_ipv6()
-            for og_ip_address in ipv6_addresses
-            if og_ip_address not in ip_address_map})
-    # Otherwise create map of original mac address to random mac address
-    else:
+    # Build initial map if None was passed
+    if not ip_address_map:
         ip_address_map = {
-            og_ip_address: generate_random_ipv4()
-            for og_ip_address in ipv4_addresses}
+            ipv4_base_str.format(index + 1): {
+                "original_ip_address": og_ip_address,
+                "regex": generate_ipv4_regex(og_ip_address)
+            } for index, og_ip_address in enumerate(ipv4_addresses)}
         ip_address_map.update({
-            og_ip_address: generate_random_ipv6()
-            for og_ip_address in ipv6_addresses})
-    # Replace instances of macs in text
-    redacted_text = text
+            ipv6_base_str.format(index + 1): {
+                "original_ip_address": og_ip_address,
+                "regex": generate_ipv6_regex(og_ip_address)
+            } for index, og_ip_address in enumerate(ipv6_addresses)})
+    else:
+        # Update IPv4 Addresses
+        ipv4_count = sum(True for key in ip_address_map.keys() if "v4" in key)
+        for og_ip_address in ipv4_addresses:
+            if not any(
+                bool(value["regex"].fullmatch(og_ip_address))
+                for value in ip_address_map.values()
+            ):
+                ipv6_count += 1
+                ip_address_map[ipv4_base_str.format(ipv4_count)] = {
+                    "original_ip_address": og_ip_address,
+                    "regex": generate_ipv6_regex(og_ip_address)}
+        # Update IPv6 Addresses
+        ipv6_count = sum(True for key in ip_address_map.keys() if "v6" in key)
+        for og_ip_address in ipv6_addresses:
+            if not any(
+                bool(value["regex"].fullmatch(og_ip_address))
+                for value in ip_address_map.values()
+            ):
+                ipv6_count += 1
+                ip_address_map[ipv6_base_str.format(ipv6_count)] = {
+                    "original_ip_address": og_ip_address,
+                    "regex": generate_ipv6_regex(og_ip_address)}
     # Replace each original mac with a redacted mac
-    for og_ip_address, redacted_ip_address in ip_address_map.items():
-        # TODO: Handle mixed case in text
-        # Replace uppercase
-        redacted_text = redacted_text.replace(
-            og_ip_address.upper(), redacted_ip_address)
-        # Replace lowercase
-        redacted_text = redacted_text.replace(
-            og_ip_address.lower(), redacted_ip_address)
+    for redaction_string, values in ip_address_map.items():
+        redacted_text = re.sub(
+            values["regex"], redaction_string, redacted_text)
 
     return redacted_text, ip_address_map
