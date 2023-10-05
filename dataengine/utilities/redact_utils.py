@@ -1,6 +1,7 @@
 import re
 import random
 import itertools
+import ipaddress
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import Pool
 
@@ -419,8 +420,7 @@ def redact_macs_from_text(text, mac_map=None):
     redacted_text = text
     # Replace each original mac with a redacted mac
     for redaction_string, values in mac_map.items():
-        redacted_text = re.sub(
-            values["regex"], redaction_string, redacted_text)
+        redacted_text = values["regex"].sub(redaction_string, redacted_text)
 
     return redacted_text, mac_map
 
@@ -604,8 +604,7 @@ def redact_ip_addresses_from_text(text, ip_address_map=None):
                     "regex": generate_ipv6_regex(og_ip_address)}
     # Replace each original mac with a redacted mac
     for redaction_string, values in ip_address_map.items():
-        redacted_text = re.sub(
-            values["regex"], redaction_string, redacted_text)
+        redacted_text = values["regex"].sub(redaction_string, redacted_text)
 
     return redacted_text, ip_address_map
 
@@ -700,19 +699,31 @@ def redact_text(text_list):
     # Get unique ip addresses and add them to redact map
     ipv4_base_str = "[REDACTED:IPv4:{}]"
     ipv6_base_str = "[REDACTED:IPv6:{}]"
-    unique_ipv4_list = list(set(itertools.chain.from_iterable(
-        pooled_find(find_unique_ipv4, text_list))))
-    unique_ipv6_list = list(set(itertools.chain.from_iterable(
-        pooled_find(find_unique_ipv6, text_list))))
+    unique_ipv4_list = [
+        ipaddress.IPv4Address(i) for i in set(itertools.chain.from_iterable(
+            pooled_find(find_unique_ipv4, text_list)))]
+    unique_ipv6_list = [
+        ipaddress.IPv6Address(i) for i in set(itertools.chain.from_iterable(
+            pooled_find(find_unique_ipv6, text_list)))]
     redact_map.update({
         ipv4_base_str.format(index + 1): {
             "original": og_ip_address,
-            "regex": generate_ipv4_regex(og_ip_address)
-        } for index, og_ip_address in enumerate(unique_ipv4_list)})
+            "regex": generate_ipv4_regex(og_ip_address.exploded)
+        } for index, og_ip_address in enumerate(unique_ipv4_list)
+        if not (
+            og_ip_address.is_loopback or
+            og_ip_address.is_private or
+            og_ip_address.is_unspecified
+        )})
     redact_map.update({
         ipv6_base_str.format(index + 1): {
             "original": og_ip_address,
-            "regex": generate_ipv6_regex(og_ip_address)
-        } for index, og_ip_address in enumerate(unique_ipv6_list)})
+            "regex": generate_ipv6_regex(og_ip_address.exploded)
+        } for index, og_ip_address in enumerate(unique_ipv6_list)
+        if not (
+            og_ip_address.is_loopback or
+            og_ip_address.is_private or
+            og_ip_address.is_unspecified
+        )})
     # Return list of redacted text strings
-    return pooled_redact_text(redact_map, text_list)
+    return redact_map, pooled_redact_text(redact_map, text_list)
