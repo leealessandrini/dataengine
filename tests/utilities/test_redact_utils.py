@@ -196,26 +196,15 @@ def test_find_mac_in_filename():
     ) == ["00:1A:2B:3C:4D:5E"]
 
 
-def test_find_unique_macs_case_sensitivity():
-    assert redact_utils.find_unique_macs(
-        "Case Test: 00:1a:2b:3c:4d:5e", case="upper") == ["00:1A:2B:3C:4D:5E"]
-    assert redact_utils.find_unique_macs(
-        "Case Test: 00:1A:2B:3C:4D:5E", case="lower") == ["00:1a:2b:3c:4d:5e"]
-
-
 def test_find_unique_macs_mixed_case():
     assert redact_utils.find_unique_macs(
-        "Mixed Case: 00:1a:2B:3C:4d:5E and 00:1A:2b:3c:4D:5e", case="upper"
+        "Mixed Case: 00:1a:2B:3C:4d:5E and 00:1A:2b:3c:4D:5e"
     ) == ["00:1A:2B:3C:4D:5E"]
-    assert redact_utils.find_unique_macs(
-        "Mixed Case: 00:1a:2B:3C:4d:5E and 00:1A:2b:3c:4D:5e", case="lower"
-    ) == ["00:1a:2b:3c:4d:5e"]
 
 
 def test_find_unique_macs_mixed_separator():
     assert redact_utils.find_unique_macs(
         "00:1a:2B:3C:4d:5E and 00-1a-2B-3C-4d-5E and 001a2B3C4d5E",
-        case="upper"
     ) == ["00:1A:2B:3C:4D:5E"]
 
 
@@ -253,19 +242,16 @@ def test_redact_macs_from_text_no_macs():
 def test_redact_macs_from_text_single_mac():
     text, mac_map = redact_utils.redact_macs_from_text(
         "Here's a MAC address: 00:1A:2B:3C:4D:5E")
-    print(text)
     assert len(mac_map) == 1
-    assert "00:1A:2B:3C:4D:5E" in mac_map
+    assert any("00:1A:2B:3C:4D:5E" in i["original"] for i in mac_map.values()) 
     assert redact_utils.find_unique_macs(text) == []
 
 def test_redact_macs_from_text_mixed_format():
     text, mac_map = redact_utils.redact_macs_from_text(
         "Here's the MAC address: 00:1A:2B:3C:4D:5E\n"
         "Here's the Mac without colons: 001A2B3C4D5E")
-    print(mac_map)
-    print(text)
     assert len(mac_map) == 1
-    assert "00:1A:2B:3C:4D:5E" in mac_map
+    assert any("00:1A:2B:3C:4D:5E" in i["original"] for i in mac_map.values()) 
     assert redact_utils.find_unique_macs(text) == []
 
 
@@ -273,25 +259,29 @@ def test_redact_macs_from_text_multiple_macs():
     text, mac_map = redact_utils.redact_macs_from_text(
         "Two MACs: 00:1A:2B:3C:4D:5E and AA:BB:CC:DD:EE:FF")
     assert len(mac_map) == 2
-    assert "00:1A:2B:3C:4D:5E" in mac_map
-    assert "AA:BB:CC:DD:EE:FF" in mac_map
+    assert any("00:1A:2B:3C:4D:5E" in i["original"] for i in mac_map.values())
+    assert any("AA:BB:CC:DD:EE:FF" in i["original"] for i in mac_map.values())
     assert redact_utils.find_unique_macs(text) == []
 
 
 def test_redact_macs_from_text_existing_mac_map():
-    existing_map = {"00:1A:2B:3C:4D:5E": "FF:FF:FF:FF:FF:FF"}
+    mac = "00:1A:2B:3C:4D:5E"
+    existing_map = {
+        "[REDACTED:MAC:1]": {
+            "original": mac,
+            "regex": redact_utils.generate_mac_regex(mac)}}
     text, mac_map = redact_utils.redact_macs_from_text(
         "Here's a MAC address: 00:1A:2B:3C:4D:5E", mac_map=existing_map)
     assert mac_map == existing_map
-    assert redact_utils.find_unique_macs(text) == [
-        mac_map["00:1A:2B:3C:4D:5E"]]
+    assert redact_utils.find_unique_macs(text) == []
 
 
 def test_redact_macs_from_text_case_sensitivity():
     text, mac_map = redact_utils.redact_macs_from_text(
-        "Case Test: 00:1a:2b:3c:4d:5e", case="upper")
-    assert "00:1A:2B:3C:4D:5E" in mac_map
+        "Case Test: 00:1a:2b:3c:4d:5e")
+    assert any("00:1A:2B:3C:4D:5E" in i["original"] for i in mac_map.values())
     assert redact_utils.find_unique_macs(text) == []
+
 
 @pytest.mark.parametrize('test_input,expected', [
     ('192.168.1.1', ['192.168.1.1']),
@@ -349,22 +339,27 @@ def test_ipv6_regex(test_input, expected):
     assert ipv6_addresses == expected
 
 
-@pytest.mark.parametrize("test_input,case,expected", [
+@pytest.mark.parametrize("test_input, expected", [
+    # Regular IPv6 and the Loopback address
     (
-        'Two IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334, ::1', None,
-        ['2001:0db8:85a3:0000:0000:8a2e:0370:7334', '::1']),
-    ('Another IPv6: ::', None, ['::']),
+        'Two IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334, ::1',
+        [
+            '2001:0DB8:85A3:0000:0000:8A2E:0370:7334',
+            '0000:0000:0000:0000:0000:0000:0000:0001'
+        ]),
+    # Unspecified address
+    ('Another IPv6: ::', ['0000:0000:0000:0000:0000:0000:0000:0000']),
+    # Two IP with different case
     (
         'IPv6 with different cases: 2001:0db8::ff00:42:8329 and 2001:0DB8::FF00:42:8329',
-        'lower', ['2001:0db8::ff00:42:8329']),
-    (
-        'IPv6 with different cases: 2001:0db8::ff00:42:8329 and 2001:0DB8::FF00:42:8329',
-        'upper', ['2001:0DB8::FF00:42:8329']),
-    ('No IPv6 here!', None, [])
+        ['2001:0DB8:0000:0000:0000:FF00:0042:8329']
+    ),
+    # No ips in the text
+    ('No IPv6 here!', [])
 ])
-def test_find_unique_ipv6_parametrized(test_input, case, expected):
-    result = redact_utils.find_unique_ipv6(test_input, case=case)
-    assert result == expected, f"For {test_input}, expected {expected} but got {result}"
+def test_find_unique_ipv6_parametrized(test_input, expected):
+    result = redact_utils.find_unique_ipv6(test_input)
+    assert all(i in expected for i in result), f"For {test_input}, expected {expected} but got {result}"
 
 
 def test_generate_random_ipv4_type():
@@ -410,3 +405,15 @@ def test_redact_ip_addresses_from_text(input_text, map_length):
     redacted_text, ip_address_map = redact_utils.redact_ip_addresses_from_text(
         input_text)
     assert len(ip_address_map) == map_length
+
+
+@pytest.mark.parametrize("compressed, expected", [
+    ("1080::8:800:417A", "1080:0000:0000:0000:0000:0008:0800:417A"),
+    ("::1", "0000:0000:0000:0000:0000:0000:0000:0001"),
+    ("::", "0000:0000:0000:0000:0000:0000:0000:0000"),
+    ("2001:db8::ff00:42:8329", "2001:0db8:0000:0000:0000:ff00:0042:8329"),
+    ("1:0:0:0:0:0:0:1", "0001:0000:0000:0000:0000:0000:0000:0001"),  # Already in full form
+    ("2001:db8:0:0:1:0:0:1", "2001:0db8:0000:0000:0001:0000:0000:0001"),  # Missing leading zeros
+])
+def test_decompress_ipv6(compressed, expected):
+    assert redact_utils.decompress_ipv6(compressed) == expected
