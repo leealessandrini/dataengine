@@ -627,8 +627,7 @@ def redact_items_from_text(text, redact_map):
     redacted_text = text
     # Redact all full matches from the redaction map
     for redaction_string, values in redact_map.items():
-        redacted_text = re.sub(
-            values["regex"], redaction_string, redacted_text)
+        redacted_text = values["regex"].sub(redaction_string, redacted_text)
     
     return redacted_text
 
