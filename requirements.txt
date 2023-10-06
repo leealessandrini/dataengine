@@ -3,6 +3,7 @@ pytest-cov
 PyYAML
 numpy
 pandas
+pyarrow
 moto
 boto3
 psycopg2-binary

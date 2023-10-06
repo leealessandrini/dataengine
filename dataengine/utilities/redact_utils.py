@@ -1,8 +1,10 @@
+from typing import List, Callable, Union, Set, Dict, Any
 import re
 import random
 import itertools
 import ipaddress
 from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 from multiprocessing import Pool
 
 
@@ -186,7 +188,7 @@ def generate_mac_regex(mac_address: str) -> re.Pattern:
     return re.compile("|".join([i.join(octets) for i in ["", ":", "-"]]))
 
 
-def generate_ipv4_regex(ipv4_address: str) -> re.Pattern:
+def generate_ipv4_regex(ipv4_address: ipaddress.IPv4Address) -> re.Pattern:
     """
     Generate a regex pattern to match the given IPv4 address and its
     equivalent IPv6 representations.
@@ -196,46 +198,43 @@ def generate_ipv4_regex(ipv4_address: str) -> re.Pattern:
     of the address.
 
     Args:
-        ipv4_address (str):
-            The IPv4 address to be converted, e.g., "192.168.1.1".
+        ipv4_address (ipaddress.IPv4Address): The IPv4 address object
 
     Returns:
         re.Pattern:
             A regex pattern that matches the IPv4 address and its IPv6
             equivalents.
     """
+    ipv4_str = ipv4_address.exploded
     base_str = "(::[Ff]{4}:|0{1,4}:0{1,4}:0{1,4}:0{1,4}:0{1,4}:[Ff]{4}:){1}"
     # Pull octets from ip address and cast them to hexadecimal
     octets = [
-        convert_to_hex(int(decimal)) for decimal in ipv4_address.split(".")]
+        convert_to_hex(int(decimal)) for decimal in ipv4_str.split(".")]
     # Get last two 16-bit words in final 32 bits of IPv6 Address
     word_1 = left_pad_zeros(generate_alphanumeric_regex("".join(octets[0:2])))
     word_2 = left_pad_zeros(generate_alphanumeric_regex("".join(octets[2:])))
     # Return IPv4 regex that supports all valid permutations
     return re.compile(
-        ipv4_address.replace(".", "\\.") + "|" + base_str + "((" +
-        ipv4_address.replace(".", "\\.") + ")|(" + ":".join([word_1, word_2]) +
+        ipv4_str.replace(".", "\\.") + "|" + base_str + "((" +
+        ipv4_str.replace(".", "\\.") + ")|(" + ":".join([word_1, word_2]) +
         ")){1}")
 
 
-def generate_ipv6_regex(ipv6_address: str) -> re.Pattern:
+def generate_ipv6_regex(ipv6_address: ipaddress.IPv6Address) -> re.Pattern:
     """
     Generates a regex pattern to match the given a decompressed IPv6 address.
     
     Args:
-        ipv6_address (str): The IPv6 address to generate a regex for.
+        ipv6_address (ipaddress.IPv6Address): IPv6 address object.
         
     Returns:
         re.Pattern:
             A compiled regex pattern that can match the IPv6
             address and its compressed forms.
-                      
-    Examples:
-        >>> generate_ipv6_regex("2001:0db8::ff00:0042:8329")
-        <regex object>
     """
+    decompressed_ipv6 = ipv6_address.exploded
     # Split the ip address into 16 bit blocks
-    blocks = ipv6_address.split(":")
+    blocks = decompressed_ipv6.split(":")
     # Get the initial permutation
     permutations = [
         ":".join([
@@ -263,7 +262,7 @@ def generate_ipv6_regex(ipv6_address: str) -> re.Pattern:
         zero_ranges[-1].append(index)
     # Generate compressed permutations
     # If all the digits are 0 then the compressed format is ::
-    if all(char == "0" for char in ipv6_address if char != ":"):
+    if all(char == "0" for char in decompressed_ipv6 if char != ":"):
         permutations.append("::")
     else:
         permutations += [
@@ -311,35 +310,36 @@ def add_colons_to_mac(mac):
     return ':'.join(mac[i:i+2] for i in range(0, 12, 2))
 
 
-def find_unique_macs(text):
+def find_unique_macs(text: str) -> Set[str]:
     """
-    Find the unique mac addresses within some text.
+    Find and return unique MAC addresses in a given text.
+
+    This function searches for MAC addresses in the text, normalizes them to 
+    uppercase and colon-separated format, and then filters out any 12-digit
+    numerical sequences that are not valid MAC addresses.
 
     Args:
-        text (str): text string
+        text (str): The text to search for MAC addresses.
 
     Returns:
-        list of unique mac addresses
+        Set[str]: A set of unique MAC addresses found in the text.
+
+    Example:
+        >>> find_unique_macs("00:1A:2B:3C:4D:5E and 00-1A-2B-3C-4D-5E")
+        {'00:1A:2B:3C:4D:5E'}
     """
-    # Search for all MAC addresses in the text
-    mac_addresses = re.findall(MAC_REGEX, text)
-    # Since re.findall() returns tuples, convert them back to the original
-    # mac addresses and make sure they're uppercase
-    mac_addresses = [
-        "".join(mac).upper() for mac in mac_addresses
-        # TODO: See if this can be moved to original regex
-        # Filter all 12 digit matches
-        if not re.compile(r"[0-9]{12}").fullmatch("".join(mac))]
-    # Add colons to mac addresses if applicable
-    mac_addresses = [
-        add_colons_to_mac(mac) if ((":" not in mac) and ("-" not in mac))
-        else mac.replace("-", ":") if ("-" in mac)
-        else mac
-        for mac in mac_addresses]
-    # Cast to a set in order to recude the list to unique macs
-    unique_macs = list(set(mac_addresses))
-    # Sort the list before returning it
-    unique_macs.sort()
+    twelve_digit_check = re.compile(r"[0-9]{12}")
+    unique_macs = set()
+    for match in MAC_REGEX.findall(text):
+        mac_str = "".join(match).upper()
+        if twelve_digit_check.fullmatch(mac_str):
+            continue
+        if ":" not in mac_str:
+            if "-" in mac_str:
+                mac_str = mac_str.replace("-", ":")
+            else:
+                mac_str = add_colons_to_mac(mac_str)
+        unique_macs.add(mac_str)
 
     return unique_macs
 
@@ -485,46 +485,85 @@ def decompress_ipv6(ipv6_address: str) -> str:
 
 
 
-def find_unique_ipv4(text):
+def find_unique_ipv4(
+        text: str, filter: bool = True
+    ) -> Set[ipaddress.IPv4Address]:
     """
-    Finds and returns the unique IPv4 addresses in a given text.
+    Find and return unique IPv4 addresses in a given text.
     
     Args:
         text (str): The text to search for IPv4 addresses.
+        filter (bool): Filter loopback, private, and unspecified IP addresses
         
     Returns:
-        list: A sorted list of unique IPv4 addresses found in the text.
+        Set[ipaddress.IPv4Address]:
+            A set of unique IPv4 addresses found in the text.
+        
+    Example:
+        >>> find_unique_ipv4("192.168.1.1 and 10.0.0.1 and 192.168.1.1")
+        {IPv4Address('192.168.1.1'), IPv4Address('10.0.0.1')}
     """
-    unique_ipv4_addresses = list(set(
-        match[0] for match in IPv4_REGEX.findall(text)))
+    unique_ip_addresses = set()
+    for match in IPv4_REGEX.findall(text):
+        ipv4 = ipaddress.IPv4Address(match[0])
+        if (
+            filter and (
+                ipv4.is_loopback or
+                ipv4.is_private or
+                ipv4.is_unspecified
+            )
+        ):
+            continue
+        unique_ip_addresses.add(ipv4)
 
-    return unique_ipv4_addresses
+    return unique_ip_addresses
 
 
-def find_unique_ipv6(text):
+def find_unique_ipv6(
+        text: str, filter: bool = True
+    ) -> Set[ipaddress.IPv6Address]:
     """
-    Finds and returns the unique IPv6 addresses in a given text.
-    
+    Find and return unique IPv6 addresses in a given text, with optional
+    filtering.
+
+    This function identifies IPv6 addresses in the given text, decompresses
+    and normalizes them to uppercase. It can also filter out loopback,
+    private, and unspecified addresses based on the 'filter' argument.
+
     Args:
         text (str): The text to search for IPv6 addresses.
-        
-    Returns:
-        list: A sorted list of unique IPv6 addresses found in the text.
-    """
-    # Find and cast each mac address to uppercase
-    ipv6_addresses = [
-        decompress_ipv6(match[0].upper())
-        for match in IPv6_REGEX.findall(text)]
-    # Decompress mac addresses
-    # TODO: Remove the if statement once this bug is figured out for 18 octet
-    #       macs. Make sure ipv6 regex doesn't pick these up
-    ipv6_addresses = [
-        i for i in ipv6_addresses
-        if not all(len(j) == 2 for j in i.split(":"))]
-    unique_ipv6_addresses = list(set(ipv6_addresses))
-    unique_ipv6_addresses.sort()
+        filter (bool, optional):
+            Whether to filter out loopback, private, or unspecified addresses.
+            Defaults to True.
 
-    return unique_ipv6_addresses
+    Returns:
+        Set[ipaddress.IPv6Address]:
+            A set of unique IPv6 addresses found in the text.
+
+    Example:
+        >>> find_unique_ipv6("::1 and fe80::1 and ::", filter=True)
+        {IPv6Address('fe80::1')}
+    """
+    unique_ip_addresses = set()
+    for match in IPv6_REGEX.findall(text):
+        # TODO: Remove the if statement once this bug is figured out for 18
+        #       octet macs. Make sure ipv6 regex doesn't pick these up
+        ip_str = decompress_ipv6(match[0].upper())
+        if all(len(j) == 2 for j in ip_str.split(":")):
+            continue
+        # Can compress this and ipv4 logic after above bug is fixed
+        ipv6 = ipaddress.IPv6Address(match[0])
+        if (
+            filter and (
+                ipv6.is_loopback or
+                ipv6.is_private or
+                ipv6.is_unspecified
+            )
+        ):
+            continue
+        unique_ip_addresses.add(ipv6)
+    
+    return unique_ip_addresses
 
 
 def generate_random_ipv4():
@@ -675,54 +714,64 @@ def pooled_redact_text(redact_map, text_list, max_workers=16):
     return results
 
 
+def generate_redact_map(
+        text_list: List[str], redact_type: str,
+        find_function: Callable[[str], Set[Any]],
+        regex_function: Callable[[Any], re.Pattern]
+    ) -> Dict[str, Dict[str, Union[str, str]]]:
+    """
+    Generate a redaction map for a list of text items based on specified find
+    and regex functions.
+
+    Args:
+        text_list (List[str]):
+            A list of text items to be processed for redaction.
+        redact_type (str):
+            A string indicating the type of redaction.
+        find_function (Callable[[str], List[str]]):
+            A function that takes a string and returns a set of matches.
+        regex_function (Callable[[str], str]):
+            A function that gives regex pattern that covers all permutations
+            of a certain type of string.
+
+    Returns:
+        Dict[str, Dict[str, Union[str, str]]]:
+            A dictionary containing the redaction mappings. Each key is a
+            redaction label and each value is another dictionary containing
+            the original match and its regex pattern.
+    """
+    # Set processes to 1 less than cpu count
+    with Pool(
+        processes=max(1, multiprocessing.cpu_count() - 1)
+    ) as executor:
+        results = list(executor.map(find_function, text_list))
+    # Get unique matches
+    unique_matches = set(itertools.chain.from_iterable(results))
+    # Return redact map
+    return {
+        f"[REDACTED:{redact_type}:{{}}]".format(index): {
+            "original": match, "regex": regex_function(match)
+        } for index, match in enumerate(unique_matches)}
+
+
 def redact_text(text_list):
     """
-    Perform redaction of MAC addresses and IP addresses on a list of text strings.
-    
+    Perform redaction of MAC addresses and IP addresses on a list of text
+    strings.
+
     Args:
         text_list (list of str):
             The list of texts where redaction needs to be performed.
-    
+
     Returns:
         list: A list of redacted text strings.
     """
-    # Get unique mac list
-    unique_macs_list = list(set(itertools.chain.from_iterable(
-        pooled_find(find_unique_macs, text_list))))
-    # Create initial redaction map with macs
-    redact_map = {
-        f"[REDACTED:MAC:{index + 1}]": {
-            "original": mac,
-            "regex": generate_mac_regex(mac)}
-        for index, mac in enumerate(unique_macs_list)}
-    # Get unique ip addresses and add them to redact map
-    ipv4_base_str = "[REDACTED:IPv4:{}]"
-    ipv6_base_str = "[REDACTED:IPv6:{}]"
-    unique_ipv4_list = [
-        ipaddress.IPv4Address(i) for i in set(itertools.chain.from_iterable(
-            pooled_find(find_unique_ipv4, text_list)))]
-    unique_ipv6_list = [
-        ipaddress.IPv6Address(i) for i in set(itertools.chain.from_iterable(
-            pooled_find(find_unique_ipv6, text_list)))]
-    redact_map.update({
-        ipv4_base_str.format(index + 1): {
-            "original": og_ip_address,
-            "regex": generate_ipv4_regex(og_ip_address.exploded)
-        } for index, og_ip_address in enumerate(unique_ipv4_list)
-        if not (
-            og_ip_address.is_loopback or
-            og_ip_address.is_private or
-            og_ip_address.is_unspecified
-        )})
-    redact_map.update({
-        ipv6_base_str.format(index + 1): {
-            "original": og_ip_address,
-            "regex": generate_ipv6_regex(og_ip_address.exploded)
-        } for index, og_ip_address in enumerate(unique_ipv6_list)
-        if not (
-            og_ip_address.is_loopback or
-            og_ip_address.is_private or
-            og_ip_address.is_unspecified
-        )})
+    redact_map = {}
+    for args in [
+        ("MAC", find_unique_macs, generate_mac_regex),
+        ("IPv4", find_unique_ipv4, generate_ipv4_regex),
+        ("IPv6", find_unique_ipv6, generate_ipv6_regex)
+    ]:
+        redact_map.update(generate_redact_map(text_list, *args))
     # Return list of redacted text strings
     return redact_map, pooled_redact_text(redact_map, text_list)
