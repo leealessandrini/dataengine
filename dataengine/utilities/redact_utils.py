@@ -22,10 +22,10 @@ LOCAL_MAC_REGEX = re.compile(
     r"([0-9A-Fa-f]{2}[:-]?){4}[0-9A-Fa-f]{2})")
 IPv4_REGEX = re.compile(
     r"(?<![.\w])"  # Negative lookbehind
-    r"(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
-    r"\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
-    r"\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
-    r"\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
+    r"((25[0-5]{1}|2[0-4]{1}[0-9]{1}|1[0-9]{2}|[1-9]{0,1}[0-9]{1}){1}\."
+    r"(25[0-5]{1}|2[0-4]{1}[0-9]{1}|1[0-9]{2}|[1-9]{0,1}[0-9]{1}){1}\."
+    r"(25[0-5]{1}|2[0-4]{1}[0-9]{1}|1[0-9]{2}|[1-9]{0,1}[0-9]{1}){1}\."
+    r"(25[0-5]{1}|2[0-4]{1}[0-9]{1}|1[0-9]{2}|[1-9]{0,1}[0-9]{1}){1})"
     r"(?!\w)"  # Negative lookahead for only word characters
 )
 # Partial source: https://stackoverflow.com/questions/53497
@@ -495,9 +495,8 @@ def find_unique_ipv4(text):
     Returns:
         list: A sorted list of unique IPv4 addresses found in the text.
     """
-    ipv4_addresses = re.findall(IPv4_REGEX, text)
-    unique_ipv4_addresses = list(set(ipv4_addresses))
-    unique_ipv4_addresses.sort()
+    unique_ipv4_addresses = list(set(
+        match[0] for match in IPv4_REGEX.findall(text)))
 
     return unique_ipv4_addresses
 
@@ -515,7 +514,7 @@ def find_unique_ipv6(text):
     # Find and cast each mac address to uppercase
     ipv6_addresses = [
         decompress_ipv6(match[0].upper())
-        for match in re.findall(IPv6_REGEX, text)]
+        for match in IPv6_REGEX.findall(text)]
     # Decompress mac addresses
     # TODO: Remove the if statement once this bug is figured out for 18 octet
     #       macs. Make sure ipv6 regex doesn't pick these up
@@ -571,12 +570,12 @@ def redact_ip_addresses_from_text(text, ip_address_map=None):
     if not ip_address_map:
         ip_address_map = {
             ipv4_base_str.format(index + 1): {
-                "original": og_ip_address,
+                "original": ipaddress.IPv4Address(og_ip_address),
                 "regex": generate_ipv4_regex(og_ip_address)
             } for index, og_ip_address in enumerate(ipv4_addresses)}
         ip_address_map.update({
             ipv6_base_str.format(index + 1): {
-                "original": og_ip_address,
+                "original": ipaddress.IPv6Address(og_ip_address),
                 "regex": generate_ipv6_regex(og_ip_address)
             } for index, og_ip_address in enumerate(ipv6_addresses)})
     else:
@@ -589,7 +588,7 @@ def redact_ip_addresses_from_text(text, ip_address_map=None):
             ):
                 ipv4_count += 1
                 ip_address_map[ipv4_base_str.format(ipv4_count)] = {
-                    "original": og_ip_address,
+                    "original": ipaddress.IPv4Address(og_ip_address),
                     "regex": generate_ipv4_regex(og_ip_address)}
         # Update IPv6 Addresses
         ipv6_count = sum(True for key in ip_address_map.keys() if "v6" in key)
@@ -600,7 +599,7 @@ def redact_ip_addresses_from_text(text, ip_address_map=None):
             ):
                 ipv6_count += 1
                 ip_address_map[ipv6_base_str.format(ipv6_count)] = {
-                    "original": og_ip_address,
+                    "original": ipaddress.IPv6Address(og_ip_address),
                     "regex": generate_ipv6_regex(og_ip_address)}
     # Replace each original mac with a redacted mac
     for redaction_string, values in ip_address_map.items():

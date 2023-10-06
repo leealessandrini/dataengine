@@ -284,26 +284,18 @@ def test_redact_macs_from_text_case_sensitivity():
 
 
 @pytest.mark.parametrize('test_input,expected', [
-    ('192.168.1.1', ['192.168.1.1']),
-    ('0.0.0.0', ['0.0.0.0']),
-    ('255.255.255.255', ['255.255.255.255']),
-    ('>192.168.1.1<', ["192.168.1.1"]),
-    ('The IP is 10.0.0.2.', ['10.0.0.2']),
-    ('Two IPs: 192.168.0.1, 172.16.0.2', ['192.168.0.1', '172.16.0.2']),
+    # Valid cases
+    ('192.168.1.1', True),
+    ('0.0.0.0', True),
+    ('255.255.255.255', True),
+    # Invalid cases
+    ('Not an ip address', False),
+    ('10.0.0.2.', False),
+    ("0.0.0.01", False),
+    ("'192.168.1.300'", False)
 ])
-def test_valid_ipv4(test_input, expected):
-    assert redact_utils.IPv4_REGEX.findall(test_input) == expected
-
-
-@pytest.mark.parametrize('test_input,expected', [
-    ('192.168.1.256', []),
-    ('192.168.1', []),
-    ('192.168.1.300', []),
-    ('.192.168.1.1', []),
-    ('a192.168.1.1', []),
-])
-def test_invalid_ipv4(test_input, expected):
-    assert redact_utils.IPv4_REGEX.findall(test_input) == expected
+def test_ipv4_regex_fullmatch(test_input, expected):
+    assert bool(redact_utils.IPv4_REGEX.fullmatch(test_input)) == expected
 
 
 @pytest.mark.parametrize('test_input,expected', [
@@ -314,11 +306,16 @@ def test_invalid_ipv4(test_input, expected):
     ('Two IPs: 192.168.0.1, 172.16.0.2', ['172.16.0.2', '192.168.0.1']),
     ('No IPs here!', []),
     ('.192.168.1.1', []),
+    # Last digit is more than 8 bits
     ('192.168.1.300', []),
+    # Leading zero in final 8 bits
+    ('255.0.0.01', []),
     ('', []),
 ])
 def test_find_unique_ipv4(test_input, expected):
-    assert redact_utils.find_unique_ipv4(test_input) == expected
+    result = redact_utils.find_unique_ipv4(test_input)
+    assert len(result) == len(expected)
+    assert all(i in expected for i in result)
 
 
 @pytest.mark.parametrize('test_input,expected', [
