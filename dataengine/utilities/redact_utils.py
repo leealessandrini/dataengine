@@ -177,6 +177,7 @@ def generate_mac_regex(mac_address: str) -> re.Pattern:
         >>> bool(pattern.match("AA-BB-CC-DD-EE-FF"))
         True
     """
+    """
     # Normalize the mac address
     normal_mac = mac_address.replace(":", "").replace("-", "")
     # Split the normalized mac into it's respective octets and cast each to a
@@ -186,6 +187,10 @@ def generate_mac_regex(mac_address: str) -> re.Pattern:
         for i in range(0, 12, 2)]
     # Generate final mac regex that handles all possible valid permutations
     return re.compile("|".join([i.join(octets) for i in ["", ":", "-"]]))
+    """
+    return re.compile("|".join(
+        [mac_address] + [mac_address.replace(":", i) for i in ["-", ""]]),
+        re.IGNORECASE)
 
 
 def generate_ipv4_regex(ipv4_address: ipaddress.IPv4Address) -> re.Pattern:
@@ -206,7 +211,7 @@ def generate_ipv4_regex(ipv4_address: ipaddress.IPv4Address) -> re.Pattern:
             equivalents.
     """
     ipv4_str = ipv4_address.exploded
-    base_str = "(::[Ff]{4}:|0{1,4}:0{1,4}:0{1,4}:0{1,4}:0{1,4}:[Ff]{4}:){1}"
+    base_str = "(::F{4}:|0{1,4}:0{1,4}:0{1,4}:0{1,4}:0{1,4}:F{4}:){1}"
     # Pull octets from ip address and cast them to hexadecimal
     octets = [
         convert_to_hex(int(decimal)) for decimal in ipv4_str.split(".")]
@@ -217,7 +222,7 @@ def generate_ipv4_regex(ipv4_address: ipaddress.IPv4Address) -> re.Pattern:
     return re.compile(
         ipv4_str.replace(".", "\\.") + "|" + base_str + "((" +
         ipv4_str.replace(".", "\\.") + ")|(" + ":".join([word_1, word_2]) +
-        ")){1}")
+        ")){1}", re.IGNORECASE)
 
 
 def generate_ipv6_regex(ipv6_address: ipaddress.IPv6Address) -> re.Pattern:
@@ -236,11 +241,7 @@ def generate_ipv6_regex(ipv6_address: ipaddress.IPv6Address) -> re.Pattern:
     # Split the ip address into 16 bit blocks
     blocks = decompressed_ipv6.split(":")
     # Get the initial permutation
-    permutations = [
-        ":".join([
-            left_pad_zeros(
-                generate_alphanumeric_regex(block)
-            ) for block in blocks])]
+    permutations = [":".join([left_pad_zeros(block) for block in blocks])]
     # Generate zero ranges for ip address
     zero_ranges = []
     in_range = False
@@ -268,9 +269,7 @@ def generate_ipv6_regex(ipv6_address: ipaddress.IPv6Address) -> re.Pattern:
         permutations += [
             ":".join([
                 i for i in [
-                    left_pad_zeros(
-                        generate_alphanumeric_regex(word)
-                    ) if not (
+                    left_pad_zeros(word) if not (
                         index >= zero_range[0] and
                         index < zero_range[1]
                     ) else ""
@@ -279,7 +278,7 @@ def generate_ipv6_regex(ipv6_address: ipaddress.IPv6Address) -> re.Pattern:
                 ] if i is not None])
             for zero_range in zero_ranges]
 
-    return re.compile("|".join(permutations))
+    return re.compile("|".join(permutations), re.IGNORECASE)
 
 
 def add_colons_to_mac(mac):
@@ -382,47 +381,6 @@ def generate_random_local_mac():
     mac_address = [first_octet] + [random.randint(0, 255) for _ in range(5)]
     # Convert to hexadecimal and join with colons
     return ':'.join(f'{octet:02x}' for octet in mac_address)
-
-
-def redact_macs_from_text(text, mac_map=None):
-    """
-    Provided some text, redact the original macs.
-
-    Args:
-        text (str): text string
-        mac_map (dict): key value pairs of og macs and random macs
-
-    Returns:
-        redacted text and updated mac map
-    """
-    base_str = "[REDACTED:MAC:{}]"
-    # Pull unique mac lists
-    mac_list = find_unique_macs(text)
-    # If existing map is passed update it
-    if not mac_map:
-        mac_map = {
-            f"[REDACTED:MAC:{index + 1}]": {
-                "original": mac,
-                "regex": generate_mac_regex(mac)}
-            for index, mac in enumerate(mac_list)}
-    else:
-        mac_count = sum(True for key in mac_map.keys() if "MAC" in key)
-        for og_mac in mac_list:
-            #if og_mac not in mac_map:
-            if not any(
-                bool(value["regex"].fullmatch(og_mac))
-                for value in mac_map.values()
-            ):
-                mac_count += 1
-                mac_map[base_str.format(mac_count)] = {
-                    "original": og_mac, "regex": generate_mac_regex(og_mac)}
-    # Replace instances of macs in text
-    redacted_text = text
-    # Replace each original mac with a redacted mac
-    for redaction_string, values in mac_map.items():
-        redacted_text = values["regex"].sub(redaction_string, redacted_text)
-
-    return redacted_text, mac_map
 
 
 def decompress_ipv6(ipv6_address: str) -> str:
@@ -586,67 +544,6 @@ def generate_random_ipv6():
     return ":".join("{:x}".format(random.randint(0, 0xFFFF)) for _ in range(8))
 
 
-def redact_ip_addresses_from_text(text, ip_address_map=None):
-    """
-    Provided some text, redact the original ip addresses.
-
-    Args:
-        text (str): text string
-        ip_address_map (dict): key value pairs of og addresses and random ones
-
-    Returns:
-        redacted text and updated ip address map
-    """
-    # Replace instances of macs in text
-    redacted_text = text
-    # Setup base redaction strings
-    ipv4_base_str = "[REDACTED:IPv4:{}]"
-    ipv6_base_str = "[REDACTED:IPv6:{}]"
-    # Pull unique mac lists
-    ipv4_addresses = find_unique_ipv4(text)
-    ipv6_addresses = find_unique_ipv6(text)
-    # Build initial map if None was passed
-    if not ip_address_map:
-        ip_address_map = {
-            ipv4_base_str.format(index + 1): {
-                "original": ipaddress.IPv4Address(og_ip_address),
-                "regex": generate_ipv4_regex(og_ip_address)
-            } for index, og_ip_address in enumerate(ipv4_addresses)}
-        ip_address_map.update({
-            ipv6_base_str.format(index + 1): {
-                "original": ipaddress.IPv6Address(og_ip_address),
-                "regex": generate_ipv6_regex(og_ip_address)
-            } for index, og_ip_address in enumerate(ipv6_addresses)})
-    else:
-        # Update IPv4 Addresses
-        ipv4_count = sum(True for key in ip_address_map.keys() if "v4" in key)
-        for og_ip_address in ipv4_addresses:
-            if not any(
-                bool(value["regex"].fullmatch(og_ip_address))
-                for value in ip_address_map.values()
-            ):
-                ipv4_count += 1
-                ip_address_map[ipv4_base_str.format(ipv4_count)] = {
-                    "original": ipaddress.IPv4Address(og_ip_address),
-                    "regex": generate_ipv4_regex(og_ip_address)}
-        # Update IPv6 Addresses
-        ipv6_count = sum(True for key in ip_address_map.keys() if "v6" in key)
-        for og_ip_address in ipv6_addresses:
-            if not any(
-                bool(value["regex"].fullmatch(og_ip_address))
-                for value in ip_address_map.values()
-            ):
-                ipv6_count += 1
-                ip_address_map[ipv6_base_str.format(ipv6_count)] = {
-                    "original": ipaddress.IPv6Address(og_ip_address),
-                    "regex": generate_ipv6_regex(og_ip_address)}
-    # Replace each original mac with a redacted mac
-    for redaction_string, values in ip_address_map.items():
-        redacted_text = values["regex"].sub(redaction_string, redacted_text)
-
-    return redacted_text, ip_address_map
-
-
 def redact_items_from_text(text, redact_map):
     """
     Redact sensitive information from a given text based on a redaction map.
@@ -669,28 +566,6 @@ def redact_items_from_text(text, redact_map):
     return redacted_text
 
 
-def pooled_find(find_function, text_list, max_workers=16):
-    """
-    Execute a find function in parallel on a list of texts.
-    
-    Args:
-        find_function (callable):
-            The function to execute on each text in the list.
-        text_list (list of str): The list of texts to process.
-        max_workers (int, optional):
-            The maximum number of worker processes. Defaults to 16.
-    
-    Returns:
-        list:
-            A list containing the results of applying find_function to each
-            text in text_list.
-    """
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        results = list(executor.map(find_function, text_list))
-
-    return results
-
-
 def pooled_redact_text(redact_map, text_list, max_workers=16):
     """
     Perform redaction in parallel on a list of texts using a redaction map.
@@ -706,7 +581,9 @@ def pooled_redact_text(redact_map, text_list, max_workers=16):
     Returns:
         list: A list containing the redacted texts.
     """
-    with Pool(processes=max_workers) as executor:
+    with Pool(
+        processes=max(1, multiprocessing.cpu_count() - 1)
+    ) as executor:
         results = list(executor.starmap(
             redact_items_from_text,
             [(text, redact_map) for text in text_list]))
