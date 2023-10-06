@@ -1,6 +1,6 @@
 import os
 import re
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union, Any
 import logging
 import yaml
 from marshmallow import Schema, fields, validates, post_load, ValidationError
@@ -263,42 +263,81 @@ class Database(Asset):
         return success
 
 
-def load_assets(asset_config_path_list):
+def load_asset_config_files(
+        asset_config_path_list: List[str]
+    ) -> Dict[str, Union[str, int, float, bool, list, dict]]:
     """
-    This function will load a provided set of assets given a list of
-    filepaths.
+    Load asset configuration files from a list of file paths and merge them
+    into a single dictionary.
+    
+    Args:
+        asset_config_path_list (List[str]):
+            A list of file paths to asset configuration files in YAML format.
+    
+    Returns:
+        Dict[str, Union[str, int, float, bool, list, dict]]:
+            A dictionary containing the merged asset configurations.
+        
+    Example:
+        >>> load_asset_config_files(
+        >>>    ["path/to/config1.yaml", "path/to/config2.yaml"])
+        {'key1': 'value1', 'key2': 'value2'}
     """
-    # Initialize asset map
-    asset_map = {"buckets": {}, "base_datasets": {}, "databases": {}}
+    asset_config = {}
     # Iterate over input asset configuration paths
     for path in asset_config_path_list:
         # Use a context manager for file I/O
         with open(path, "r") as f:
-            asset_config = yaml.safe_load(f)
-        # Iterate over each asset and load it accordingly
-        for asset_name, parameters in asset_config.items():
-            asset_type = parameters["asset_type"]
-            # Determine whether config parameter is an environment variable
-            # and if it is pull the value from the environment
-            config = {"asset_name": asset_name}
-            for key, value in parameters.items():
-                if key == "asset_type":
-                    continue
-                match = ENVIRONMENT_VAR_REGEX.fullmatch(value)
-                if match:
-                    value = os.getenv(match.group(1))
-                # If the input value is a port cast it to an integer
-                if key == "port" and re.fullmatch(r"[0-9]+", value):
-                    value = int(value)
-                # Set the final config value
-                config[key] = value
-            # Load asset
-            if asset_type == "database":
-                asset_map["databases"][asset_name] = DatabaseSchema().load(config)
-            elif asset_type == "bucket":
-                asset_map["buckets"][asset_name] = BucketSchema().load(config)
-            elif asset_type == "base_dataset":
-                asset_map["base_datasets"][asset_name] = BaseDatasetSchema(
-                    ).load(config)
+            asset_config.update(yaml.safe_load(f))
+    
+    return asset_config
+
+
+def load_assets(
+        asset_config: Dict[str, Dict[str, Union[str, int, float, bool]]]
+    ) -> Dict[str, Dict[str, Any]]:
+    """
+    Load assets from a configuration dictionary and organize them into
+    different types.
+
+    Args:
+        asset_config (Dict[str, Dict[str, Union[str, int, float, bool]]]):
+            A dictionary containing asset names as keys and another dictionary
+            as values. The inner dictionary contains asset parameters including
+            the asset type ('database', 'bucket', 'base_dataset') and other
+            configurations.
+
+    Returns:
+        Dict[str, Dict[str, Any]]:
+            A dictionary containing loaded assets organized into 'buckets',
+            'base_datasets', and 'databases'.
+    """
+    # Initialize asset map
+    asset_map = {"buckets": {}, "base_datasets": {}, "databases": {}}
+    # Iterate over each asset and load it accordingly
+    for asset_name, parameters in asset_config.items():
+        asset_type = parameters["asset_type"]
+        # Determine whether config parameter is an environment variable
+        # and if it is pull the value from the environment
+        config = {"asset_name": asset_name}
+        for key, value in parameters.items():
+            if key == "asset_type":
+                continue
+            match = ENVIRONMENT_VAR_REGEX.fullmatch(str(value))
+            if match:
+                value = os.getenv(match.group(1))
+            # If the input value is a port cast it to an integer
+            if key == "port" and re.fullmatch(r"[0-9]+", str(value)):
+                value = int(value)
+            # Set the final config value
+            config[key] = value
+        # Load asset
+        if asset_type == "database":
+            asset_map["databases"][asset_name] = DatabaseSchema().load(config)
+        elif asset_type == "bucket":
+            asset_map["buckets"][asset_name] = BucketSchema().load(config)
+        elif asset_type == "base_dataset":
+            asset_map["base_datasets"][asset_name] = BaseDatasetSchema().load(
+                config)
 
     return asset_map

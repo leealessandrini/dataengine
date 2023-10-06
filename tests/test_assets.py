@@ -23,12 +23,19 @@ def mock_env_vars():
     for key in env_vars.keys():
         del os.environ[key]
 
+def test_load_asset_config_files(mock_env_vars):
+    yaml_paths = [
+        './tests/sample_configs/sample_config1.yaml',
+        './tests/sample_configs/sample_config2.yaml']
+    db_map = assets.load_asset_config_files(yaml_paths)
+    assert all(i in db_map for i in ["db1", "db2"])
 
 def test_load_assets(mock_env_vars):
     yaml_paths = [
         './tests/sample_configs/sample_config1.yaml',
         './tests/sample_configs/sample_config2.yaml']
-    db_map = assets.load_assets(yaml_paths)
+    db_map = assets.load_assets(
+        assets.load_asset_config_files(yaml_paths))
     # Validate that the databases are loaded correctly
     assert 'db1' in db_map["databases"]
     assert 'db2' in db_map["databases"]
