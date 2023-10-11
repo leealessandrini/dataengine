@@ -2,7 +2,7 @@
 AWS Athena Utility Methods
 """
 import time
-from typing import Tuple, Union
+from typing import Tuple, Optional
 import pandas as pd
 import boto3
 import numpy as np
@@ -11,7 +11,7 @@ QUERY_STATUSES = ['SUCCEEDED', 'FAILED', 'CANCELLED']
 
 def run_athena_query(
         access_key: str, secret_key: str, query: str, database: str,
-        workgroup: str, sleep_time: int = 1
+        workgroup: str,  region: Optional[str] = None, sleep_time: int = 1
     ) -> Tuple[pd.DataFrame, bool]:
     """
     Executes an Athena query and fetches the results into a Pandas DataFrame.
@@ -36,7 +36,8 @@ def run_athena_query(
     # Establish connection with Athena
     athena_client = boto3.client(
         'athena', aws_access_key_id=access_key,
-        aws_secret_access_key=secret_key)
+        aws_secret_access_key=secret_key,
+        region_name=region)
     # Start query and get execution ID
     response = athena_client.start_query_execution(
         QueryString=query, QueryExecutionContext={'Database': database},
