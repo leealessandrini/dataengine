@@ -167,17 +167,6 @@ def generate_mac_regex(mac_address: str) -> re.Pattern:
         >>> bool(pattern.match("AA-BB-CC-DD-EE-FF"))
         True
     """
-    """
-    # Normalize the mac address
-    normal_mac = mac_address.replace(":", "").replace("-", "")
-    # Split the normalized mac into it's respective octets and cast each to a
-    # regex that handles case sensitivity
-    octets = [
-        generate_alphanumeric_regex(normal_mac[i:i + 2])
-        for i in range(0, 12, 2)]
-    # Generate final mac regex that handles all possible valid permutations
-    return re.compile("|".join([i.join(octets) for i in ["", ":", "-"]]))
-    """
     return re.compile("|".join(
         [mac_address] + [mac_address.replace(":", i) for i in ["-", ""]]),
         re.IGNORECASE)
@@ -616,29 +605,71 @@ def generate_redact_map(
     unique_matches = set(itertools.chain.from_iterable(results))
     # Return redact map
     return {
-        f"[REDACTED:{redact_type}:{{}}]".format(index): {
+        f"[REDACTED:{redact_type}:{{}}]".format(index + 1): {
             "original": match, "regex": regex_function(match)
         } for index, match in enumerate(unique_matches)}
 
 
-def redact_text(text_list):
+def redact_text(text_list, custom_redactions=None):
     """
-    Perform redaction of MAC addresses and IP addresses on a list of text
-    strings.
+    Perform redaction of MAC addresses, IP addresses, and any custom types on
+    a list of text strings.
+
+    This function allows for custom redaction types to be added. Each custom 
+    redaction is specified as a tuple containing:
+    - A string indicating the type of redaction.
+    - A function for finding the substring to redact.
+    - A function that generates a regex for the substring.
 
     Args:
         text_list (list of str):
             The list of texts where redaction needs to be performed.
+        custom_redactions (list of tuple, optional):
+            Custom redaction types to add.
+            Each tuple should contain (type, find_function, regex_function).
+            Defaults to None.
 
     Returns:
-        list: A list of redacted text strings.
+        tuple: A tuple containing two elements:
+            1. dict:
+                A mapping from redaction type to the corresponding redaction
+                information.
+            2. list: A list of redacted text strings.
+
+    Raises:
+        ValueError: If a custom redaction tuple is invalid.
+            - Tuple does not have exactly 3 elements.
+            - The first element is not a string.
+            - The second and third elements are not callable functions.
     """
-    redact_map = {}
-    for args in [
+    # Default redactions
+    redaction_args = [
         ("MAC", find_unique_macs, generate_mac_regex),
         ("IPv4", find_unique_ipv4, generate_ipv4_regex),
-        ("IPv6", find_unique_ipv6, generate_ipv6_regex)
-    ]:
+        ("IPv6", find_unique_ipv6, generate_ipv6_regex)]
+    # Add custom redactions if provided
+    if custom_redactions:
+        for i, custom in enumerate(custom_redactions):
+            # Check if tuple has exactly 3 elements
+            if len(custom) != 3:
+                raise ValueError(
+                    f"Custom redaction tuple at index {i} should have exactly"
+                    " 3 elements.")
+            # Check if the first element is a string
+            if not isinstance(custom[0], str):
+                raise ValueError(
+                    f"The first element of the tuple at index {i} should be a"
+                    " string indicating the redaction type.")
+            # Check if the second and third elements are callable
+            if not callable(custom[1]) or not callable(custom[2]):
+                raise ValueError(
+                    f"The second and third elements of the tuple at index {i}"
+                    " should be callable functions.")
+            # Add to existing redactions and update types
+            redaction_args.append(custom)
+    # Generate redact_map and return redacted texts
+    redact_map = {}
+    for args in redaction_args:
         redact_map.update(generate_redact_map(text_list, *args))
-    # Return list of redacted text strings
+    
     return redact_map, pooled_redact_text(redact_map, text_list)

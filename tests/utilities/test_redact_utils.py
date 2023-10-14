@@ -51,6 +51,26 @@ def test_local_mac_regex(mac_address, expected):
             f"MAC address {mac_address} incorrectly matched the regex")
 
 
+@pytest.mark.parametrize("mac_input, mac_to_match, expected", [
+    # Basic tests for matching MAC address in different formats
+    ("AA:BB:CC:DD:EE:FF", "AA:BB:CC:DD:EE:FF", True),
+    ("AA:BB:CC:DD:EE:FF", "AA-BB-CC-DD-EE-FF", True),
+    ("AA:BB:CC:DD:EE:FF", "aabbccddeeff", True),
+    
+    # Case-insensitivity tests
+    ("aa:bb:cc:dd:ee:ff", "AA:BB:CC:DD:EE:FF", True),
+    ("AA:BB:CC:DD:EE:FF", "aa:bb:cc:dd:ee:ff", True),
+    
+    # Tests for invalid inputs
+    ("AA:BB:CC:DD:EE:FF", "invalid_mac_address", False),
+    ("AA:BB:CC:DD:EE:FF", "AA:BB:CC:DD:EE", False),
+    ("AA:BB:CC:DD:EE:FF", "AA:BB:CC:DD:EE:FG", False)
+])
+def test_generate_mac_regex(mac_input, mac_to_match, expected):
+    pattern = redact_utils.generate_mac_regex(mac_input)
+    assert bool(pattern.match(mac_to_match)) == expected
+
+
 @pytest.mark.parametrize("input_word, expected_output", [
     ("1234", "1234"),
     ("0045", "0{0,2}45"),
@@ -356,3 +376,61 @@ def test_generate_random_ipv6_uniqueness():
 ])
 def test_decompress_ipv6(compressed, expected):
     assert redact_utils.decompress_ipv6(compressed) == expected
+
+
+def test_redact_text_basic():
+    """
+    Test basic text redaction with defaults.
+    """
+    text_list = ["some text with MAC AB:CD:EF:12:34:56 and IP 1.2.3.4"]
+    redact_map, redacted_texts = redact_utils.redact_text(text_list)
+    assert (
+        ("[REDACTED:MAC:1]" in redact_map) and
+        (redact_map["[REDACTED:MAC:1]"]["original"] == "AB:CD:EF:12:34:56")
+    )
+    assert (
+        ("[REDACTED:IPv4:1]" in redact_map) and
+        (redact_map["[REDACTED:IPv4:1]"][
+            "original"] == ipaddress.IPv4Address("1.2.3.4"))
+    )
+    assert redacted_texts == [
+        'some text with MAC [REDACTED:MAC:1] and IP [REDACTED:IPv4:1]']
+
+# Declare these as global function so they can be pickled
+def custom_find(text):
+    return ['custom']
+
+def custom_regex(match):
+    return re.compile('custom')
+
+def test_redact_text_custom():
+    """
+    Test custom redaction.
+    """
+    custom_redactions = [("CustomType", custom_find, custom_regex)]
+    redact_map, redacted_texts = redact_utils.redact_text(
+        ["Replace custom with type"], custom_redactions=custom_redactions)
+    assert "[REDACTED:CustomType:1]" in redact_map
+    assert redacted_texts == [
+        'Replace [REDACTED:CustomType:1] with type']
+
+
+def test_redact_text_invalid_tuple_length():
+    with pytest.raises(ValueError) as excinfo:
+        redact_utils.redact_text(
+            [], custom_redactions=[("TooShort",)])
+    assert "should have exactly 3 elements" in str(excinfo.value)
+
+# Test ValueError for invalid type (non-string)
+def test_redact_text_invalid_type():
+    with pytest.raises(ValueError) as excinfo:
+        redact_utils.redact_text(
+            [], custom_redactions=[(123, lambda x: x, lambda x: x)])
+    assert "should be a string indicating the redaction type" in str(excinfo.value)
+
+# Test ValueError for non-callable functions
+def test_redact_text_non_callable_functions():
+    with pytest.raises(ValueError) as excinfo:
+        redact_utils.redact_text(
+            [], custom_redactions=[("CustomType", "not_a_function", "also_not_a_function")])
+    assert "should be callable functions" in str(excinfo.value)
