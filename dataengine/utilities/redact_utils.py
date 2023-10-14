@@ -61,16 +61,6 @@ IPv6_REGEX = re.compile(
 )
 
 
-def generate_combinations(s, start=0, current="", result=[]):
-    if start == len(s):
-        result.append(current)
-        return
-    generate_combinations(s, start + 1, current + s[start].lower(), result)
-    generate_combinations(s, start + 1, current + s[start].upper(), result)
-
-    return list(set(result))
-
-
 def convert_to_hex(decimal):
     """
     Convert to hexadecimal with leading zeros.

@@ -66,7 +66,7 @@ def run_athena_query(
                     value.get('VarCharValue', np.nan)
                     for value in row['Data']
                 ]
-                for row in results['ResultSet']['Rows'][1:]
+                for row in results['ResultSet']['Rows']
             ],
             columns=[col['Name'] for col in results[
                 'ResultSet']['ResultSetMetadata']['ColumnInfo']]
