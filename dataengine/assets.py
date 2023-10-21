@@ -327,8 +327,14 @@ def load_assets(
             if match:
                 value = os.getenv(match.group(1))
             # If the input value is a port cast it to an integer
-            if key == "port" and re.fullmatch(r"[0-9]+", str(value)):
-                value = int(value)
+            if key == "port":
+                if re.fullmatch(r"[0-9]+", str(value)):
+                    value = int(value)
+                else:
+                    value = 0
+            # If the value is still None cast it to an empty string
+            if value is None:
+                value = ""
             # Set the final config value
             config[key] = value
         # Load asset
