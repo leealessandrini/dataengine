@@ -251,11 +251,11 @@ class Database(Asset):
         # Log either success or failure
         if success:
             logging.info(
-                f"Successfully loaded into the {self.database_name} "
+                f"Successfully loaded into the {self.asset_name} "
                 f"table {schema_name}.{table_name}")
         else:
             logging.error(
-                f"Failed loading into the {self.database_name} "
+                f"Failed loading into the {self.asset_name} "
                 f"table {schema_name}.{table_name}")
         # Close connection
         conn.close()
