@@ -174,6 +174,7 @@ class QuerySchema(Schema):
     replace_where = fields.List(fields.Nested(ReplaceWhereSchema))
     mode = fields.String()
     max_records_per_file = fields.Integer()
+    exact_records_per_file = fields.Integer()
     # Setup nested schemas for dependencies, load, and delete information
     dependencies = fields.List(fields.Nested(DependencySchema), required=True)
     load_info = fields.Nested(LoadInfoSchema)
