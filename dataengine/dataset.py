@@ -100,8 +100,7 @@ class DatasetSchema(Schema):
 
 class Dataset(object):
     """
-    This class will function as the base class for pyspark datasets
-    within the SAF.
+    Dataset class.
     """
 
     def __init__(

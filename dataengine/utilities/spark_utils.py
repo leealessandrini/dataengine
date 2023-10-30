@@ -191,7 +191,9 @@ def convert_to_pandas(spark_df):
 def save_spark_df_to_s3(
         spark_df, output_location, file_format="csv", separator=",",
         use_pandas=False, header=True, partition_by=[], repartition={},
-        replace_where=[], mode="overwrite", max_records_per_file=None):
+        replace_where=[], mode="overwrite", max_records_per_file=None,
+        exact_records_per_file=None
+    ):
     """
     This method will save a Spark DataFrame to a provided s3 location.
 
@@ -220,6 +222,18 @@ def save_spark_df_to_s3(
             row_count=pandas_df.shape[0], output_location=output_location))
     # Otherwise, use spark to write
     else:
+        # If exact number of records per file is passed, find number of
+        # partitions needed to accomplish this
+        if exact_records_per_file is not None:
+            # If 0 or less this is invalid
+            if exact_records_per_file <= 0:
+                print("Invalid exact number of records per file provided.")
+            # Otherwise get the number of partitions by dividing the number of
+            # total records by the number of records per file
+            else:
+                total_records = spark_df.count()
+                repartition["n_partitions"] = round(
+                    total_records / exact_records_per_file)
         # Repartition result DataFrame provided arguments
         if repartition:
             args = []
