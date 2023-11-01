@@ -198,10 +198,14 @@ class Dataset(object):
                             lz_hour=general_utils.leading_zero(dt_object.hour),
                             bucket=bucket, **unique_format_args)
                         # Only check whether path exists if the bucket matches
-                        exist_status = True
+                        # TODO: Update this once bucket asset is setup properly
                         if bucket in dt_path:
                             exist_status = s3_utils.check_s3_path(
                                 S3_ACCESS_KEY, S3_SECRET_KEY, dt_path, bucket)
+                        else:
+                            # Assume we are using IAM role to read
+                            exist_status = s3_utils.check_s3_path(
+                                None, None, *s3_utils.parse_url(dt_path))
                         # Verify whether path exists if bucket matches and is
                         # new then append
                         if (
