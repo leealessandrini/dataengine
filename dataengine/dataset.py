@@ -45,24 +45,6 @@ class TimestampConversionSchema(Schema):
     new_column_header = fields.String()
 
 
-class S3PathField(fields.Field):
-    """
-    Field to represent either a string or list of strings.
-
-    Source: https://stackoverflow.com/questions/61614546
-    """
-    def _deserialize(self, value, attr, data, **kwargs):
-        if isinstance(value, str):
-            return [value]
-        elif (
-            isinstance(value, list) and
-            all([isinstance(i, str) for i in value])
-        ):
-            return value
-        else:
-            raise ValidationError('Field should be string or list of strings')
-
-
 class DatasetSchema(Schema):
     """
         Dataset marshmallow validation schema.
@@ -70,7 +52,7 @@ class DatasetSchema(Schema):
     spark = fields.Raw(required=True)
     dt = fields.DateTime(required=True)
     hour = fields.String(required=True)
-    file_path = S3PathField(required=True)
+    file_path = general_utils.StringOrListField(required=True)
     bucket = fields.String(required=True)
     format_args = fields.Dict()
     file_format = fields.String()
@@ -145,8 +127,9 @@ class Dataset(object):
                     self.df = spark_utils.convert_timestamp(self.df, **params)
         # Otherwise assume the data is a local csv file
         else:
-            self.file_path_list = [file_path]
-            self.df = spark_utils.pandas_to_spark(pd.read_csv(file_path))
+            self.file_path_list = file_path
+            self.df = spark_utils.pandas_to_spark(pd.concat([
+                pd.read_csv(path) for path in file_path], ignore_index=True))
 
     def _setup_s3_path(
             self, s3_path, dt, hour, time_delta, bucket, format_args,

@@ -11,6 +11,29 @@ import logging
 import math
 import numpy as np
 from scipy.stats import shapiro, normaltest
+from marshmallow import fields, ValidationError
+
+
+class StringOrListField(fields.Field):
+    """
+    Custom Marshmallow field for handling a field that can be either a single
+    string or a list of strings.
+    
+    Raises:
+        ValidationError:
+            If the field is neither a string nor a list of strings.
+    """
+    def _deserialize(self, value, attr, data, **kwargs):
+        if isinstance(value, str):
+            return value
+        elif (
+            isinstance(value, list) and
+            all(isinstance(x, str) for x in value)
+        ):
+            return value
+        else:
+            raise ValidationError(
+                "Field should be either a string or a list of strings.")
 
 
 def get_date_range(date_0, date_1):
