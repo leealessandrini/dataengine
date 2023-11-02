@@ -2,6 +2,7 @@ import os
 import logging
 import datetime
 from marshmallow import Schema, fields, post_load, validates, ValidationError
+import pandas as pd
 from .utilities import s3_utils, spark_utils, general_utils
 
 S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
@@ -69,7 +70,7 @@ class DatasetSchema(Schema):
     spark = fields.Raw(required=True)
     dt = fields.DateTime(required=True)
     hour = fields.String(required=True)
-    s3_path = S3PathField(required=True)
+    file_path = S3PathField(required=True)
     bucket = fields.String(required=True)
     format_args = fields.Dict()
     file_format = fields.String()
@@ -83,6 +84,7 @@ class DatasetSchema(Schema):
     dt_delta = fields.Nested(DtDeltaSchema)
     exclude_hours = fields.List(fields.String())
     rename = fields.Dict()
+    location = fields.String(default="s3")
 
     @validates("file_format")
     def validate_file_format(self, file_format):
@@ -90,6 +92,15 @@ class DatasetSchema(Schema):
         if file_format not in valid_args:
             raise ValidationError(
                 f"Invalid file_format '{file_format}' provided, "
+                "please choose among the list: [{}]".format(
+                    ", ".join(valid_args)))
+
+    @validates("location")
+    def validate_location(self, location):
+        valid_args = ["s3", "local"]
+        if location not in valid_args:
+            raise ValidationError(
+                f"Invalid location '{location}' provided, "
                 "please choose among the list: [{}]".format(
                     ", ".join(valid_args)))
 
@@ -104,30 +115,38 @@ class Dataset(object):
     """
 
     def __init__(
-            self, spark, dt, hour, s3_path, bucket,
+            self, spark, dt, hour, file_path, bucket,
             format_args={}, file_format="csv", column_headers=[],
             column_types=[], separator=",", header=False,
             time_delta={"days": 0, "hours": 0, "weeks": 0},
             timestamp_conversion=[], dt_delta={}, exclude_hours=[],
-            rename={}, **kwargs):
+            rename={}, location="s3", **kwargs
+        ):
         """
         Dataset constructor.
         """
         self.spark = spark
+        self.file_format = file_format
         # Get all unique permutations of the format arguments
-        format_args_permutations = general_utils.get_dict_permutations(format_args)
-        # Setup list of s3 paths
-        self.s3_path = self._setup_s3_path(
-            s3_path, dt, hour, time_delta, bucket, format_args_permutations,
-            dt_delta, exclude_hours)
-        # Load data into a pyspark DataFrame
-        self._load_data(
-            column_headers, column_types, file_format, separator, header,
-            rename=rename)
-        # Convert timestamp if applicable
-        if timestamp_conversion:
-            for params in timestamp_conversion:
-                self.df = spark_utils.convert_timestamp(self.df, **params)
+        format_args_permutations = general_utils.get_dict_permutations(
+            format_args)
+        # Load data from s3 if that is what the location is set to
+        if location == "s3":
+            self.file_path_list = self._setup_s3_path(
+                file_path, dt, hour, time_delta, bucket, 
+                format_args_permutations, dt_delta, exclude_hours)
+            # Load data into a pyspark DataFrame
+            self.df = self._load_data_from_s3(
+                column_headers, column_types, file_format, separator, header,
+                rename=rename)
+            # Convert timestamp if applicable
+            if timestamp_conversion:
+                for params in timestamp_conversion:
+                    self.df = spark_utils.convert_timestamp(self.df, **params)
+        # Otherwise assume the data is a local csv file
+        else:
+            self.file_path_list = [file_path]
+            self.df = spark_utils.pandas_to_spark(pd.read_csv(file_path))
 
     def _setup_s3_path(
             self, s3_path, dt, hour, time_delta, bucket, format_args,
@@ -251,7 +270,7 @@ class Dataset(object):
         return dataset_s3_path_list
 
 
-    def _load_data(
+    def _load_data_from_s3(
             self, column_headers, column_types, file_format, separator,
             header, rename={}):
         """
@@ -262,25 +281,22 @@ class Dataset(object):
             pyspark DataFrame
         """
         # Explicitely raise exception if no valid files were found
-        if not self.s3_path:
+        if not self.file_path_list:
             logging.error("No valid data located.\n")
             raise Exception
         # Otherwise attempt to load data
-        self.file_format = file_format
         if file_format == "csv":
-            self.df = self.spark.read.load(
-                self.s3_path, format=self.file_format, sep=separator,
+            df = self.spark.read.load(
+                self.file_path_list, format=file_format, sep=separator,
                 header=header, schema=spark_utils.create_spark_schema(
                     column_headers, column_types))
         elif file_format in ("parquet", "delta", "avro"):
-            self.df = self.spark.read.load(
-                self.s3_path, format=self.file_format, mergeSchema=True)
+            df = self.spark.read.load(
+                self.file_path_list, format=file_format, mergeSchema=True)
         elif file_format == "json":
-            self.df = self.spark.read.json(self.s3_path)
+            df = self.spark.read.json(self.file_path_list)
         # Rename columns if applicable
         if rename:
-            self.df = spark_utils.rename_cols(self.df, rename)
-        # Setup column header, type, and schema variables
-        self.column_headers = self.df.columns
-        self.column_types = [i.dataType for i in self.df.schema]
-        self.schema = self.df.schema
+            df = spark_utils.rename_cols(self.df, rename)
+
+        return df
