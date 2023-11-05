@@ -112,6 +112,9 @@ class Dataset(object):
         # Get all unique permutations of the format arguments
         format_args_permutations = general_utils.get_dict_permutations(
             format_args)
+        # Convert file path to list if a string was passed in
+        if isinstance(file_path, str):
+            file_path = [file_path]
         # Load data from s3 if that is what the location is set to
         if location == "s3":
             self.file_path_list = self._setup_s3_path(
