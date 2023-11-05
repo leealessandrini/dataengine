@@ -131,7 +131,7 @@ class Dataset(object):
         # Otherwise assume the data is a local csv file
         else:
             self.file_path_list = file_path
-            self.df = spark_utils.pandas_to_spark(pd.concat([
+            self.df = spark_utils.pandas_to_spark(spark, pd.concat([
                 pd.read_csv(path) for path in file_path], ignore_index=True))
 
     def _setup_s3_path(
