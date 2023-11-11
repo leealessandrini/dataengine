@@ -20,11 +20,11 @@ class BaseDatasetSchema(AssetSchema):
     """
     Schema for BaseDataset class.
     """
-    s3_prefix = fields.Str(required=True)
+    file_path_list = fields.List(fields.Str(), required=True)
     file_format = fields.Str(load_default="csv")
+    bucket_asset_name = fields.Str()
     header = fields.Bool(load_default=True)
-    schema = fields.Dict(
-        keys=fields.Str(), values=fields.Str(), required=False)
+    schema = fields.Dict(keys=fields.Str(), values=fields.Str())
     
     @validates("file_format")
     def validate_file_format(self, file_format):
@@ -77,16 +77,23 @@ class BaseDataset(Asset):
     def __init__(
             self,
             asset_name: str,
-            s3_prefix: str,
+            file_path_list: list,
             file_format: str = "csv",
+            bucket_asset_name: str = None,
             header: bool = True,
             schema: Optional[Dict[str, str]] = None
     ):
         super().__init__(asset_name)
-        self.s3_prefix = s3_prefix
+        self.file_path_list = file_path_list
         self.file_format = file_format
         self.header = header
         self.schema = schema
+        # Setup location
+        self.bucket_asset_name = bucket_asset_name
+        if self.bucket_asset_name:
+            self.location = "s3"
+        else:
+            self.location = "local"
         # Initially, the dataset is not in any bucket
         self.bucket: Optional[Bucket] = None
 
@@ -316,7 +323,12 @@ def load_assets(
     asset_map = {"buckets": {}, "base_datasets": {}, "databases": {}}
     # Iterate over each asset and load it accordingly
     for asset_name, parameters in asset_config.items():
-        asset_type = parameters["asset_type"]
+        # Assume asset is base dataset
+        # TODO: Replace this when base datasets are updated
+        if "asset_type" not in parameters:
+            asset_type = "base_dataset"
+        else:
+            asset_type = parameters["asset_type"]
         # Determine whether config parameter is an environment variable
         # and if it is pull the value from the environment
         config = {"asset_name": asset_name}
@@ -345,5 +357,7 @@ def load_assets(
         elif asset_type == "base_dataset":
             asset_map["base_datasets"][asset_name] = BaseDatasetSchema().load(
                 config)
+    # Setup linkage between buckets and datasets
+    # TODO: Setup bucket / base_dataset linkage here
 
     return asset_map
