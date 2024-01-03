@@ -94,6 +94,7 @@ class LoadInfoSchema(Schema):
     table_name = fields.String(required=True)
     delete_info = fields.Nested(DeleteInfoSchema)
     replace = fields.Boolean()
+    truncate = fields.Boolean(missing=False)
 
     # TODO: Validate load location using assets
     @validates("load_location")

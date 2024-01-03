@@ -189,6 +189,32 @@ class Database(Asset):
                 schema_name, self.host, self.port, self.user, self.password)
         return postgresql_utils.get_connection(
             schema_name, self.host, self.port, self.user, self.password)
+    
+    def truncate(
+            self, schema_name, table_name
+    ):
+        """
+        Truncates the specified table in the given schema.
+
+        Args:
+            schema_name (str): The name of the schema where the table resides
+            table_name (str): The name of the table to be truncated
+
+        Returns:
+            bool: True if the table was successfully truncated, False otherwise
+        """
+        truncate_success = False
+        conn = self.get_connection(schema_name)
+        try:
+            with conn.cursor() as cur:
+                cur.execute(f"TRUNCATE TABLE {table_name};")
+            conn.commit()
+            truncate_success = True
+            logging.info(f"Successfully truncated {table_name}")
+        except Exception as e:
+            logging.error(f"Failed table truncation: {e}")
+        
+        return truncate_success
 
     def delete(
             self, schema_name, table_name, delete_all=False, days=None,
