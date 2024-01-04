@@ -88,7 +88,8 @@ def pandas_to_spark(spark, pandas_df):
     columns = list(pandas_df.columns)
     types = list(pandas_df.dtypes)
     p_schema = ps_types.StructType([
-        ps_types.StructField(column, get_equivalent_spark_type(pandas_type))
+        ps_types.StructField(
+            column, get_equivalent_spark_type(str(pandas_type)))
         for column, pandas_type in zip(columns, types)])
 
     return spark.createDataFrame(pandas_df, p_schema)
