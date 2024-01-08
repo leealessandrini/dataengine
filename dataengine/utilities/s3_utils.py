@@ -5,6 +5,7 @@ import io
 import logging
 from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor
+import json
 import zipfile
 import yaml
 import boto3
@@ -396,3 +397,42 @@ def copy_s3_files(
             success = False
 
     return success
+
+
+def create_manifest_for_parquet(
+        s3_bucket, s3_prefix, aws_access_key_id=None,
+        aws_secret_access_key=None):
+    """
+    Create a manifest file for Parquet files in a given S3 prefix.
+
+    Parameters:
+        s3_bucket (str): Name of the S3 bucket.
+        s3_prefix (str): Prefix in the S3 bucket where Parquet files are stored.
+        aws_access_key_id (str, optional): AWS Access Key ID. Defaults to None.
+        aws_secret_access_key (str, optional): AWS Secret Access Key. Defaults to None.
+
+    Returns:
+        str: The S3 key of the created manifest file.
+    """
+    # Pull the list of files from the provided prefix
+    responses = get_responses(
+        aws_access_key_id, aws_secret_access_key, s3_prefix,
+        s3_bucket)
+    # Filter for .parquet files and create manifest entries
+    manifest = {
+        "entries": [
+            {
+                "url": f"s3://{s3_bucket}/" + obj["Key"],
+                "mandatory": True,
+                "meta": {"content_length": obj["Size"]}
+            }
+            for obj in responses
+            if obj["Key"].endswith(".parquet")]}
+    # Write manifest file to S3
+    s3 = boto3.client(
+        's3', aws_access_key_id=aws_access_key_id, 
+        aws_secret_access_key=aws_secret_access_key)
+    manifest_key = s3_prefix.rstrip('/') + '/manifest.json'
+    s3.put_object(Bucket=s3_bucket, Key=manifest_key, Body=json.dumps(manifest))
+
+    return manifest_key
