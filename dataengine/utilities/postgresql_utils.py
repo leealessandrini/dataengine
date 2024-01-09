@@ -44,7 +44,7 @@ def load_from_s3(
     conversion_params = (
         f"DELIMITER '{separator}'{ignore_header}MAXERROR AS 10000;")
     if file_format == "parquet":
-        conversion_params = "FORMAT AS PARQUET;"
+        conversion_params = "FORMAT AS PARQUET MANIFEST;"
     # Fill parameters
     query = f"""
         COPY {table_name}
