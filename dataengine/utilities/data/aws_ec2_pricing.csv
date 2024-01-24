@@ -1,0 +1,537 @@
+rateCode,price,Location,Instance Family,vCPU,Instance Type,Memory,Storage,Network Performance,plc:OperatingSystem,plc:InstanceFamily,Operating System,Pre Installed S/W,License Model
+ZRQ563Q5AP77Y2NN.JRTCKXETXF.6YS6EN2CT7,12.5600000000,US East (N. Virginia),GPU instance,96,g5.24xlarge,384 GiB,1 x 3800 GB NVMe SSD,50 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+ZS5NVGRQR9NDPEUQ.JRTCKXETXF.6YS6EN2CT7,4.1440000000,US East (N. Virginia),Memory optimized,32,r5dn.8xlarge,256 GiB,2 x 600 NVMe SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+ZU7GWG22E9W3SPYT.JRTCKXETXF.6YS6EN2CT7,0.4820000000,US East (N. Virginia),Memory optimized,4,r5n.xlarge,32 GiB,EBS only,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+YEYRK7WARZPWGG7C.JRTCKXETXF.6YS6EN2CT7,2.8320000000,US East (N. Virginia),Compute optimized,32,c6i.8xlarge,64 GiB,EBS only,12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+YHNZP3YEPJBAZNDK.JRTCKXETXF.6YS6EN2CT7,6.1696000000,US East (N. Virginia),Compute optimized,64,c6id.16xlarge,128 GiB,2 x 1900 NVMe SSD,25000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+YJ3MYRBZHPF28GF2.JRTCKXETXF.6YS6EN2CT7,0.2663300000,US East (N. Virginia),Memory optimized,2,r6in.large,16 GiB,EBS only,Up to 25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+YMET2NQBNPQ9UCE5.JRTCKXETXF.6YS6EN2CT7,9.2544000000,US East (N. Virginia),General purpose,96,m7i.24xlarge,384 GiB,EBS only,37500 Megabit,Windows,General Purpose,Windows,NA,No License required
+YS38J6V898MDYYBU.JRTCKXETXF.6YS6EN2CT7,16.0716800000,US East (N. Virginia),General purpose,128,m6idn.metal,512 GiB,4 x 1900 NVMe SSD,200000 Megabit,Windows,General Purpose,Windows,NA,No License required
+YSMYYV6Y94GF9ZQ8.JRTCKXETXF.6YS6EN2CT7,0.0186000000,US East (N. Virginia),General purpose,2,t3a.micro,1 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+YT7QP26RP7SDD96H.JRTCKXETXF.6YS6EN2CT7,25.1200000000,US East (N. Virginia),GPU instance,192,g5.48xlarge,768 GiB,2 x 3800 GB NVMe SSD,100 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+YUM5RFA8GKDSJKWV.JRTCKXETXF.6YS6EN2CT7,9.0240000000,US East (N. Virginia),General purpose,96,m5.metal,384 GiB,EBS only,25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+YWWPM8YD7DRVP3JK.JRTCKXETXF.6YS6EN2CT7,2.2991200000,US East (N. Virginia),Memory optimized,16,r6idn.4xlarge,128 GiB,1 x 950 NVMe SSD,Up to 50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+YZRM47UFBU2YUHZE.JRTCKXETXF.6YS6EN2CT7,6.1200000000,US East (N. Virginia),GPU instance,48,g4dn.12xlarge,192 GiB,900 GB NVMe SSD,50 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+YZRZ8W64AYUZRTK7.JRTCKXETXF.6YS6EN2CT7,0.9249200000,US East (N. Virginia),General purpose,8,m6in.2xlarge,32 GiB,EBS only,Up to 40000 Megabit,Windows,General Purpose,Windows,NA,No License required
+Z2HRXPQJGKBW2EM6.JRTCKXETXF.6YS6EN2CT7,1.7944000000,US East (N. Virginia),Memory optimized,16,r7i.4xlarge,128 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+XK2EU2XXUUKXXPRS.JRTCKXETXF.6YS6EN2CT7,0.4108000000,US East (N. Virginia),Compute optimized,4,c6in.xlarge,8 GiB,EBS only,Up to 30000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+Z8R3PH6TSF8JGPUV.JRTCKXETXF.6YS6EN2CT7,9.8592000000,US East (N. Virginia),Compute optimized,96,c6in.24xlarge,192 GiB,EBS only,150000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+Z97U3G8WN7PU5BRW.JRTCKXETXF.6YS6EN2CT7,3.2800000000,US East (N. Virginia),Memory optimized,32,r5a.8xlarge,256 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+Z9SB76RG7AYSDDDQ.JRTCKXETXF.6YS6EN2CT7,0.1108000000,US East (N. Virginia),General purpose,2,t3.large,8 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+ZBYX93H6NMF57UPW.JRTCKXETXF.6YS6EN2CT7,2.9305600000,US East (N. Virginia),General purpose,32,m7i-flex.8xlarge,128 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+ZF4B42K8PJW7G4TW.JRTCKXETXF.6YS6EN2CT7,2.1306400000,US East (N. Virginia),Memory optimized,16,r6in.4xlarge,128 GiB,EBS only,Up to 50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+ZFQ6PGN95FA9TCR8.JRTCKXETXF.6YS6EN2CT7,0.2050000000,US East (N. Virginia),Memory optimized,2,r5a.large,16 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+ZG4JRPCC4VZQWHCQ.JRTCKXETXF.6YS6EN2CT7,0.4500000000,US East (N. Virginia),Memory optimized,4,r4.xlarge,30.5 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+ZGDW4XDTYZ7XZQ2G.JRTCKXETXF.6YS6EN2CT7,0.4158400000,US East (N. Virginia),General purpose,4,m7a.xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+ZKNV3YNZ7ETKWSWB.JRTCKXETXF.6YS6EN2CT7,0.1208000000,US East (N. Virginia),General purpose,2,t2.large,8 GiB,EBS only,Low to Moderate,Windows,General Purpose,Windows,NA,No License required
+ZCWE2KR9UEJCTTXX.JRTCKXETXF.6YS6EN2CT7,1.9456000000,US East (N. Virginia),Memory optimized,16,r6id.4xlarge,128 GiB,1 x 950 NVMe SSD,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+ZDKHAWAESF3AUZAQ.JRTCKXETXF.6YS6EN2CT7,15.2640000000,US East (N. Virginia),Storage optimized,96,i3en.24xlarge,768 GiB,8 x 7500 NVMe SSD,100 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+Y2VGVAY5NP5RWM39.JRTCKXETXF.6YS6EN2CT7,1.5430000000,US East (N. Virginia),General purpose,12,m5zn.3xlarge,48 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+Y3FRM7BRXT57DCWN.JRTCKXETXF.6YS6EN2CT7,11.5680000000,US East (N. Virginia),Memory optimized,96,r5b.24xlarge,768 GiB,EBS only,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+Y4HP6K9JMEMQQUXZ.JRTCKXETXF.6YS6EN2CT7,1.5424000000,US East (N. Virginia),Compute optimized,16,c6id.4xlarge,32 GiB,1 x 950 NVMe SSD,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+Y4Q5Y2CYQ6YG3QVU.JRTCKXETXF.6YS6EN2CT7,0.6740000000,US East (N. Virginia),Compute optimized,8,c6a.2xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+Y6JB2MQ25JXZH44A.JRTCKXETXF.6YS6EN2CT7,6.3260000000,US East (N. Virginia),Storage optimized,48,i4i.12xlarge,384 GiB,3 x 3750 NVMe SSD,28125 Megabit,Windows,Storage Optimized,Windows,NA,No License required
+Y8NK84SZZZ2XMQGB.JRTCKXETXF.6YS6EN2CT7,0.1780000000,US East (N. Virginia),General purpose,2,m5a.large,8 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+Y8YEDKFKQQA3DUNE.JRTCKXETXF.6YS6EN2CT7,4.0705000000,US East (N. Virginia),Memory optimized,16,x2iedn.4xlarge,512 GiB,1 x 475 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+Y9N52D8W4U72JSZF.JRTCKXETXF.6YS6EN2CT7,0.2410000000,US East (N. Virginia),Memory optimized,2,r5n.large,16 GiB,EBS only,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+XM2KB7EDN84EEFDW.JRTCKXETXF.6YS6EN2CT7,8.5632000000,US East (N. Virginia),General purpose,96,m6a.24xlarge,384 GiB,EBS only,37500 Megabit,Windows,General Purpose,Windows,NA,No License required
+XN67XDRMYQXKPDJ9.JRTCKXETXF.6YS6EN2CT7,0.1028000000,US East (N. Virginia),General purpose,2,t3a.large,8 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+XNNVA67NWMKK87UN.JRTCKXETXF.6YS6EN2CT7,4.4480000000,US East (N. Virginia),Memory optimized,32,r7iz.8xlarge,256 GiB,EBS only,12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+XQMBWWKZVA9NRCH9.JRTCKXETXF.6YS6EN2CT7,0.7326400000,US East (N. Virginia),General purpose,8,m7i-flex.2xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+XVU8GV78VTPX5ACQ.JRTCKXETXF.6YS6EN2CT7,16.1760000000,US East (N. Virginia),Compute optimized,192,c6a.metal,384 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+XY2WBA6REGFCKY36.JRTCKXETXF.6YS6EN2CT7,4.5120000000,US East (N. Virginia),General purpose,48,m5.12xlarge,192 GiB,EBS only,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+X9PSA23QV2FBUSQJ.JRTCKXETXF.6YS6EN2CT7,0.9640000000,US East (N. Virginia),Memory optimized,8,r5n.2xlarge,64 GiB,EBS only,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+XAGFXGW3ZXX9QD5E.JRTCKXETXF.6YS6EN2CT7,0.2400000000,US East (N. Virginia),General purpose,4,t3.xlarge,16 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+UJFATA5N65Z8EB3E.JRTCKXETXF.6YS6EN2CT7,6.7520000000,US East (N. Virginia),General purpose,64,m5n.16xlarge,256 GiB,EBS only,75 Gigabit,Windows,General Purpose,Windows,NA,No License required
+UPABSKTCF3HG8WG9.JRTCKXETXF.6YS6EN2CT7,0.4220000000,US East (N. Virginia),General purpose,4,m5n.xlarge,16 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+URRF2Q44X79V5NWJ.JRTCKXETXF.6YS6EN2CT7,239.0080000000,US East (N. Virginia),Memory optimized,448,u-24tb1.112xlarge,24576 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+USZQRDJJF74G7GDZ.JRTCKXETXF.6YS6EN2CT7,8.2880000000,US East (N. Virginia),Memory optimized,64,r5dn.16xlarge,512 GiB,4 x 600 NVMe SSD,75 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+UVF3W5GDNY9PFU44.JRTCKXETXF.6YS6EN2CT7,13.1456000000,US East (N. Virginia),Compute optimized,128,c6in.32xlarge,256 GiB,EBS only,200000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+UWMG9CQ3FC52C4VA.JRTCKXETXF.6YS6EN2CT7,8.5225600000,US East (N. Virginia),Memory optimized,64,r6in.16xlarge,512 GiB,EBS only,100000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+UY23MW6DPAKU4KJ9.JRTCKXETXF.6YS6EN2CT7,0.4332000000,US East (N. Virginia),General purpose,8,t2.2xlarge,32 GiB,EBS only,Moderate,Windows,General Purpose,Windows,NA,No License required
+UY42S2W4AJPYQSQA.JRTCKXETXF.6YS6EN2CT7,0.7800000000,US East (N. Virginia),General purpose,8,m5ad.2xlarge,32 GiB,1 x 300 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+U8P9SG42AAMCXQWY.JRTCKXETXF.6YS6EN2CT7,7.8800000000,US East (N. Virginia),GPU instance,48,g5.12xlarge,192 GiB,1 x 3800 GB NVMe SSD,40 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+UBUJRGMA87YA5MXR.JRTCKXETXF.6YS6EN2CT7,1.4652800000,US East (N. Virginia),General purpose,16,m7i-flex.4xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+UCRH9WYPTSZRPWUK.JRTCKXETXF.6YS6EN2CT7,0.2572000000,US East (N. Virginia),General purpose,2,m5zn.large,8 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+UD562C8RBBXWR8SY.JRTCKXETXF.6YS6EN2CT7,12.2160000000,US East (N. Virginia),Memory optimized,48,x2iezn.metal,1536 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+UDYFDW6Y9G9ZKCUT.JRTCKXETXF.6YS6EN2CT7,7.3993600000,US East (N. Virginia),General purpose,64,m6in.16xlarge,256 GiB,EBS only,100000 Megabit,Windows,General Purpose,Windows,NA,No License required
+SU4KHTFQAZH56GVA.JRTCKXETXF.6YS6EN2CT7,0.3568000000,US East (N. Virginia),General purpose,4,m6a.xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+SVQT2C6THZT89Y4A.JRTCKXETXF.6YS6EN2CT7,7.5520000000,US East (N. Virginia),Memory optimized,64,r5d.16xlarge,512 GiB,4 x 600 NVMe SSD,20 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+TEQHGYMWE4CH889Y.JRTCKXETXF.6YS6EN2CT7,13.3068800000,US East (N. Virginia),General purpose,128,m7a.32xlarge,512 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+TEYASPUJ85Z54KKH.JRTCKXETXF.6YS6EN2CT7,8.4960000000,US East (N. Virginia),Compute optimized,96,c5.24xlarge,192 GiB,EBS only,25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+TFYWW8WQP93673FX.JRTCKXETXF.6YS6EN2CT7,6.9760000000,US East (N. Virginia),Memory optimized,64,r6i.16xlarge,512 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+THUB53GJ4HASZUST.JRTCKXETXF.6YS6EN2CT7,1.5040000000,US East (N. Virginia),General purpose,16,m5.4xlarge,64 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+TPSV6ZTWPRMZ3XXE.JRTCKXETXF.6YS6EN2CT7,0.7100000000,US East (N. Virginia),GPU instance,4,g4dn.xlarge,16 GiB,125 GB NVMe SSD,Up to 25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+T6H2CFRNXUKPA96N.JRTCKXETXF.6YS6EN2CT7,9.6130000000,US East (N. Virginia),Memory optimized,64,x2idn.16xlarge,1024 GiB,1 x 1900 NVMe SSD,50 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+T7FRX7GH6TNPK3RB.JRTCKXETXF.6YS6EN2CT7,4.2180000000,US East (N. Virginia),Storage optimized,32,i4i.8xlarge,256 GiB,2 x 3750 NVMe SSD,18750 Megabit,Windows,Storage Optimized,Windows,NA,No License required
+T7WMWMB82H2YK9UB.JRTCKXETXF.6YS6EN2CT7,18.3929600000,US East (N. Virginia),Memory optimized,128,r6idn.32xlarge,1024 GiB,4 x 1900 NVMe SSD,200000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+TB4MYGC7MSS5DCKM.JRTCKXETXF.6YS6EN2CT7,0.7680000000,US East (N. Virginia),General purpose,8,m4.2xlarge,32 GiB,EBS only,High,Windows,General Purpose,Windows,NA,No License required
+TC2G2PUXC667HMCA.JRTCKXETXF.6YS6EN2CT7,9.8592000000,US East (N. Virginia),Memory optimized,96,r6a.24xlarge,768 GiB,EBS only,37500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+T9UP5RWHHHNKSSPY.JRTCKXETXF.6YS6EN2CT7,13.4816000000,US East (N. Virginia),General purpose,128,m6id.metal,512 GiB,4 x 1900 NVMe SSD,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+T9Y42UH8HWAB5G5F.JRTCKXETXF.6YS6EN2CT7,7.2960000000,US East (N. Virginia),General purpose,64,m5dn.16xlarge,256 GiB,4 x 600 NVMe SSD,75 Gigabit,Windows,General Purpose,Windows,NA,No License required
+TA642HW7KSPC9EY3.JRTCKXETXF.6YS6EN2CT7,0.4460000000,US East (N. Virginia),Memory optimized,4,r5ad.xlarge,32 GiB,1 x 150 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+TAUX8DRTS8VG3VB7.JRTCKXETXF.6YS6EN2CT7,6.1696000000,US East (N. Virginia),General purpose,64,m7i.16xlarge,256 GiB,EBS only,25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+T2AZS2EF66QENEXP.JRTCKXETXF.6YS6EN2CT7,17.0451200000,US East (N. Virginia),Memory optimized,128,r6in.metal,1024 GiB,EBS only,200000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+TDZD7E4JNS9CEYRE.JRTCKXETXF.6YS6EN2CT7,184.4080000000,US East (N. Virginia),Memory optimized,448,u-18tb1.112xlarge,18432 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+TF7ST8JG6E9SZXCE.JRTCKXETXF.6YS6EN2CT7,3.2800000000,US East (N. Virginia),General purpose,32,m5d.8xlarge,128 GiB,2 x 600 NVMe SSD,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+TNK8MST9NEE9X3VF.JRTCKXETXF.6YS6EN2CT7,5.6960000000,US East (N. Virginia),General purpose,64,m5a.16xlarge,256 GiB,EBS only,12 Gigabit,Windows,General Purpose,Windows,NA,No License required
+TQVJG37DQMG8JUQA.JRTCKXETXF.6YS6EN2CT7,3.3267200000,US East (N. Virginia),General purpose,32,m7a.8xlarge,128 GiB,EBS only,12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+TTTR5G4TWPRK4EEU.JRTCKXETXF.6YS6EN2CT7,13.9520000000,US East (N. Virginia),Memory optimized,128,r6i.32xlarge,1024 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+U25TVWAAWGRGVVKF.JRTCKXETXF.6YS6EN2CT7,15.2640000000,US East (N. Virginia),Storage optimized,96,i3en.metal,768 GiB,8 x 7500 NVMe SSD,100 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+U29HXG6E4WRURCBN.JRTCKXETXF.6YS6EN2CT7,17.7920000000,US East (N. Virginia),Memory optimized,128,r7iz.32xlarge,1024 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+U2JTCTAX8XJZ2K8X.JRTCKXETXF.6YS6EN2CT7,4.6800000000,US East (N. Virginia),General purpose,48,m5ad.12xlarge,192 GiB,2 x 900 NVMe SSD,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+U2UC654S2AUCXQU6.JRTCKXETXF.6YS6EN2CT7,12.0320000000,US East (N. Virginia),General purpose,128,m6i.metal,512 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+TTS386B2SXKQXGZP.JRTCKXETXF.6YS6EN2CT7,3.6000000000,US East (N. Virginia),Memory optimized,32,r4.8xlarge,244 GiB,EBS only,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+TV77PCMGHCV3J3FM.JRTCKXETXF.6YS6EN2CT7,10.4640000000,US East (N. Virginia),Memory optimized,96,r5.metal,768 GiB,EBS only,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+UZMSGR37TS876MGW.JRTCKXETXF.6YS6EN2CT7,7.9360000000,US East (N. Virginia),Storage optimized,72,i3.metal,512 GiB,8 x 1900 NVMe SSD,25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+V3FZA9N6BF2WRB37.JRTCKXETXF.6YS6EN2CT7,2.7340000000,US East (N. Virginia),Storage optimized,16,d3.4xlarge,128 GiB,12 x 2000 HDD,Up to 15 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+V3G5CXZSJKNN5W3N.JRTCKXETXF.6YS6EN2CT7,0.1770000000,US East (N. Virginia),Compute optimized,2,c6i.large,4 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+V3RG7AF3MP388W9R.JRTCKXETXF.6YS6EN2CT7,0.2240000000,US East (N. Virginia),General purpose,4,t3a.xlarge,16 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+V4AMCYFCGS7KRGQB.JRTCKXETXF.6YS6EN2CT7,11.7192000000,US East (N. Virginia),Memory optimized,96,r7a.24xlarge,768 GiB,EBS only,37500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+V5K26FGAR6BS5W56.JRTCKXETXF.6YS6EN2CT7,0.1880000000,US East (N. Virginia),General purpose,2,m5.large,8 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+QYFXFTGTF3CQ3XKH.JRTCKXETXF.6YS6EN2CT7,0.0081000000,US East (N. Virginia),General purpose,1,t2.nano,0.5 GiB,EBS only,Low,Windows,General Purpose,Windows,NA,No License required
+R4XHKDDZUJXABU4Z.JRTCKXETXF.6YS6EN2CT7,0.1920000000,US East (N. Virginia),Compute optimized,2,c4.large,3.75 GiB,EBS only,Moderate,Windows,Compute Optimized,Windows,NA,No License required
+QV83RDMFWDU5WFFX.JRTCKXETXF.6YS6EN2CT7,0.3760000000,US East (N. Virginia),General purpose,4,m6i.xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+QXBANRT528N3AX2R.JRTCKXETXF.6YS6EN2CT7,9.3600000000,US East (N. Virginia),General purpose,96,m5ad.24xlarge,384 GiB,4 x 900 NVMe SSD,20 Gigabit,Windows,General Purpose,Windows,NA,No License required
+QZGMU4WMYX5SH7W3.JRTCKXETXF.6YS6EN2CT7,8.5166400000,US East (N. Virginia),Storage optimized,48,d3en.12xlarge,192 GiB,24 x 14000 HDD,75 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+QM6KSPJ8N9NU5AJA.JRTCKXETXF.6YS6EN2CT7,3.0080000000,US East (N. Virginia),General purpose,32,m6i.8xlarge,128 GiB,EBS only,12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+QGW3CA2N3HTG9DSH.JRTCKXETXF.6YS6EN2CT7,1.7440000000,US East (N. Virginia),Memory optimized,16,r6i.4xlarge,128 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+QKZXUWMRPCEW8QXE.JRTCKXETXF.6YS6EN2CT7,9.1964800000,US East (N. Virginia),Memory optimized,64,r6idn.16xlarge,512 GiB,2 x 1900 NVMe SSD,100000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+QMMNVJ7MZ5KXZ7TJ.JRTCKXETXF.6YS6EN2CT7,0.2410000000,US East (N. Virginia),Memory optimized,2,r5b.large,16 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+QT8WTV6HFQFMJTSJ.JRTCKXETXF.6YS6EN2CT7,1.4500000000,US East (N. Virginia),Compute optimized,16,c7i.4xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+QFMHMEBB7RE8B4KU.JRTCKXETXF.6YS6EN2CT7,1.5571200000,US East (N. Virginia),Compute optimized,16,c7a.4xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+QF8Y2976N7P6UXAP.JRTCKXETXF.6YS6EN2CT7,8.4960000000,US East (N. Virginia),Compute optimized,96,c6i.24xlarge,192 GiB,EBS only,37500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+QFG6ZP5V8QKYYTQ9.JRTCKXETXF.6YS6EN2CT7,9.3427200000,US East (N. Virginia),Compute optimized,96,c7a.24xlarge,192 GiB,EBS only,37500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+SNTW3QD5G3R2B85T.JRTCKXETXF.6YS6EN2CT7,5.7088000000,US East (N. Virginia),General purpose,64,m6a.16xlarge,256 GiB,EBS only,25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+SQEC9Z24F6D4FF3R.JRTCKXETXF.6YS6EN2CT7,0.8720000000,US East (N. Virginia),Memory optimized,8,r5.2xlarge,64 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+RWTXKGH83UGSJTUW.JRTCKXETXF.6YS6EN2CT7,0.9340000000,US East (N. Virginia),GPU instance,4,g3s.xlarge,30.5 GiB,EBS only,10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+SBSECEMGUAXVW7GG.JRTCKXETXF.6YS6EN2CT7,1.9280000000,US East (N. Virginia),Memory optimized,16,r5n.4xlarge,128 GiB,EBS only,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+SBUDGEAD4MKGWZRW.JRTCKXETXF.6YS6EN2CT7,0.2873900000,US East (N. Virginia),Memory optimized,2,r6idn.large,16 GiB,1 x 118 NVMe SSD,Up to 25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+SCRAYKXZN7A9VVUJ.JRTCKXETXF.6YS6EN2CT7,6.2284800000,US East (N. Virginia),Compute optimized,64,c7a.16xlarge,128 GiB,EBS only,25000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+SGYUS9N7VCKNAXVB.JRTCKXETXF.6YS6EN2CT7,7.5040000000,US East (N. Virginia),GPU instance,64,g3.16xlarge,488 GiB,EBS only,20 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+SKAZ5KHWRZ9CT95Q.JRTCKXETXF.6YS6EN2CT7,3.0860000000,US East (N. Virginia),General purpose,24,m5zn.6xlarge,96 GiB,EBS only,50 Gigabit,Windows,General Purpose,Windows,NA,No License required
+SMQW8DG3QYDG9FHA.JRTCKXETXF.6YS6EN2CT7,17.4000000000,US East (N. Virginia),Compute optimized,192,c7i.metal-48xl,384 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+SNT4WY4P994WRXTH.JRTCKXETXF.6YS6EN2CT7,1.6432000000,US East (N. Virginia),Memory optimized,16,r6a.4xlarge,128 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+SA3SBP2T8HCQWD6V.JRTCKXETXF.6YS6EN2CT7,3.1860000000,US East (N. Virginia),Compute optimized,36,c5.9xlarge,72 GiB,EBS only,10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+RPHBK9CY8TXWP5U3.JRTCKXETXF.6YS6EN2CT7,1.0044800000,US East (N. Virginia),General purpose,8,m6idn.2xlarge,32 GiB,1 x 474 NVMe SSD,Up to 40000 Megabit,Windows,General Purpose,Windows,NA,No License required
+S2HTBBHEBC2H2XQP.JRTCKXETXF.6YS6EN2CT7,4.2720000000,US East (N. Virginia),Compute optimized,48,c5ad.12xlarge,96 GiB,2 x 900 NVMe SSD,12 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+S3HR5GP6Q7TKAHHX.JRTCKXETXF.6YS6EN2CT7,6.7680000000,US East (N. Virginia),Compute optimized,72,c5d.18xlarge,144 GiB,2 x 900 NVMe SSD,25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+S4QD9M7EM9Y7A6HK.JRTCKXETXF.6YS6EN2CT7,0.2079200000,US East (N. Virginia),General purpose,2,m7a.large,8 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+S78KHHH96AJF23KZ.JRTCKXETXF.6YS6EN2CT7,2.3600000000,US East (N. Virginia),GPU instance,16,g5.4xlarge,64 GiB,1 x 600 GB NVMe SSD,Up to 25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+S7AHY8P5SV29MNFC.JRTCKXETXF.6YS6EN2CT7,4.0440000000,US East (N. Virginia),Compute optimized,48,c6a.12xlarge,96 GiB,EBS only,18750 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+R98SF3K4TP6TTM3V.JRTCKXETXF.6YS6EN2CT7,5.0556000000,US East (N. Virginia),General purpose,48,m6id.12xlarge,192 GiB,2 x 1425 NVMe SSD,18750 Megabit,Windows,General Purpose,Windows,NA,No License required
+RTZ76VK544A8WPTF.JRTCKXETXF.6YS6EN2CT7,5.8596000000,US East (N. Virginia),Memory optimized,48,r7a.12xlarge,384 GiB,EBS only,18750 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+RU8J9XP2SNRPAB3S.JRTCKXETXF.6YS6EN2CT7,3.3760000000,US East (N. Virginia),General purpose,32,m5n.8xlarge,128 GiB,EBS only,25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+RUMJ5QQHYNKUEMCR.JRTCKXETXF.6YS6EN2CT7,18.5088000000,US East (N. Virginia),General purpose,192,m7i.48xlarge,768 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+RUYBG3SJMB2G5YJS.JRTCKXETXF.6YS6EN2CT7,0.1946400000,US East (N. Virginia),Compute optimized,2,c7a.large,4 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+RVRGDGB6G47N4J4F.JRTCKXETXF.6YS6EN2CT7,0.1220800000,US East (N. Virginia),Memory optimized,1,r7a.medium,8 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+RWECWC2SWPAU4QSE.JRTCKXETXF.6YS6EN2CT7,0.8216000000,US East (N. Virginia),Compute optimized,8,c6in.2xlarge,16 GiB,EBS only,Up to 40000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+RJY3HCJGTH6TNPZR.JRTCKXETXF.6YS6EN2CT7,0.4480000000,US East (N. Virginia),General purpose,8,t3a.2xlarge,32 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+RJ2HY46H2GAXCYJA.JRTCKXETXF.6YS6EN2CT7,56.7079100000,US East (N. Virginia),Memory optimized,224,u-6tb1.56xlarge,6144 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+RJWZ3TWTP6R6R5VT.JRTCKXETXF.6YS6EN2CT7,3.5680000000,US East (N. Virginia),Memory optimized,32,r5ad.8xlarge,256 GiB,2 x 600 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+RBTHF99YNSM58N5C.JRTCKXETXF.6YS6EN2CT7,12.0320000000,US East (N. Virginia),General purpose,128,m6i.32xlarge,512 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+XDDQ4WNNBWWXSE8P.JRTCKXETXF.6YS6EN2CT7,16.8704000000,US East (N. Virginia),Storage optimized,128,i4i.32xlarge,1024 GiB,8 x 3750 SSD,75000 Megabit,Windows,Storage Optimized,Windows,NA,No License required
+XFEDQ94YQWNZB5ZB.JRTCKXETXF.6YS6EN2CT7,0.3856000000,US East (N. Virginia),Compute optimized,4,c6id.xlarge,8 GiB,1 x 237 NVMe SSD,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+XFJWBADTXUKBRGTC.JRTCKXETXF.6YS6EN2CT7,3.8400000000,US East (N. Virginia),General purpose,40,m4.10xlarge,160 GiB,EBS only,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+XHD5G9B7UQRUNW6V.JRTCKXETXF.6YS6EN2CT7,7.6320000000,US East (N. Virginia),Storage optimized,48,i3en.12xlarge,384 GiB,4 x 7500 NVMe SSD,50 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+WJ4GUA2WXQ6PJARF.JRTCKXETXF.6YS6EN2CT7,1.9400000000,US East (N. Virginia),GPU instance,16,g4dn.4xlarge,64 GiB,225 GB NVMe SSD,Up to 25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+WG3C7UM9P2WBPC35.JRTCKXETXF.6YS6EN2CT7,23.4384000000,US East (N. Virginia),Memory optimized,192,r7a.metal-48xl,1536 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+WJECH6CEUA7JWCCM.JRTCKXETXF.6YS6EN2CT7,0.4100000000,US East (N. Virginia),General purpose,4,m5d.xlarge,16 GiB,1 x 150 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+WMM97TT2QNFQ3VN3.JRTCKXETXF.6YS6EN2CT7,0.8216000000,US East (N. Virginia),Memory optimized,8,r6a.2xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+WMZMV9VFMDY39S43.JRTCKXETXF.6YS6EN2CT7,17.3440000000,US East (N. Virginia),GPU instance,64,p2.16xlarge,732 GiB,EBS only,20 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+W2TF42TB33D7VDWX.JRTCKXETXF.6YS6EN2CT7,1.4240000000,US East (N. Virginia),Compute optimized,16,c5ad.4xlarge,32 GiB,2 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+W3RVHPACT4S66GCH.JRTCKXETXF.6YS6EN2CT7,0.4883000000,US East (N. Virginia),Memory optimized,4,r7a.xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+W49ZFGVS757SUXQU.JRTCKXETXF.6YS6EN2CT7,0.3625000000,US East (N. Virginia),Compute optimized,4,c7i.xlarge,8 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+WWNXU2QJU9XYEM5Z.JRTCKXETXF.6YS6EN2CT7,0.2266000000,US East (N. Virginia),General purpose,4,t2.xlarge,16 GiB,EBS only,Moderate,Windows,General Purpose,Windows,NA,No License required
+WXVK338BCMPQ5NV3.JRTCKXETXF.6YS6EN2CT7,7.7120000000,US East (N. Virginia),Memory optimized,64,r5b.16xlarge,512 GiB,EBS only,20 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+W6WSTUAQ469EC8S8.JRTCKXETXF.6YS6EN2CT7,1.9280000000,US East (N. Virginia),Memory optimized,16,r5b.4xlarge,128 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+WBAHAMHNJ7UM7KX6.JRTCKXETXF.6YS6EN2CT7,9.9801600000,US East (N. Virginia),General purpose,96,m7a.24xlarge,384 GiB,EBS only,37500 Megabit,Windows,General Purpose,Windows,NA,No License required
+WCTSW22T2W67NES3.JRTCKXETXF.6YS6EN2CT7,16.2820000000,US East (N. Virginia),Memory optimized,64,x2iedn.16xlarge,2048 GiB,1 x 1900 NVMe SSD,50 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+WDAJ6FNK7H5M66SC.JRTCKXETXF.6YS6EN2CT7,0.2110000000,US East (N. Virginia),General purpose,2,m5n.large,8 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+WDJFGF98N8B5EAYC.JRTCKXETXF.6YS6EN2CT7,0.2511200000,US East (N. Virginia),General purpose,2,m6idn.large,8 GiB,1 x 118 NVMe SSD,Up to 25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+WDWU4S8SYFA3M36A.JRTCKXETXF.6YS6EN2CT7,7.2000000000,US East (N. Virginia),Compute optimized,72,c5n.18xlarge,192 GiB,EBS only,100 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+X59W5EUSN9XBS63S.JRTCKXETXF.6YS6EN2CT7,19.7184000000,US East (N. Virginia),Memory optimized,192,r6a.metal,1536 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+X5EDE49DAERZVB7C.JRTCKXETXF.6YS6EN2CT7,0.4864000000,US East (N. Virginia),Memory optimized,4,r6id.xlarge,32 GiB,1 x 237 NVMe SSD,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+X734E9XXZUSRRNGE.JRTCKXETXF.6YS6EN2CT7,1.0287000000,US East (N. Virginia),General purpose,8,m5zn.2xlarge,32 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+WPEZ6H9R829DMVHB.JRTCKXETXF.6YS6EN2CT7,0.3370000000,US East (N. Virginia),Compute optimized,4,c6a.xlarge,8 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+WTJK7SRJK6V3HCWX.JRTCKXETXF.6YS6EN2CT7,2.0360000000,US East (N. Virginia),Memory optimized,8,x2iezn.2xlarge,256 GiB,EBS only,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+WPSREWKHF5TE9CSM.JRTCKXETXF.6YS6EN2CT7,5.3832000000,US East (N. Virginia),Memory optimized,48,r7i.12xlarge,384 GiB,EBS only,18750 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+X7XEUAWAZ85SCC88.JRTCKXETXF.6YS6EN2CT7,2.0352500000,US East (N. Virginia),Memory optimized,8,x2iedn.2xlarge,256 GiB,1 x 237 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+VRV44E7ENJDRDMTM.JRTCKXETXF.6YS6EN2CT7,6.5728000000,US East (N. Virginia),Compute optimized,64,c6in.16xlarge,128 GiB,EBS only,100000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+VT6ABS6UBK3UY5CH.JRTCKXETXF.6YS6EN2CT7,5.0640000000,US East (N. Virginia),General purpose,48,m5n.12xlarge,192 GiB,EBS only,50 Gigabit,Windows,General Purpose,Windows,NA,No License required
+VUXPQP2SB8WD3PRT.JRTCKXETXF.6YS6EN2CT7,3.6480000000,US East (N. Virginia),GPU instance,32,g4dn.8xlarge,128 GiB,900 GB NVMe SSD,50 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+VV5A7BNXRSZQJ6MG.JRTCKXETXF.6YS6EN2CT7,0.2250000000,US East (N. Virginia),Memory optimized,2,r4.large,15.25 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+VV77TQ9GAGS9FF2G.JRTCKXETXF.6YS6EN2CT7,1.0540000000,US East (N. Virginia),Storage optimized,8,i4i.2xlarge,64 GiB,1 x 1875 NVMe SSD,Up to 12 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+VV984XACWXHCF9FC.JRTCKXETXF.6YS6EN2CT7,5.4720000000,US East (N. Virginia),General purpose,48,m5dn.12xlarge,192 GiB,2 x 900 GB NVMe SSD,50 Gigabit,Windows,General Purpose,Windows,NA,No License required
+VVZ6SR9Y2BPJNZRV.JRTCKXETXF.6YS6EN2CT7,0.5326600000,US East (N. Virginia),Memory optimized,4,r6in.xlarge,32 GiB,EBS only,Up to 30000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+VXAD8Z48VTTRSQPV.JRTCKXETXF.6YS6EN2CT7,32.5640000000,US East (N. Virginia),Memory optimized,128,x2iedn.32xlarge,4096 GiB,2 x 1900 NVMe SSD,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+VYJCZT3KR7UWCQ8T.JRTCKXETXF.6YS6EN2CT7,4.0560000000,US East (N. Virginia),Compute optimized,48,c5a.12xlarge,96 GiB,EBS only,12 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+V7ZPECCN7AX2ME3K.JRTCKXETXF.6YS6EN2CT7,0.0320000000,US East (N. Virginia),General purpose,1,t2.small,2 GiB,EBS only,Low to Moderate,Windows,General Purpose,Windows,NA,No License required
+VDYDT4D7WRM5CVFE.JRTCKXETXF.6YS6EN2CT7,11.0990400000,US East (N. Virginia),General purpose,96,m6in.24xlarge,384 GiB,EBS only,150000 Megabit,Windows,General Purpose,Windows,NA,No License required
+VENVCH793AWB9M32.JRTCKXETXF.6YS6EN2CT7,0.3856000000,US East (N. Virginia),General purpose,4,m7i.xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+VHKWYT3HHX8A9D9G.JRTCKXETXF.6YS6EN2CT7,9.0240000000,US East (N. Virginia),Compute optimized,96,c5d.24xlarge,192 GiB,4 x 900 NVMe SSD,25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+VKZY87EJ294KXKWY.JRTCKXETXF.6YS6EN2CT7,8.6720000000,US East (N. Virginia),GPU instance,32,p2.8xlarge,488 GiB,EBS only,10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+M8N4UQ4CWC3KJMZT.JRTCKXETXF.6YS6EN2CT7,1.6880000000,US East (N. Virginia),General purpose,16,m5n.4xlarge,64 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+M9MCQWG5EKKS5PWR.JRTCKXETXF.6YS6EN2CT7,0.1880000000,US East (N. Virginia),General purpose,2,m6i.large,8 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+MCDHJ5AKRPRP4SC4.JRTCKXETXF.6YS6EN2CT7,129.8080000000,US East (N. Virginia),Memory optimized,448,u-12tb1.112xlarge,12288 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+MG9HBTFUQCYTNHRJ.JRTCKXETXF.6YS6EN2CT7,0.6760000000,US East (N. Virginia),Compute optimized,8,c5a.2xlarge,16 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+MHH8NXD5X5268XCH.JRTCKXETXF.6YS6EN2CT7,3.8560000000,US East (N. Virginia),Memory optimized,32,r5b.8xlarge,256 GiB,EBS only,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+K42JSQDPG8VKG75G.JRTCKXETXF.6YS6EN2CT7,0.2000000000,US East (N. Virginia),Compute optimized,2,c5n.large,5.25 GiB,EBS only,Up to 25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+KTZYT2QK3KRKX3XT.JRTCKXETXF.6YS6EN2CT7,13.7120000000,US East (N. Virginia),GPU instance,32,p3.8xlarge,244 GiB,EBS only,10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+KWYD26U22QERWJV3.JRTCKXETXF.6YS6EN2CT7,21.5328000000,US East (N. Virginia),Memory optimized,192,r7i.metal-48xl,1536 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+JUC92TP3WAVK547C.JRTCKXETXF.6YS6EN2CT7,0.2312300000,US East (N. Virginia),General purpose,2,m6in.large,8 GiB,EBS only,Up to 25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+GVKD6QU2SXZ2FGCQ.JRTCKXETXF.6YS6EN2CT7,0.9728000000,US East (N. Virginia),Memory optimized,8,r6id.2xlarge,64 GiB,1 x 474 NVMe SSD,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+K9GNYJBAEBJGBE3S.JRTCKXETXF.6YS6EN2CT7,0.2480000000,US East (N. Virginia),Storage optimized,2,i3.large,15.25 GiB,1 x 475 NVMe SSD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+KAGNFDGWDJJUWHQZ.JRTCKXETXF.6YS6EN2CT7,11.5680000000,US East (N. Virginia),Memory optimized,96,r5n.metal,768 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+K5YBPA2PX7XQXAS4.JRTCKXETXF.6YS6EN2CT7,0.7520000000,US East (N. Virginia),General purpose,8,m5.2xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+K78NU28HS3SAYHQE.JRTCKXETXF.6YS6EN2CT7,0.0392000000,US East (N. Virginia),General purpose,2,t3.small,2 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+K7C8UJYVAC9EBGVN.JRTCKXETXF.6YS6EN2CT7,10.9440000000,US East (N. Virginia),General purpose,96,m5dn.24xlarge,384 GiB,4 x 900 NVMe SSD,100 Gigabit,Windows,General Purpose,Windows,NA,No License required
+KGEU82ZERJXZ92S6.JRTCKXETXF.6YS6EN2CT7,4.5982400000,US East (N. Virginia),Memory optimized,32,r6idn.8xlarge,256 GiB,1 x 1900 NVMe SSD,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+KKRP4JBQEEJ8KPHB.JRTCKXETXF.6YS6EN2CT7,0.1690000000,US East (N. Virginia),Compute optimized,2,c5a.large,4 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+MXF7Y2HWP6VMMHXZ.JRTCKXETXF.6YS6EN2CT7,10.7664000000,US East (N. Virginia),Memory optimized,96,r7i.metal-24xl,768 GiB,EBS only,37500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+MZHTWPA4TARNNTEA.JRTCKXETXF.6YS6EN2CT7,0.1950000000,US East (N. Virginia),General purpose,2,m5ad.large,8 GiB,1 x 75 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+MY4942UT22W97JPF.JRTCKXETXF.6YS6EN2CT7,0.3900000000,US East (N. Virginia),General purpose,4,m5ad.xlarge,16 GiB,1 x 150 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+KPXGFSF75NBJAUB5.JRTCKXETXF.6YS6EN2CT7,6.1721000000,US East (N. Virginia),General purpose,48,m5zn.12xlarge,192 GiB,EBS only,100 Gigabit,Windows,General Purpose,Windows,NA,No License required
+HD7DSDMNNNQAM7PK.JRTCKXETXF.6YS6EN2CT7,7.2000000000,US East (N. Virginia),Memory optimized,64,r4.16xlarge,488 GiB,EBS only,20 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+H3U84ZSUPJDGHTGW.JRTCKXETXF.6YS6EN2CT7,1.1120000000,US East (N. Virginia),Memory optimized,8,z1d.2xlarge,64 GiB,1 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+HTAKE3B6TWWTHR9G.JRTCKXETXF.6YS6EN2CT7,9.2544000000,US East (N. Virginia),General purpose,96,m7i.metal-24xl,384 GiB,EBS only,37500 Megabit,Windows,General Purpose,Windows,NA,No License required
+HVDDDNMJ79QDDNQM.JRTCKXETXF.6YS6EN2CT7,14.7987200000,US East (N. Virginia),General purpose,128,m6in.32xlarge,512 GiB,EBS only,200000 Megabit,Windows,General Purpose,Windows,NA,No License required
+HTUYTVYQMEGEM74Y.JRTCKXETXF.6YS6EN2CT7,4.6272000000,US East (N. Virginia),General purpose,48,m7i.12xlarge,192 GiB,EBS only,18750 Megabit,Windows,General Purpose,Windows,NA,No License required
+HU3SQXZKN9QPS9WT.JRTCKXETXF.6YS6EN2CT7,4.5120000000,US East (N. Virginia),General purpose,48,m6i.12xlarge,192 GiB,EBS only,18750 Megabit,Windows,General Purpose,Windows,NA,No License required
+HTJN4BQSW3S5HX29.JRTCKXETXF.6YS6EN2CT7,0.7136000000,US East (N. Virginia),General purpose,8,m6a.2xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+H76TM67PM8TBH9GM.JRTCKXETXF.6YS6EN2CT7,1.5424000000,US East (N. Virginia),General purpose,16,m7i.4xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+MKCEABBM6R2CXP4N.JRTCKXETXF.6YS6EN2CT7,0.7120000000,US East (N. Virginia),General purpose,8,m5a.2xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+N34BSS89FBWZRDZZ.JRTCKXETXF.6YS6EN2CT7,1.8240000000,US East (N. Virginia),General purpose,16,m5dn.4xlarge,64 GiB,2 x 300 NVMe SSD,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+JVQ6K6XTRBSBDXME.JRTCKXETXF.6YS6EN2CT7,1.3480000000,US East (N. Virginia),Compute optimized,16,c6a.4xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+JS23S9UZYMC2DS3U.JRTCKXETXF.6YS6EN2CT7,16.0716800000,US East (N. Virginia),General purpose,128,m6idn.32xlarge,512 GiB,4 x 1900 NVMe SSD,200000 Megabit,Windows,General Purpose,Windows,NA,No License required
+JSMVRJJZDDDCWN26.JRTCKXETXF.6YS6EN2CT7,11.3280000000,US East (N. Virginia),Memory optimized,96,r5d.24xlarge,768 GiB,4 x 900 NVMe SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+GYUU6H6TVHCGKSA7.JRTCKXETXF.6YS6EN2CT7,4.9200000000,US East (N. Virginia),Memory optimized,48,r5a.12xlarge,384 GiB,EBS only,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+GWAHNNQBKKYDZ2N6.JRTCKXETXF.6YS6EN2CT7,2.0089600000,US East (N. Virginia),General purpose,16,m6idn.4xlarge,64 GiB,1 x 950 NVMe SSD,Up to 50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+K7SXYAUYQAAPAGGZ.JRTCKXETXF.6YS6EN2CT7,6.6534400000,US East (N. Virginia),General purpose,64,m7a.16xlarge,256 GiB,EBS only,25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+K7ZJYAHDKB55BN5V.JRTCKXETXF.6YS6EN2CT7,0.1039600000,US East (N. Virginia),General purpose,1,m7a.medium,4 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+GZWYTYPS7J7N4Z82.JRTCKXETXF.6YS6EN2CT7,0.7520000000,US East (N. Virginia),General purpose,8,m6i.2xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+KA8723T99VEBBAPU.JRTCKXETXF.6YS6EN2CT7,0.1784000000,US East (N. Virginia),General purpose,2,m6a.large,8 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+KB8CP4XD7SBD3H3F.JRTCKXETXF.6YS6EN2CT7,12.4320000000,US East (N. Virginia),Memory optimized,96,r5dn.24xlarge,768 GiB,4 x 900 NVMe SSD,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+KBNWDNPNYX37C8BM.JRTCKXETXF.6YS6EN2CT7,0.3540000000,US East (N. Virginia),Compute optimized,4,c5.xlarge,8 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+HM5WK7Z959Z46JAS.JRTCKXETXF.6YS6EN2CT7,8.1410000000,US East (N. Virginia),Memory optimized,32,x2iedn.8xlarge,1024 GiB,1 x 950 NVMe SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+KC3PFUW2U3T5RRSR.JRTCKXETXF.6YS6EN2CT7,16.2880000000,US East (N. Virginia),Memory optimized,64,x1e.16xlarge,1952 GiB,1 x 1920 SSD,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+KDH339PT4BZYF4KZ.JRTCKXETXF.6YS6EN2CT7,3.7760000000,US East (N. Virginia),Memory optimized,32,r5d.8xlarge,256 GiB,2 x 600 NVMe SSD,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+KGHZGCA9JT32U5QD.JRTCKXETXF.6YS6EN2CT7,0.5625300000,US East (N. Virginia),GPU instance,4,g4ad.xlarge,16 GiB,150 GB NVMe SSD,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+KMK9JNAHK29NK2MA.JRTCKXETXF.6YS6EN2CT7,12.4569600000,US East (N. Virginia),Compute optimized,128,c7a.32xlarge,256 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+H3DVRW566VQRJPZG.JRTCKXETXF.6YS6EN2CT7,19.9603200000,US East (N. Virginia),General purpose,192,m7a.48xlarge,768 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+H7WA8V3P8PGJM4SW.JRTCKXETXF.6YS6EN2CT7,0.1812500000,US East (N. Virginia),Compute optimized,2,c7i.large,4 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+KEQRXP7YBAMX94V6.JRTCKXETXF.6YS6EN2CT7,1.4240000000,US East (N. Virginia),General purpose,16,m5a.4xlarge,64 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+J8JGEGKX83C3EKXS.JRTCKXETXF.6YS6EN2CT7,3.2864000000,US East (N. Virginia),Memory optimized,32,r6a.8xlarge,256 GiB,EBS only,12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+J38W7UQ6BGXT48ZF.JRTCKXETXF.6YS6EN2CT7,7.8128000000,US East (N. Virginia),Memory optimized,64,r7a.16xlarge,512 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+J4E3EWHYRYS9MM6E.JRTCKXETXF.6YS6EN2CT7,0.2230000000,US East (N. Virginia),Memory optimized,2,r5ad.large,16 GiB,1 x 75 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+HYYCKVDJR94M4PEZ.JRTCKXETXF.6YS6EN2CT7,4.0720000000,US East (N. Virginia),Memory optimized,16,x2iezn.4xlarge,512 GiB,EBS only,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+KPNU5B9H29NYM628.JRTCKXETXF.6YS6EN2CT7,5.7840000000,US East (N. Virginia),Memory optimized,48,r5b.12xlarge,384 GiB,EBS only,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+M6S5UAGSBBTECRZX.JRTCKXETXF.6YS6EN2CT7,6.0160000000,US East (N. Virginia),General purpose,64,m6i.16xlarge,256 GiB,EBS only,25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+MCT4SMPMV42VW5MR.JRTCKXETXF.6YS6EN2CT7,0.6830000000,US East (N. Virginia),Storage optimized,4,d3.xlarge,32 GiB,3 x 2000 HDD,Up to 15 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+HPFHGR63YTDV5KN2.JRTCKXETXF.6YS6EN2CT7,0.3560000000,US East (N. Virginia),General purpose,4,m5a.xlarge,16 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+HPNN5F7A74REZQ7A.JRTCKXETXF.6YS6EN2CT7,4.3500000000,US East (N. Virginia),Compute optimized,48,c7i.12xlarge,96 GiB,EBS only,18750 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+MF2WKKFVD8HQRCEF.JRTCKXETXF.6YS6EN2CT7,8.1120000000,US East (N. Virginia),Compute optimized,96,c5a.24xlarge,192 GiB,EBS only,20 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+MRK8P9PGZKDPVUW7.JRTCKXETXF.6YS6EN2CT7,1.8880000000,US East (N. Virginia),Memory optimized,16,r5d.4xlarge,128 GiB,2 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+HXGQ45BFM9J2FJ3F.JRTCKXETXF.6YS6EN2CT7,0.3760000000,US East (N. Virginia),General purpose,4,m5.xlarge,16 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+N2WYW2MVGBAJY3DY.JRTCKXETXF.6YS6EN2CT7,0.1831600000,US East (N. Virginia),General purpose,2,m7i-flex.large,8 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+HGC8Q33P3HRZGTBE.JRTCKXETXF.6YS6EN2CT7,5.2320000000,US East (N. Virginia),Memory optimized,48,r6i.12xlarge,384 GiB,EBS only,18750 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+HHCGFESKR82PU6AE.JRTCKXETXF.6YS6EN2CT7,0.4213000000,US East (N. Virginia),General purpose,4,m6id.xlarge,16 GiB,1 x 237 NVMe SSD,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+HHP87B66HPGQ843V.JRTCKXETXF.6YS6EN2CT7,1.0653200000,US East (N. Virginia),Memory optimized,8,r6in.2xlarge,64 GiB,EBS only,Up to 40000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+JFTMER8GNFD9XNBT.JRTCKXETXF.6YS6EN2CT7,4.2480000000,US East (N. Virginia),Compute optimized,48,c5.12xlarge,96 GiB,EBS only,12 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+JK4FZRRE427BB8MT.JRTCKXETXF.6YS6EN2CT7,11.3280000000,US East (N. Virginia),Compute optimized,128,c6i.metal,256 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+JC2S62Z6E2ZSYNSX.JRTCKXETXF.6YS6EN2CT7,18.3929600000,US East (N. Virginia),Memory optimized,128,r6idn.metal,1024 GiB,4 x 1900 NVMe SSD,200000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+JC7JUCHSPEBE7KX2.JRTCKXETXF.6YS6EN2CT7,0.7520000000,US East (N. Virginia),Compute optimized,8,c5d.2xlarge,16 GiB,1 x 200 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+JE9UYDB7U3AR4D4Z.JRTCKXETXF.6YS6EN2CT7,6.1080000000,US East (N. Virginia),Memory optimized,24,x2iezn.6xlarge,768 GiB,EBS only,50 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+JESSB9HP8MGMDJ4Q.JRTCKXETXF.6YS6EN2CT7,0.4800000000,US East (N. Virginia),General purpose,8,t3.2xlarge,32 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+JMDUCZDWUM22HK9W.JRTCKXETXF.6YS6EN2CT7,3.5888000000,US East (N. Virginia),Memory optimized,32,r7i.8xlarge,256 GiB,EBS only,12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+JN92GMNZ5PE977V3.JRTCKXETXF.6YS6EN2CT7,9.2544000000,US East (N. Virginia),Compute optimized,96,c6id.24xlarge,192 GiB,4 x 1425 NVMe SSD,37500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+JNZUZPSEDNKCRCNB.JRTCKXETXF.6YS6EN2CT7,1.5040000000,US East (N. Virginia),General purpose,16,m6i.4xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+ZVHDPZG9XCYZDT56.JRTCKXETXF.6YS6EN2CT7,8.8960000000,US East (N. Virginia),Memory optimized,64,r7iz.metal-16xl,512 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+ZZH4WYEZZ5C9BHZK.JRTCKXETXF.6YS6EN2CT7,35.6280000000,US East (N. Virginia),GPU instance,96,p3dn.24xlarge,768 GiB,2 x 900 NVMe SSD,100 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+X9AP3GFT4CXKBHEU.JRTCKXETXF.6YS6EN2CT7,9.0240000000,US East (N. Virginia),Compute optimized,96,c5d.metal,192 GiB,4 x 900 NVMe SSD,25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+YBY6RMYU5HE75YDM.JRTCKXETXF.6YS6EN2CT7,0.8316800000,US East (N. Virginia),General purpose,8,m7a.2xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+YCB5ZDAPFSHHX97B.JRTCKXETXF.6YS6EN2CT7,9.6130000000,US East (N. Virginia),Memory optimized,64,x1.16xlarge,976 GiB,1 x 1920 SSD,High,Windows,Memory Optimized,Windows,NA,No License required
+83T7HZB6ZJETXEA2.JRTCKXETXF.6YS6EN2CT7,0.4720000000,US East (N. Virginia),Memory optimized,4,r5d.xlarge,32 GiB,1 x 150 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+8592PWB6WJSQ5BF3.JRTCKXETXF.6YS6EN2CT7,5.3520000000,US East (N. Virginia),Memory optimized,48,r5ad.12xlarge,384 GiB,2 x 900 NVMe SSD,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+83RDZUNMB488FSTG.JRTCKXETXF.6YS6EN2CT7,1.5800000000,US East (N. Virginia),GPU instance,8,g5.2xlarge,32 GiB,1 x 450 GB NVMe SSD,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+8AF8KMMQUHXNXVDE.JRTCKXETXF.6YS6EN2CT7,1.9080000000,US East (N. Virginia),Storage optimized,12,i3en.3xlarge,96 GiB,1 x 7500 NVMe SSD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+7YWBQJ66HRNUC74N.JRTCKXETXF.6YS6EN2CT7,19.2260000000,US East (N. Virginia),Memory optimized,128,x2idn.metal,2048 GiB,2 x 1900 NVMe SSD,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+726AFQB5DBJJGJ4T.JRTCKXETXF.6YS6EN2CT7,2.7040000000,US East (N. Virginia),Compute optimized,32,c5a.8xlarge,64 GiB,EBS only,10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+7S5JMBPJUMESJQMS.JRTCKXETXF.6YS6EN2CT7,0.7712000000,US East (N. Virginia),General purpose,8,m7i.2xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+7SBK7HTPQ6CTP74J.JRTCKXETXF.6YS6EN2CT7,4.9900800000,US East (N. Virginia),General purpose,48,m7a.12xlarge,192 GiB,EBS only,18750 Megabit,Windows,General Purpose,Windows,NA,No License required
+7Q8SXFV7BACMK4YX.JRTCKXETXF.6YS6EN2CT7,1.1200000000,US East (N. Virginia),GPU instance,8,g4dn.2xlarge,32 GiB,225 GB NVMe SSD,Up to 25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+7N6HH9H4ZMFG45XN.JRTCKXETXF.6YS6EN2CT7,0.2243000000,US East (N. Virginia),Memory optimized,2,r7i.large,16 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+8P6MW4W3JCH9BP47.JRTCKXETXF.6YS6EN2CT7,10.1280000000,US East (N. Virginia),General purpose,96,m5n.metal,384 GiB,EBS only,100 Gigabit,Windows,General Purpose,Windows,NA,No License required
+8PWP644R45F4VKQ9.JRTCKXETXF.6YS6EN2CT7,19.2260000000,US East (N. Virginia),Memory optimized,128,x1.32xlarge,1952 GiB,2 x 1920 SSD,High,Windows,Memory Optimized,Windows,NA,No License required
+8PG2CF3NXF6W5JXN.JRTCKXETXF.6YS6EN2CT7,7.0400000000,US East (N. Virginia),GPU instance,64,g5.16xlarge,256 GiB,1 x 1900 GB NVMe SSD,25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+7T6QNVYWVFDSQ23H.JRTCKXETXF.6YS6EN2CT7,0.2180000000,US East (N. Virginia),Memory optimized,2,r6i.large,16 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+7VJXKNKUWTYUUJDQ.JRTCKXETXF.6YS6EN2CT7,1.9840000000,US East (N. Virginia),Storage optimized,16,i3.4xlarge,122 GiB,2 x 1900 NVMe SSD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+7W9T879WACE8KBYD.JRTCKXETXF.6YS6EN2CT7,1.6000000000,US East (N. Virginia),Compute optimized,16,c5n.4xlarge,42 GiB,EBS only,Up to 25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+7HNNZT8ZV9U28MS4.JRTCKXETXF.6YS6EN2CT7,8.5440000000,US East (N. Virginia),Compute optimized,96,c5ad.24xlarge,192 GiB,2 x 1900 NVMe SSD,20 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+8GPKB3C2DQ9DG4FY.JRTCKXETXF.6YS6EN2CT7,4.2580000000,US East (N. Virginia),Storage optimized,24,d3en.6xlarge,96 GiB,12 x 14000 HDD,40 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+8G6FU4PC5BC4KEVM.JRTCKXETXF.6YS6EN2CT7,9.8400000000,US East (N. Virginia),General purpose,96,m5d.24xlarge,384 GiB,4 x 900 NVMe SSD,25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+8BB6MWXSG2WXTB48.JRTCKXETXF.6YS6EN2CT7,3.4880000000,US East (N. Virginia),Memory optimized,32,r5.8xlarge,256 GiB,EBS only,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+8D54UVMHV36Y39MQ.JRTCKXETXF.6YS6EN2CT7,10.7664000000,US East (N. Virginia),Memory optimized,96,r7i.24xlarge,768 GiB,EBS only,37500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+8HZFEBG6K3WEFTX4.JRTCKXETXF.6YS6EN2CT7,9.0240000000,US East (N. Virginia),General purpose,96,m5.24xlarge,384 GiB,EBS only,25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+8G89P8TC43XTJH8X.JRTCKXETXF.6YS6EN2CT7,6.6880000000,US East (N. Virginia),Storage optimized,64,h1.16xlarge,256 GiB,8 x 2000 HDD,25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+8JZV6YQ8FJQ2YBPK.JRTCKXETXF.6YS6EN2CT7,3.3440000000,US East (N. Virginia),Storage optimized,32,h1.8xlarge,128 GiB,4 x 2000 HDD,10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+86FEVXHAJVJ75D5R.JRTCKXETXF.6YS6EN2CT7,0.7660000000,US East (N. Virginia),Compute optimized,8,c4.2xlarge,15 GiB,EBS only,High,Windows,Compute Optimized,Windows,NA,No License required
+872FSN6GPQ3AMF88.JRTCKXETXF.6YS6EN2CT7,23.4384000000,US East (N. Virginia),Memory optimized,192,r7a.48xlarge,1536 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+8744TF3WB3SSENYH.JRTCKXETXF.6YS6EN2CT7,3.0910000000,US East (N. Virginia),Compute optimized,36,c4.8xlarge,60 GiB,EBS only,10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+88PWJUWEJBNKHVEY.JRTCKXETXF.6YS6EN2CT7,0.8200000000,US East (N. Virginia),Memory optimized,8,r5a.2xlarge,64 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+85G3SHYCZVQPGBET.JRTCKXETXF.6YS6EN2CT7,1.4190000000,US East (N. Virginia),Storage optimized,8,d3en.2xlarge,32 GiB,4 x 14000 HDD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+6ZKFPUYM3GZSCSN9.JRTCKXETXF.6YS6EN2CT7,3.0848000000,US East (N. Virginia),Compute optimized,32,c6id.8xlarge,64 GiB,1 x 1900 NVMe SSD,12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+8XEVRE7NG2QAMZ9E.JRTCKXETXF.6YS6EN2CT7,0.4360000000,US East (N. Virginia),Memory optimized,4,r6i.xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+8W88BH2GK69QERTB.JRTCKXETXF.6YS6EN2CT7,0.4486000000,US East (N. Virginia),Memory optimized,4,r7i.xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+6VEFVCPXHYNYSW3J.JRTCKXETXF.6YS6EN2CT7,3.9064000000,US East (N. Virginia),Memory optimized,32,r7a.8xlarge,256 GiB,EBS only,12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+6WFWZNCJ8BQCTR3M.JRTCKXETXF.6YS6EN2CT7,15.5648000000,US East (N. Virginia),Memory optimized,128,r6id.metal,1024 GiB,4 x 1900 NVMe SSD,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+73HEXDG6HBFP5Z2P.JRTCKXETXF.6YS6EN2CT7,1.6432000000,US East (N. Virginia),Compute optimized,16,c6in.4xlarge,32 GiB,EBS only,Up to 50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+7APFVGHQXR9QGJ23.JRTCKXETXF.6YS6EN2CT7,27.4240000000,US East (N. Virginia),GPU instance,64,p3.16xlarge,488 GiB,EBS only,25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+7BAT9SF2T25AZA6X.JRTCKXETXF.6YS6EN2CT7,0.7712000000,US East (N. Virginia),Compute optimized,8,c6id.2xlarge,16 GiB,1 x 474 NVMe SSD,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+7CSJ5937A26M3NA4.JRTCKXETXF.6YS6EN2CT7,3.8560000000,US East (N. Virginia),Memory optimized,32,r5n.8xlarge,256 GiB,EBS only,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+7BCAWFWHT5P4B69R.JRTCKXETXF.6YS6EN2CT7,5.8000000000,US East (N. Virginia),Compute optimized,64,c7i.16xlarge,128 GiB,EBS only,25000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+7FRMK4DAY2RVKRQR.JRTCKXETXF.6YS6EN2CT7,13.9520000000,US East (N. Virginia),Memory optimized,128,r6i.metal,1024 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+6SNHPAN3YKSWBAJB.JRTCKXETXF.6YS6EN2CT7,0.9000000000,US East (N. Virginia),Memory optimized,8,r4.2xlarge,61 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+92JU3MDX3GZHG376.JRTCKXETXF.6YS6EN2CT7,3.6996800000,US East (N. Virginia),General purpose,32,m6in.8xlarge,128 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+ACRB9VDKRQMFN8TG.JRTCKXETXF.6YS6EN2CT7,7.7120000000,US East (N. Virginia),Memory optimized,64,r5n.16xlarge,512 GiB,EBS only,75 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+A7GZGAGGFJYB3JUJ.JRTCKXETXF.6YS6EN2CT7,0.2280000000,US East (N. Virginia),General purpose,2,m5dn.large,8 GiB,1 x 75 NVMe SSD,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+9RR5DC4CVHQRN85T.JRTCKXETXF.6YS6EN2CT7,2.8480000000,US East (N. Virginia),Compute optimized,32,c5ad.8xlarge,64 GiB,2 x 600 NVMe SSD,10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+9S9UUYNJYVCYH6EB.JRTCKXETXF.6YS6EN2CT7,5.6777600000,US East (N. Virginia),Storage optimized,32,d3en.8xlarge,128 GiB,16 x 14000 HDD,50 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+9SG2X6C8C8E24C3P.JRTCKXETXF.6YS6EN2CT7,12.6528000000,US East (N. Virginia),Storage optimized,96,i4i.24xlarge,768 GiB,6 x 3750 NVMe SSD,56250 Megabit,Windows,Storage Optimized,Windows,NA,No License required
+9THSSBP4CWE3RMMJ.JRTCKXETXF.6YS6EN2CT7,4.9200000000,US East (N. Virginia),General purpose,48,m5d.12xlarge,192 GiB,2 x 900 NVMe SSD,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+A8NG2GF96A6WJPJW.JRTCKXETXF.6YS6EN2CT7,0.4960000000,US East (N. Virginia),Storage optimized,4,i3.xlarge,30.5 GiB,1 x 950 NVMe SSD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+A8GAU4FG8Y4YCC2D.JRTCKXETXF.6YS6EN2CT7,3.1142400000,US East (N. Virginia),Compute optimized,32,c7a.8xlarge,64 GiB,EBS only,12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+AA8D2P5CNTNTQAY7.JRTCKXETXF.6YS6EN2CT7,10.7840000000,US East (N. Virginia),Compute optimized,128,c6a.32xlarge,256 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+B5NFXVNWBAADGZP4.JRTCKXETXF.6YS6EN2CT7,1.6852000000,US East (N. Virginia),General purpose,16,m6id.4xlarge,64 GiB,1 x 950 NVMe SSD,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+B9P28G22DSWEP97U.JRTCKXETXF.6YS6EN2CT7,7.2000000000,US East (N. Virginia),Compute optimized,72,c5n.metal,192 GiB,EBS only,100 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+BCC7CMHZ4XUMKKJ2.JRTCKXETXF.6YS6EN2CT7,11.3280000000,US East (N. Virginia),Compute optimized,128,c6i.32xlarge,256 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+AZF6AZHW2UDB7RN5.JRTCKXETXF.6YS6EN2CT7,4.2612800000,US East (N. Virginia),Memory optimized,32,r6in.8xlarge,256 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+AJYJZ3X3S2AJ2D6D.JRTCKXETXF.6YS6EN2CT7,3.4280000000,US East (N. Virginia),GPU instance,8,p3.2xlarge,61 GiB,EBS only,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+B6TXW3MNW7GRNCFS.JRTCKXETXF.6YS6EN2CT7,5.7840000000,US East (N. Virginia),Memory optimized,48,r5n.12xlarge,384 GiB,EBS only,50 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+BFABHQKWNZPHXYKS.JRTCKXETXF.6YS6EN2CT7,18.5088000000,US East (N. Virginia),General purpose,192,m7i.metal-48xl,768 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+9BFFUY3GAZR9XGG8.JRTCKXETXF.6YS6EN2CT7,19.2260000000,US East (N. Virginia),Memory optimized,128,x2idn.32xlarge,2048 GiB,2 x 1900 NVMe SSD,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+9DUM3QTYRC5MK7UR.JRTCKXETXF.6YS6EN2CT7,13.7947200000,US East (N. Virginia),Memory optimized,96,r6idn.24xlarge,768 GiB,4 x 1425 NVMe SSD,150000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+99FMVDAKQZYJ9HKN.JRTCKXETXF.6YS6EN2CT7,2.8390000000,US East (N. Virginia),Storage optimized,16,d3en.4xlarge,64 GiB,8 x 14000 HDD,25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+989VETQ43PZ4P2BE.JRTCKXETXF.6YS6EN2CT7,15.5648000000,US East (N. Virginia),Memory optimized,128,r6id.32xlarge,1024 GiB,4 x 1900 NVMe SSD,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+9HFHK6RECZZ4W92B.JRTCKXETXF.6YS6EN2CT7,1.0180000000,US East (N. Virginia),Memory optimized,4,x1e.xlarge,122 GiB,1 x 120 SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+9GFWJZDGJ3N3KSK5.JRTCKXETXF.6YS6EN2CT7,0.9091700000,US East (N. Virginia),GPU instance,8,g4ad.2xlarge,32 GiB,300 GB NVMe SSD,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+9KA8YGU8KFGQ7ERN.JRTCKXETXF.6YS6EN2CT7,1.4160000000,US East (N. Virginia),Compute optimized,16,c5.4xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+9MBC2CFEMJBRKHTT.JRTCKXETXF.6YS6EN2CT7,4.2816000000,US East (N. Virginia),General purpose,48,m6a.12xlarge,192 GiB,EBS only,18750 Megabit,Windows,General Purpose,Windows,NA,No License required
+AQ4BJM4AR87GBQDX.JRTCKXETXF.6YS6EN2CT7,1.5320000000,US East (N. Virginia),Compute optimized,16,c4.4xlarge,30 GiB,EBS only,High,Windows,Compute Optimized,Windows,NA,No License required
+AP8CRXEFDUCGR7QY.JRTCKXETXF.6YS6EN2CT7,0.1920000000,US East (N. Virginia),General purpose,2,m4.large,8 GiB,EBS only,Moderate,Windows,General Purpose,Windows,NA,No License required
+9V9FQDQV83DFTEUD.JRTCKXETXF.6YS6EN2CT7,8.8960000000,US East (N. Virginia),Memory optimized,64,r7iz.16xlarge,512 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+4RM5PZU7AJGWQ4T9.JRTCKXETXF.6YS6EN2CT7,1.1120000000,US East (N. Virginia),Memory optimized,8,r7iz.2xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+4QW6A43XNB3PMFM6.JRTCKXETXF.6YS6EN2CT7,11.6736000000,US East (N. Virginia),Memory optimized,96,r6id.24xlarge,768 GiB,4 x 1425 NVMe SSD,37500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+4VV6V3MAZZGV47MU.JRTCKXETXF.6YS6EN2CT7,2.0360000000,US East (N. Virginia),Memory optimized,8,x1e.2xlarge,244 GiB,1 x 240 SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+9YA4XB84K57K8GBD.JRTCKXETXF.6YS6EN2CT7,16.1760000000,US East (N. Virginia),Compute optimized,192,c6a.48xlarge,384 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+9Y9B58QN89N5DN92.JRTCKXETXF.6YS6EN2CT7,17.7920000000,US East (N. Virginia),Memory optimized,128,r7iz.metal-32xl,1024 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+9Z2QAQA2Z9PTH2FY.JRTCKXETXF.6YS6EN2CT7,0.5022400000,US East (N. Virginia),General purpose,4,m6idn.xlarge,16 GiB,1 x 237 NVMe SSD,Up to 30000 Megabit,Windows,General Purpose,Windows,NA,No License required
+5PHSTUESTSJBSFAK.JRTCKXETXF.6YS6EN2CT7,8.4350000000,US East (N. Virginia),Storage optimized,64,i4i.16xlarge,512 GiB,4 x 3750 NVMe SSD,35000 Megabit,Windows,Storage Optimized,Windows,NA,No License required
+2GMT9U4A9KRACNG8.JRTCKXETXF.6YS6EN2CT7,11.3280000000,US East (N. Virginia),Memory optimized,96,r5d.metal,768 GiB,4 x 900 NVMe SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+2FSSN6MA2KMWNNK8.JRTCKXETXF.6YS6EN2CT7,0.1685000000,US East (N. Virginia),Compute optimized,2,c6a.large,4 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+2GP7KWW4GE6WWXGF.JRTCKXETXF.6YS6EN2CT7,1.6400000000,US East (N. Virginia),Memory optimized,16,r5a.4xlarge,128 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+2MS9BQ29TD8ZPX2B.JRTCKXETXF.6YS6EN2CT7,32.5760000000,US East (N. Virginia),Memory optimized,128,x1e.32xlarge,3904 GiB,2 x 1920 SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+2MGQ32BCK59K8M8A.JRTCKXETXF.6YS6EN2CT7,1.1495600000,US East (N. Virginia),Memory optimized,8,r6idn.2xlarge,64 GiB,1 x 474 NVMe SSD,Up to 40000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+2Q5JWDTXT6GFYV4N.JRTCKXETXF.6YS6EN2CT7,3.4880000000,US East (N. Virginia),Memory optimized,32,r6i.8xlarge,256 GiB,EBS only,12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+2JAR7QURUYEEEEDU.JRTCKXETXF.6YS6EN2CT7,0.1928000000,US East (N. Virginia),General purpose,2,m7i.large,8 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+2M62ZXJC6297GM2S.JRTCKXETXF.6YS6EN2CT7,0.6360000000,US East (N. Virginia),Storage optimized,4,i3en.xlarge,32 GiB,1 x 2500 NVMe SSD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+2QDKW9ZB2TU67JTK.JRTCKXETXF.6YS6EN2CT7,9.8400000000,US East (N. Virginia),General purpose,96,m5d.metal,384 GiB,4 x 900 NVMe SSD,25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+2B93TS27E46GZV4S.JRTCKXETXF.6YS6EN2CT7,0.9766000000,US East (N. Virginia),Memory optimized,8,r7a.2xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+2ZK2MVN7ZQ4UBZWH.JRTCKXETXF.6YS6EN2CT7,8.1440000000,US East (N. Virginia),Memory optimized,32,x2iezn.8xlarge,1024 GiB,EBS only,75 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+2ZEU4FQG3A3U8HEC.JRTCKXETXF.6YS6EN2CT7,1.6720000000,US East (N. Virginia),Storage optimized,16,h1.4xlarge,64 GiB,2 x 2000 HDD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+2BVWSSCN2TJX7TZX.JRTCKXETXF.6YS6EN2CT7,5.8368000000,US East (N. Virginia),Memory optimized,48,r6id.12xlarge,384 GiB,2 x 1425 NVMe SSD,18750 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+2CJZBJFS6RP5P46P.JRTCKXETXF.6YS6EN2CT7,0.0560000000,US East (N. Virginia),General purpose,2,t3a.medium,4 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+2SN6CBPKJWMJK4W8.JRTCKXETXF.6YS6EN2CT7,6.3720000000,US East (N. Virginia),Compute optimized,72,c5.18xlarge,144 GiB,EBS only,25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+3PSF5WZCCWJNJC69.JRTCKXETXF.6YS6EN2CT7,0.5747800000,US East (N. Virginia),Memory optimized,4,r6idn.xlarge,32 GiB,1 x 237 NVMe SSD,Up to 30000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+3TJZCQ6SUHGWH4FS.JRTCKXETXF.6YS6EN2CT7,1.5040000000,US East (N. Virginia),Compute optimized,16,c5d.4xlarge,32 GiB,1 x 400 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+3UVQWDHKB4C46D8R.JRTCKXETXF.6YS6EN2CT7,10.4640000000,US East (N. Virginia),Memory optimized,96,r6i.24xlarge,768 GiB,EBS only,37500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+49MPJBU4D2VQ36J8.JRTCKXETXF.6YS6EN2CT7,6.5728000000,US East (N. Virginia),Memory optimized,64,r6a.16xlarge,512 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+46HB843PR73N6BZV.JRTCKXETXF.6YS6EN2CT7,8.0358400000,US East (N. Virginia),General purpose,64,m6idn.16xlarge,256 GiB,2 x 1900 NVMe SSD,100000 Megabit,Windows,General Purpose,Windows,NA,No License required
+43YD24N2B9SEAEHJ.JRTCKXETXF.6YS6EN2CT7,6.1721000000,US East (N. Virginia),General purpose,48,m5zn.metal,192 GiB,EBS only,100 Gigabit,Windows,General Purpose,Windows,NA,No License required
+3VMV67XQM4K92EGV.JRTCKXETXF.6YS6EN2CT7,12.3392000000,US East (N. Virginia),Compute optimized,128,c6id.metal,256 GiB,4 x 1900 NVMe SSD,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+3ZQ6QEUU6ZYWFW3D.JRTCKXETXF.6YS6EN2CT7,6.2400000000,US East (N. Virginia),General purpose,64,m5ad.16xlarge,256 GiB,4 x 600 NVMe SSD,12 Gigabit,Windows,General Purpose,Windows,NA,No License required
+42E228PHGVWEK5FQ.JRTCKXETXF.6YS6EN2CT7,18.6854400000,US East (N. Virginia),Compute optimized,192,c7a.metal-48xl,384 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+3WTQEZRUMFS2H2SV.JRTCKXETXF.6YS6EN2CT7,12.7838400000,US East (N. Virginia),Memory optimized,96,r6in.24xlarge,768 GiB,EBS only,150000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+3Z3XC7ACTC7Z3YJ8.JRTCKXETXF.6YS6EN2CT7,9.0240000000,US East (N. Virginia),General purpose,96,m6i.24xlarge,384 GiB,EBS only,37500 Megabit,Windows,General Purpose,Windows,NA,No License required
+3Z7U9V32K6HA9P7A.JRTCKXETXF.6YS6EN2CT7,0.4100000000,US East (N. Virginia),Memory optimized,4,r5a.xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+36EDMUPPXTD42ZKJ.JRTCKXETXF.6YS6EN2CT7,1.1900000000,US East (N. Virginia),GPU instance,4,g5.xlarge,16 GiB,1 x 250 GB NVMe SSD,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+3A4JVMT4VPX7N5NF.JRTCKXETXF.6YS6EN2CT7,0.0372000000,US East (N. Virginia),General purpose,2,t3a.small,2 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+39EVKZQS8FYV4DRQ.JRTCKXETXF.6YS6EN2CT7,1.4160000000,US East (N. Virginia),Compute optimized,16,c6i.4xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+3BCZXJFKY5CEKYBY.JRTCKXETXF.6YS6EN2CT7,0.8972000000,US East (N. Virginia),Memory optimized,8,r7i.2xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+3CFBCU7275YWTQFC.JRTCKXETXF.6YS6EN2CT7,102.5080000000,US East (N. Virginia),Memory optimized,448,u-9tb1.112xlarge,9216 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+35VJQH4NAVNJGGM6.JRTCKXETXF.6YS6EN2CT7,5.5495200000,US East (N. Virginia),General purpose,48,m6in.12xlarge,192 GiB,EBS only,75000 Megabit,Windows,General Purpose,Windows,NA,No License required
+35QACGXEGWD9AZHY.JRTCKXETXF.6YS6EN2CT7,0.1770000000,US East (N. Virginia),Compute optimized,2,c5.large,4 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+2UQMRDDEVG35PVMR.JRTCKXETXF.6YS6EN2CT7,4.9296000000,US East (N. Virginia),Compute optimized,48,c6in.12xlarge,96 GiB,EBS only,75000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+2UTE9B34TKSDXFFB.JRTCKXETXF.6YS6EN2CT7,1.8498400000,US East (N. Virginia),General purpose,16,m6in.4xlarge,64 GiB,EBS only,Up to 50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+FQ63FAA8GK7GHGRQ.JRTCKXETXF.6YS6EN2CT7,6.0160000000,US East (N. Virginia),General purpose,64,m5.16xlarge,256 GiB,EBS only,20 Gigabit,Windows,General Purpose,Windows,NA,No License required
+FRDM5RGUSBJYR2G3.JRTCKXETXF.6YS6EN2CT7,4.2720000000,US East (N. Virginia),General purpose,48,m5a.12xlarge,192 GiB,EBS only,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+FMQH9RHJJFE36GFA.JRTCKXETXF.6YS6EN2CT7,0.3760000000,US East (N. Virginia),Compute optimized,4,c5d.xlarge,8 GiB,1 x 100 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+F25NZQCF9RQY76CK.JRTCKXETXF.6YS6EN2CT7,19.9603200000,US East (N. Virginia),General purpose,192,m7a.metal-48xl,768 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+FZS76SFS2XQZDRJE.JRTCKXETXF.6YS6EN2CT7,24.4230000000,US East (N. Virginia),Memory optimized,96,x2iedn.24xlarge,3072 GiB,2 x 1425 NVMe SSD,75 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+G9WBYAXUDWGW7XYV.JRTCKXETXF.6YS6EN2CT7,0.0600000000,US East (N. Virginia),General purpose,2,t3.medium,4 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+GAMAEGQGHSWC95UR.JRTCKXETXF.6YS6EN2CT7,3.9680000000,US East (N. Virginia),Storage optimized,32,i3.8xlarge,244 GiB,4 x 1900 NVMe SSD,10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+GCQ9S27EMSPQKVGY.JRTCKXETXF.6YS6EN2CT7,8.7000000000,US East (N. Virginia),Compute optimized,96,c7i.metal-24xl,192 GiB,EBS only,37500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+FTKGUK3A3PSQ2SW2.JRTCKXETXF.6YS6EN2CT7,0.7250000000,US East (N. Virginia),Compute optimized,8,c7i.2xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+FUXRTAXNSU8XYRBD.JRTCKXETXF.6YS6EN2CT7,17.0451200000,US East (N. Virginia),Memory optimized,128,r6in.32xlarge,1024 GiB,EBS only,200000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+FUETJGKE44YRRDYN.JRTCKXETXF.6YS6EN2CT7,0.7080000000,US East (N. Virginia),Compute optimized,8,c5.2xlarge,16 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+G2XSZWBV3VF4RVJZ.JRTCKXETXF.6YS6EN2CT7,2.8480000000,US East (N. Virginia),General purpose,32,m5a.8xlarge,128 GiB,EBS only,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+FCSJGMPA3CC9MKCG.JRTCKXETXF.6YS6EN2CT7,4.2480000000,US East (N. Virginia),Compute optimized,48,c6i.12xlarge,96 GiB,EBS only,18750 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+FCZ2A6E4ZJPAQXBK.JRTCKXETXF.6YS6EN2CT7,2.0720000000,US East (N. Virginia),Memory optimized,16,r5dn.4xlarge,128 GiB,2 x 300 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+FA2G8UWBSMVA56Z4.JRTCKXETXF.6YS6EN2CT7,5.6640000000,US East (N. Virginia),Memory optimized,48,r5d.12xlarge,384 GiB,2 x 900 NVMe SSD,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+FGZ4HT639C8MVZM9.JRTCKXETXF.6YS6EN2CT7,1.5600000000,US East (N. Virginia),General purpose,16,m5ad.4xlarge,64 GiB,2 x 300 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+EWR4DWGXX5YW4B4M.JRTCKXETXF.6YS6EN2CT7,3.7520000000,US East (N. Virginia),GPU instance,32,g3.8xlarge,244 GiB,EBS only,10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+EYGEABY274R4JKZD.JRTCKXETXF.6YS6EN2CT7,11.5680000000,US East (N. Virginia),Memory optimized,96,r5n.24xlarge,768 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+F7H92E3N3TN52552.JRTCKXETXF.6YS6EN2CT7,0.0644000000,US East (N. Virginia),General purpose,2,t2.medium,4 GiB,EBS only,Low to Moderate,Windows,General Purpose,Windows,NA,No License required
+F58DMNJDDW372CG5.JRTCKXETXF.6YS6EN2CT7,5.3920000000,US East (N. Virginia),Compute optimized,64,c6a.16xlarge,128 GiB,EBS only,25000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+FA29ZTDMUKGQA7Q9.JRTCKXETXF.6YS6EN2CT7,1.3670000000,US East (N. Virginia),Storage optimized,8,d3.2xlarge,64 GiB,6 x 2000 HDD,Up to 15 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+FCGGE5K9DHTF7FBK.JRTCKXETXF.6YS6EN2CT7,13.1456000000,US East (N. Virginia),Compute optimized,128,c6in.metal,256 GiB,EBS only,200000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+FDYTKT6MSVDTFW98.JRTCKXETXF.6YS6EN2CT7,0.7100000000,US East (N. Virginia),Storage optimized,4,d3en.xlarge,16 GiB,2 x 14000 HDD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+FHMDZQVPB6BS8SJF.JRTCKXETXF.6YS6EN2CT7,6.4120000000,US East (N. Virginia),GPU instance,64,g4ad.16xlarge,256 GiB,2400 GB NVMe SSD,25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+FHF68GSTZSKM8WJU.JRTCKXETXF.6YS6EN2CT7,7.1360000000,US East (N. Virginia),Memory optimized,64,r5ad.16xlarge,512 GiB,4 x 600 NVMe SSD,12 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+E8XFYF43MZH6J9RC.JRTCKXETXF.6YS6EN2CT7,1.0360000000,US East (N. Virginia),Memory optimized,8,r5dn.2xlarge,64 GiB,1 x 300 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+EDJXVWHPD5EHYTS9.JRTCKXETXF.6YS6EN2CT7,3.3840000000,US East (N. Virginia),Compute optimized,36,c5d.9xlarge,72 GiB,1 x 900 NVMe SSD,10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+ENC27NEH7G4NQCAJ.JRTCKXETXF.6YS6EN2CT7,8.4960000000,US East (N. Virginia),Compute optimized,96,c5.metal,192 GiB,EBS only,25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+EP2G9EP5TJCT9TCM.JRTCKXETXF.6YS6EN2CT7,0.7120000000,US East (N. Virginia),Compute optimized,8,c5ad.2xlarge,16 GiB,1 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+ENXDWMPSRZ5Y556J.JRTCKXETXF.6YS6EN2CT7,8.5440000000,US East (N. Virginia),General purpose,96,m5a.24xlarge,384 GiB,EBS only,20 Gigabit,Windows,General Purpose,Windows,NA,No License required
+EUPKVYF42ZHZFAVB.JRTCKXETXF.6YS6EN2CT7,0.4560000000,US East (N. Virginia),General purpose,4,m5dn.xlarge,16 GiB,1 x 150 NVMe SSD,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+ESYWHECDEVC74ZDG.JRTCKXETXF.6YS6EN2CT7,1.2720000000,US East (N. Virginia),Storage optimized,8,i3en.2xlarge,64 GiB,2 x 2500 NVMe SSD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+E37AWFBBA4A4C8BV.JRTCKXETXF.6YS6EN2CT7,0.1928000000,US East (N. Virginia),Compute optimized,2,c6id.large,4 GiB,1 x 118 NVMe SSD,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+BM7YGWAVUCPX6CP7.JRTCKXETXF.6YS6EN2CT7,0.2054000000,US East (N. Virginia),Memory optimized,2,r6a.large,16 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+BNKWAGFUKMSC725Z.JRTCKXETXF.6YS6EN2CT7,32.5640000000,US East (N. Virginia),Memory optimized,128,x2iedn.metal,4096 GiB,2 x 1900 NVMe SSD,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+BKA6JDP9QUM7E3H5.JRTCKXETXF.6YS6EN2CT7,6.2160000000,US East (N. Virginia),Memory optimized,48,r5dn.12xlarge,384 GiB,2 x 900 GB NVMe SSD,50 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+BMSG8Z5QXGNT8HPZ.JRTCKXETXF.6YS6EN2CT7,5.6640000000,US East (N. Virginia),Compute optimized,64,c6i.16xlarge,128 GiB,EBS only,25000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+BKHUVUT4THYW2GNY.JRTCKXETXF.6YS6EN2CT7,0.9120000000,US East (N. Virginia),General purpose,8,m5dn.2xlarge,32 GiB,1 x 300 NVMe SSD,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+BR5RZXEJZU8VJWEU.JRTCKXETXF.6YS6EN2CT7,2.2240000000,US East (N. Virginia),Memory optimized,16,r7iz.4xlarge,128 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+C8GXKK68CD2SJQN4.JRTCKXETXF.6YS6EN2CT7,10.4640000000,US East (N. Virginia),Memory optimized,96,r5.24xlarge,768 GiB,EBS only,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+CSB698QGR9BMRU9Z.JRTCKXETXF.6YS6EN2CT7,0.2054000000,US East (N. Virginia),Compute optimized,2,c6in.large,4 GiB,EBS only,Up to 25000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+CNQRJ2XRQ5WYZJQ3.JRTCKXETXF.6YS6EN2CT7,0.9920000000,US East (N. Virginia),Storage optimized,8,i3.2xlarge,61 GiB,1 x 1900 NVMe SSD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+CWTXAXW7FCD842W3.JRTCKXETXF.6YS6EN2CT7,6.0268800000,US East (N. Virginia),General purpose,48,m6idn.12xlarge,192 GiB,2 x 1425 NVMe SSD,75000 Megabit,Windows,General Purpose,Windows,NA,No License required
+CWNR8FP73S834RWD.JRTCKXETXF.6YS6EN2CT7,17.1264000000,US East (N. Virginia),General purpose,192,m6a.48xlarge,768 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+CWHRSPVCEZZE89JP.JRTCKXETXF.6YS6EN2CT7,0.8360000000,US East (N. Virginia),Storage optimized,8,h1.2xlarge,32 GiB,1 x 2000 HDD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+DH99ZP65JTBV82G6.JRTCKXETXF.6YS6EN2CT7,1.6400000000,US East (N. Virginia),General purpose,16,m5d.4xlarge,64 GiB,2 x 300 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+DJ2YJFDQ4XVGDRF7.JRTCKXETXF.6YS6EN2CT7,0.7080000000,US East (N. Virginia),Compute optimized,8,c6i.2xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+DP3MFM6KW2KXVSRB.JRTCKXETXF.6YS6EN2CT7,13.4816000000,US East (N. Virginia),General purpose,128,m6id.32xlarge,512 GiB,4 x 1900 NVMe SSD,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+DP8G5CP2WV54QNFP.JRTCKXETXF.6YS6EN2CT7,0.8440000000,US East (N. Virginia),General purpose,8,m5n.2xlarge,32 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+CZ9BHU45SGEFD4MA.JRTCKXETXF.6YS6EN2CT7,6.1440000000,US East (N. Virginia),General purpose,64,m4.16xlarge,256 GiB,EBS only,20 Gigabit,Windows,General Purpose,Windows,NA,No License required
+D36F88FP9U8X534M.JRTCKXETXF.6YS6EN2CT7,0.4624600000,US East (N. Virginia),General purpose,4,m6in.xlarge,16 GiB,EBS only,Up to 30000 Megabit,Windows,General Purpose,Windows,NA,No License required
+DFQ67CPP6R36YU7G.JRTCKXETXF.6YS6EN2CT7,1.6680000000,US East (N. Virginia),Memory optimized,12,z1d.3xlarge,96 GiB,1 x 450 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+DFXA5AHSSCVGSRVV.JRTCKXETXF.6YS6EN2CT7,3.6480000000,US East (N. Virginia),General purpose,32,m5dn.8xlarge,128 GiB,2 x 600 NVMe SSD,25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+DR5NZDVPF56J2TPC.JRTCKXETXF.6YS6EN2CT7,4.6713600000,US East (N. Virginia),Compute optimized,48,c7a.12xlarge,96 GiB,EBS only,18750 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+D66XHF6AG58MTEBC.JRTCKXETXF.6YS6EN2CT7,6.8973600000,US East (N. Virginia),Memory optimized,48,r6idn.12xlarge,384 GiB,2 x 1425 NVMe SSD,75000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+CHHJYQEHZNFCBQC3.JRTCKXETXF.6YS6EN2CT7,37.6040000000,US East (N. Virginia),Memory optimized,224,u-3tb1.56xlarge,3072 GiB,EBS only,50 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+DTCQQMKQYR332DQW.JRTCKXETXF.6YS6EN2CT7,0.2106500000,US East (N. Virginia),General purpose,2,m6id.large,8 GiB,1 x 118 NVMe SSD,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+DRZTPVABY3M859GT.JRTCKXETXF.6YS6EN2CT7,10.7040000000,US East (N. Virginia),Memory optimized,96,r5ad.24xlarge,768 GiB,4 x 900 NVMe SSD,20 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+DSUP6SXF5M2HZBH4.JRTCKXETXF.6YS6EN2CT7,3.6000000000,US East (N. Virginia),Compute optimized,36,c5n.9xlarge,96 GiB,EBS only,50 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+BUKV57CDXF385QWA.JRTCKXETXF.6YS6EN2CT7,6.6720000000,US East (N. Virginia),Memory optimized,48,r7iz.12xlarge,384 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+BVA53SP54488TUC8.JRTCKXETXF.6YS6EN2CT7,0.3830000000,US East (N. Virginia),Compute optimized,4,c4.xlarge,7.5 GiB,EBS only,High,Windows,Compute Optimized,Windows,NA,No License required
+BSHTKTQY9M2ZKJ3H.JRTCKXETXF.6YS6EN2CT7,0.8720000000,US East (N. Virginia),Memory optimized,8,r6i.2xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+CESSXUPGGQ45TUVB.JRTCKXETXF.6YS6EN2CT7,6.7408000000,US East (N. Virginia),General purpose,64,m6id.16xlarge,256 GiB,2 x 1900 NVMe SSD,25000 Megabit,Windows,General Purpose,Windows,NA,No License required
+CFP3XZQZF264EPVS.JRTCKXETXF.6YS6EN2CT7,12.2400000000,US East (N. Virginia),GPU instance,96,g4dn.metal,384 GiB,2 x 900 GB NVMe SSD,100 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+CEJQN2YX6MZHEQYF.JRTCKXETXF.6YS6EN2CT7,17.1264000000,US East (N. Virginia),General purpose,192,m6a.metal,768 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+CD32JJZMCBPG6Q4V.JRTCKXETXF.6YS6EN2CT7,12.3392000000,US East (N. Virginia),Compute optimized,128,c6id.32xlarge,256 GiB,4 x 1900 NVMe SSD,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+DKURX68VNJ85GE4V.JRTCKXETXF.6YS6EN2CT7,12.2160000000,US East (N. Virginia),Memory optimized,48,x2iezn.12xlarge,1536 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+D8M5RDQ8BWFW7PD5.JRTCKXETXF.6YS6EN2CT7,15.6256000000,US East (N. Virginia),Memory optimized,128,r7a.32xlarge,1024 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+DA4HWCTQM2E2R39U.JRTCKXETXF.6YS6EN2CT7,5.4080000000,US East (N. Virginia),Compute optimized,64,c5a.16xlarge,128 GiB,EBS only,20 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+D7HYD2JRUH78Q2DM.JRTCKXETXF.6YS6EN2CT7,5.6960000000,US East (N. Virginia),Compute optimized,64,c5ad.16xlarge,128 GiB,2 x 1200 NVMe SSD,20 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+D7EYC38V3FSUPJE6.JRTCKXETXF.6YS6EN2CT7,7.2960000000,US East (N. Virginia),GPU instance,64,g4dn.16xlarge,256 GiB,900 GB NVMe SSD,50 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+BH44KATTNSC6MMKP.JRTCKXETXF.6YS6EN2CT7,0.5143000000,US East (N. Virginia),General purpose,4,m5zn.xlarge,16 GiB,EBS only,Up to 25 Gigabit,Windows,General Purpose,Windows,NA,No License required
+BGU9UG7QCNNGBKAB.JRTCKXETXF.6YS6EN2CT7,1.0840000000,US East (N. Virginia),GPU instance,4,p2.xlarge,61 GiB,EBS only,High,Windows,Accelerated Computing,Windows,NA,No License required
+C4728D98WKFX2RQM.JRTCKXETXF.6YS6EN2CT7,5.4675200000,US East (N. Virginia),Storage optimized,32,d3.8xlarge,256 GiB,24 x 2000 HDD,25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+C3RVEWJ3A5T5CVV8.JRTCKXETXF.6YS6EN2CT7,5.2320000000,US East (N. Virginia),Memory optimized,48,r5.12xlarge,384 GiB,EBS only,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+NAYSHTERFCAHATT2.JRTCKXETXF.6YS6EN2CT7,0.0093000000,US East (N. Virginia),General purpose,2,t3a.nano,0.5 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+NA6QYTC3MRSHVKHT.JRTCKXETXF.6YS6EN2CT7,6.9760000000,US East (N. Virginia),Memory optimized,64,r5.16xlarge,512 GiB,EBS only,20 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+PPXTVVYPGDYTTGPN.JRTCKXETXF.6YS6EN2CT7,3.1200000000,US East (N. Virginia),General purpose,32,m5ad.8xlarge,128 GiB,2 x 600 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+NF882BZXB72ZVRU6.JRTCKXETXF.6YS6EN2CT7,0.3663200000,US East (N. Virginia),General purpose,4,m7i-flex.xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+ND7ZMG9JX8RYABDV.JRTCKXETXF.6YS6EN2CT7,1.6030000000,US East (N. Virginia),GPU instance,16,g4ad.4xlarge,64 GiB,600 GB NVMe SSD,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+NHEK4WCHVK2ASJYH.JRTCKXETXF.6YS6EN2CT7,0.9440000000,US East (N. Virginia),Memory optimized,8,r5d.2xlarge,64 GiB,1 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+NHESUYJX8T5AA58A.JRTCKXETXF.6YS6EN2CT7,0.2780000000,US East (N. Virginia),Memory optimized,2,z1d.large,16 GiB,1 x 75 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+NKSUVTN6E8NJNVCY.JRTCKXETXF.6YS6EN2CT7,3.8912000000,US East (N. Virginia),Memory optimized,32,r6id.8xlarge,256 GiB,1 x 1900 NVMe SSD,12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+NKZG2K25H6WZ8B27.JRTCKXETXF.6YS6EN2CT7,4.6272000000,US East (N. Virginia),Compute optimized,48,c6id.12xlarge,96 GiB,2 x 1425 NVMe SSD,18750 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+NPFR6HMQJWV5HMG7.JRTCKXETXF.6YS6EN2CT7,6.3919200000,US East (N. Virginia),Memory optimized,48,r6in.12xlarge,384 GiB,EBS only,75000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+NRHQSTBB6U3PFZYA.JRTCKXETXF.6YS6EN2CT7,1.6633600000,US East (N. Virginia),General purpose,16,m7a.4xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+NYA5DX253KJXYV86.JRTCKXETXF.6YS6EN2CT7,14.4195000000,US East (N. Virginia),Memory optimized,96,x2idn.24xlarge,1536 GiB,2 x 1425 NVMe SSD,75 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+NYBDNSYBSZ6A77HJ.JRTCKXETXF.6YS6EN2CT7,0.2432000000,US East (N. Virginia),Memory optimized,2,r6id.large,16 GiB,1 x 118 NVMe SSD,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+NZFMZQVP6PYMADE3.JRTCKXETXF.6YS6EN2CT7,0.8200000000,US East (N. Virginia),General purpose,8,m5d.2xlarge,32 GiB,1 x 300 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+NSG2ZYZGQC5JU66P.JRTCKXETXF.6YS6EN2CT7,21.5328000000,US East (N. Virginia),Memory optimized,192,r7i.48xlarge,1536 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+NSY25V248S255WAN.JRTCKXETXF.6YS6EN2CT7,0.9640000000,US East (N. Virginia),Memory optimized,8,r5b.2xlarge,64 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+NTQ63M7W9ERV6Z8N.JRTCKXETXF.6YS6EN2CT7,6.5600000000,US East (N. Virginia),Memory optimized,64,r5a.16xlarge,512 GiB,EBS only,12 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+PQUPVKE4C2VTJASH.JRTCKXETXF.6YS6EN2CT7,0.5560000000,US East (N. Virginia),Memory optimized,4,z1d.xlarge,32 GiB,1 x 150 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+N6A7PSK5B77S6BGA.JRTCKXETXF.6YS6EN2CT7,3.0080000000,US East (N. Virginia),General purpose,32,m5.8xlarge,128 GiB,EBS only,10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+P6CRCUCR75248P22.JRTCKXETXF.6YS6EN2CT7,4.0179200000,US East (N. Virginia),General purpose,32,m6idn.8xlarge,128 GiB,1 x 1900 NVMe SSD,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+P828Z6CQNBT35UK9.JRTCKXETXF.6YS6EN2CT7,0.5180000000,US East (N. Virginia),Memory optimized,4,r5dn.xlarge,32 GiB,1 x 150 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+P8B7DSQDPVEJ7KCE.JRTCKXETXF.6YS6EN2CT7,0.2050000000,US East (N. Virginia),General purpose,2,m5d.large,8 GiB,1 x 75 NVMe SSD,Up to 10 Gigabit,Windows,General Purpose,Windows,NA,No License required
+PCRHSDP85AJZZPGB.JRTCKXETXF.6YS6EN2CT7,6.6720000000,US East (N. Virginia),Memory optimized,48,z1d.12xlarge,384 GiB,2 x 900 NVMe SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+PCPM8UYTYB4X73M4.JRTCKXETXF.6YS6EN2CT7,0.4820000000,US East (N. Virginia),Memory optimized,4,r5b.xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+PCT9DPU78S8BDPJC.JRTCKXETXF.6YS6EN2CT7,1.9532000000,US East (N. Virginia),Memory optimized,16,r7a.4xlarge,128 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+P9TVD8D4MXTFVYWQ.JRTCKXETXF.6YS6EN2CT7,17.4000000000,US East (N. Virginia),Compute optimized,192,c7i.48xlarge,384 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+PA32RE6ZGAMJBZ5X.JRTCKXETXF.6YS6EN2CT7,7.7824000000,US East (N. Virginia),Memory optimized,64,r6id.16xlarge,512 GiB,2 x 1900 NVMe SSD,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+PGXV596NBZYAYB85.JRTCKXETXF.6YS6EN2CT7,0.4000000000,US East (N. Virginia),Compute optimized,4,c5n.xlarge,10.5 GiB,EBS only,Up to 25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+PHM2NYB662MPMP2G.JRTCKXETXF.6YS6EN2CT7,2.1090000000,US East (N. Virginia),Storage optimized,16,i4i.4xlarge,128 GiB,1 x 3750 NVMe SSD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+PGBR5CFTTF8DA6DB.JRTCKXETXF.6YS6EN2CT7,1.0176300000,US East (N. Virginia),Memory optimized,4,x2iedn.xlarge,128 GiB,1 x 118 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+PGR5FRABP4TABQWQ.JRTCKXETXF.6YS6EN2CT7,10.1280000000,US East (N. Virginia),General purpose,96,m5n.24xlarge,384 GiB,EBS only,100 Gigabit,Windows,General Purpose,Windows,NA,No License required
+PTGRX5MK4DDZ3C69.JRTCKXETXF.6YS6EN2CT7,0.2640000000,US East (N. Virginia),Storage optimized,2,i4i.large,16 GiB,1 x 468 NVMe SSD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+PU7HTBY2DWN9A4CH.JRTCKXETXF.6YS6EN2CT7,9.8400000000,US East (N. Virginia),Memory optimized,96,r5a.24xlarge,768 GiB,EBS only,20 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+PXY74A6QN49JAXDC.JRTCKXETXF.6YS6EN2CT7,3.0848000000,US East (N. Virginia),General purpose,32,m7i.8xlarge,128 GiB,EBS only,12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+Q49VKFFWC877GUFC.JRTCKXETXF.6YS6EN2CT7,0.3840000000,US East (N. Virginia),General purpose,4,m4.xlarge,16 GiB,EBS only,High,Windows,General Purpose,Windows,NA,No License required
+PTSHWPAYPTH89XQS.JRTCKXETXF.6YS6EN2CT7,2.8544000000,US East (N. Virginia),General purpose,32,m6a.8xlarge,128 GiB,EBS only,12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+Q5RZW7MUQJC46XBJ.JRTCKXETXF.6YS6EN2CT7,6.5600000000,US East (N. Virginia),General purpose,64,m5d.16xlarge,256 GiB,4 x 600 NVMe SSD,20 Gigabit,Windows,General Purpose,Windows,NA,No License required
+Q7KRGX9524EXCE9T.JRTCKXETXF.6YS6EN2CT7,1.8760000000,US East (N. Virginia),GPU instance,16,g3.4xlarge,122 GiB,EBS only,Up to 10 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+Q95VBRCY396PHJXB.JRTCKXETXF.6YS6EN2CT7,4.5120000000,US East (N. Virginia),Compute optimized,48,c5d.12xlarge,96 GiB,2 x 900 NVMe SSD,12 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+QAMMQS9R5WC8PTN7.JRTCKXETXF.6YS6EN2CT7,7.9360000000,US East (N. Virginia),Storage optimized,64,i3.16xlarge,488 GiB,8 x 1900 NVMe SSD,20 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+PXX7ZX4HRH2YJVEG.JRTCKXETXF.6YS6EN2CT7,0.0098000000,US East (N. Virginia),General purpose,2,t3.nano,0.5 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+GCVNP3P773YU7QZU.JRTCKXETXF.6YS6EN2CT7,0.5560000000,US East (N. Virginia),Memory optimized,4,r7iz.xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+Q7J7N544Y92FFHWS.JRTCKXETXF.6YS6EN2CT7,4.9296000000,US East (N. Virginia),Memory optimized,48,r6a.12xlarge,384 GiB,EBS only,18750 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+GT2YADF8BBMV8XFS.JRTCKXETXF.6YS6EN2CT7,18.6854400000,US East (N. Virginia),Compute optimized,192,c7a.48xlarge,384 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+GPQ9VNPAAZ3ZJZXD.JRTCKXETXF.6YS6EN2CT7,0.1780000000,US East (N. Virginia),Compute optimized,2,c5ad.large,4 GiB,1 x 75 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+4F6W8DNQFUMHKEZF.JRTCKXETXF.6YS6EN2CT7,0.0196000000,US East (N. Virginia),General purpose,2,t3.micro,1 GiB,EBS only,Up to 5 Gigabit,Windows,General Purpose,Windows,NA,No License required
+4F7HFAK8E2KS9HNA.JRTCKXETXF.6YS6EN2CT7,1.3520000000,US East (N. Virginia),Compute optimized,16,c5a.4xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+4M6622HRKYEJPM3K.JRTCKXETXF.6YS6EN2CT7,10.9440000000,US East (N. Virginia),General purpose,96,m5dn.metal,384 GiB,4 x 900 NVMe SSD,100 Gigabit,Windows,General Purpose,Windows,NA,No License required
+4MXGXTGVVJUS59BB.JRTCKXETXF.6YS6EN2CT7,8.7000000000,US East (N. Virginia),Compute optimized,96,c7i.24xlarge,192 GiB,EBS only,37500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+4NEJM8X5ME9CJSET.JRTCKXETXF.6YS6EN2CT7,3.3704000000,US East (N. Virginia),General purpose,32,m6id.8xlarge,128 GiB,1 x 1900 NVMe SSD,12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+5MJXHMJ4S8EN3GMR.JRTCKXETXF.6YS6EN2CT7,0.3892800000,US East (N. Virginia),Compute optimized,4,c7a.xlarge,8 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+5JKCCVZU8MX4DGMQ.JRTCKXETXF.6YS6EN2CT7,13.1456000000,US East (N. Virginia),Memory optimized,128,r6a.32xlarge,1024 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+5M5TGRSJ7RQAC8HJ.JRTCKXETXF.6YS6EN2CT7,2.9000000000,US East (N. Virginia),Compute optimized,32,c7i.8xlarge,64 GiB,EBS only,12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+5CMJ2RREHKGZTY3C.JRTCKXETXF.6YS6EN2CT7,0.4360000000,US East (N. Virginia),Memory optimized,4,r5.xlarge,32 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+58EXRGUEKVGM346C.JRTCKXETXF.6YS6EN2CT7,10.1112000000,US East (N. Virginia),General purpose,96,m6id.24xlarge,384 GiB,4 x 1425 NVMe SSD,37500 Megabit,Windows,General Purpose,Windows,NA,No License required
+65YSUPNAN563AP29.JRTCKXETXF.6YS6EN2CT7,0.7785600000,US East (N. Virginia),Compute optimized,8,c7a.2xlarge,16 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+673H65ZNDZYPM93M.JRTCKXETXF.6YS6EN2CT7,0.3380000000,US East (N. Virginia),Compute optimized,4,c5a.xlarge,8 GiB,EBS only,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+65TQ59ABD2GYEYY6.JRTCKXETXF.6YS6EN2CT7,16.8700000000,US East (N. Virginia),Storage optimized,128,i4i.metal,1024 GiB,8 x 3750 NVMe SSD,75000 Megabit,Windows,Storage Optimized,Windows,NA,No License required
+66W3PGETT462AMK2.JRTCKXETXF.6YS6EN2CT7,3.3360000000,US East (N. Virginia),Memory optimized,24,z1d.6xlarge,192 GiB,1 x 900 NVMe SSD,10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+65P4Y8WDUV7V8WXZ.JRTCKXETXF.6YS6EN2CT7,0.3540000000,US East (N. Virginia),Compute optimized,4,c6i.xlarge,8 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+6A3W2FZDRCMP2VVD.JRTCKXETXF.6YS6EN2CT7,0.8000000000,US East (N. Virginia),Compute optimized,8,c5n.2xlarge,21 GiB,EBS only,Up to 25 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+6ADN5F2UDDANJB6H.JRTCKXETXF.6YS6EN2CT7,0.8920000000,US East (N. Virginia),Memory optimized,8,r5ad.2xlarge,64 GiB,1 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+69UU24ENP2GD52PU.JRTCKXETXF.6YS6EN2CT7,2.6960000000,US East (N. Virginia),Compute optimized,32,c6a.8xlarge,64 GiB,EBS only,12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+52XSU7K6PWUFPKB4.JRTCKXETXF.6YS6EN2CT7,0.1880000000,US East (N. Virginia),Compute optimized,2,c5d.large,4 GiB,1 x 50 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+4Y7QPNHCP4WADJ5Q.JRTCKXETXF.6YS6EN2CT7,3.9200000000,US East (N. Virginia),GPU instance,32,g5.8xlarge,128 GiB,1 x 900 GB NVMe SSD,25 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+4XPC5NCG6KZRMEJD.JRTCKXETXF.6YS6EN2CT7,0.2360000000,US East (N. Virginia),Memory optimized,2,r5d.large,16 GiB,1 x 75 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+68JXBV5UF5AMUV4X.JRTCKXETXF.6YS6EN2CT7,8.1440000000,US East (N. Virginia),Memory optimized,32,x1e.8xlarge,976 GiB,1 x 960 SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+6898Z5WFTX5GEKYT.JRTCKXETXF.6YS6EN2CT7,4.0720000000,US East (N. Virginia),Memory optimized,16,x1e.4xlarge,488 GiB,1 x 480 SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+68TFKFM9J33ZZB97.JRTCKXETXF.6YS6EN2CT7,1.8000000000,US East (N. Virginia),Memory optimized,16,r4.4xlarge,122 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+68EG9A8YWGD85VW5.JRTCKXETXF.6YS6EN2CT7,12.4320000000,US East (N. Virginia),Memory optimized,96,r5dn.metal,768 GiB,4 x 900 NVMe SSD,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+67QTUXXV4MU5C39U.JRTCKXETXF.6YS6EN2CT7,0.3560000000,US East (N. Virginia),Compute optimized,4,c5ad.xlarge,8 GiB,1 x 150 NVMe SSD,Up to 10 Gigabit,Windows,Compute Optimized,Windows,NA,No License required
+6DR85XFER3USR8AF.JRTCKXETXF.6YS6EN2CT7,14.7987200000,US East (N. Virginia),General purpose,128,m6in.metal,512 GiB,EBS only,200000 Megabit,Windows,General Purpose,Windows,NA,No License required
+6EK2D9JK6EYSEQKP.JRTCKXETXF.6YS6EN2CT7,3.8160000000,US East (N. Virginia),Storage optimized,24,i3en.6xlarge,192 GiB,2 x 7500 NVMe SSD,25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+6MCQ45CJ6T6N2N3S.JRTCKXETXF.6YS6EN2CT7,6.6720000000,US East (N. Virginia),Memory optimized,48,z1d.metal,384 GiB,2 x 900 NVMe SSD,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+6GJZVJZ5GTXDYYKX.JRTCKXETXF.6YS6EN2CT7,8.0880000000,US East (N. Virginia),Compute optimized,96,c6a.24xlarge,192 GiB,EBS only,37500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+6GKHU33N2W8MZ3ZR.JRTCKXETXF.6YS6EN2CT7,11.5680000000,US East (N. Virginia),Memory optimized,96,r5b.metal,768 GiB,EBS only,25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+6MXSBYN5SHXC2FMC.JRTCKXETXF.6YS6EN2CT7,0.4108000000,US East (N. Virginia),Memory optimized,4,r6a.xlarge,32 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+6PJMXTM7984ET69K.JRTCKXETXF.6YS6EN2CT7,1.4272000000,US East (N. Virginia),General purpose,16,m6a.4xlarge,64 GiB,EBS only,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+55WR62Y9JCGXXJPA.JRTCKXETXF.6YS6EN2CT7,7.1776000000,US East (N. Virginia),Memory optimized,64,r7i.16xlarge,512 GiB,EBS only,25000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+5RQPDWUK4MKMRQMC.JRTCKXETXF.6YS6EN2CT7,0.0973200000,US East (N. Virginia),Compute optimized,1,c7a.medium,2 GiB,EBS only,Up to 12500 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+6ACKSJX6KGWPAVR7.JRTCKXETXF.6YS6EN2CT7,0.2441500000,US East (N. Virginia),Memory optimized,2,r7a.large,16 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+6CZHX7FDNEGZP73C.JRTCKXETXF.6YS6EN2CT7,75.2080000000,US East (N. Virginia),Memory optimized,448,u-6tb1.112xlarge,6144 GiB,EBS only,100 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+9W9C9RYCEM7MTPXG.JRTCKXETXF.6YS6EN2CT7,1.7440000000,US East (N. Virginia),Memory optimized,16,r5.4xlarge,128 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+5ENC5NT5E9PMC573.JRTCKXETXF.6YS6EN2CT7,19.7184000000,US East (N. Virginia),Memory optimized,192,r6a.48xlarge,1536 GiB,EBS only,50000 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+AVFCYPTZANYJJM9X.JRTCKXETXF.6YS6EN2CT7,3.2864000000,US East (N. Virginia),Compute optimized,32,c6in.8xlarge,64 GiB,EBS only,50000 Megabit,Windows,Compute Optimized,Windows,NA,No License required
+5G4YZXJUHDCCXEDQ.JRTCKXETXF.6YS6EN2CT7,0.2780000000,US East (N. Virginia),Memory optimized,2,r7iz.large,16 GiB,EBS only,Up to 12500 Megabit,Windows,Memory Optimized,Windows,NA,No License required
+5HASRPRF2XY9CWHP.JRTCKXETXF.6YS6EN2CT7,11.4176000000,US East (N. Virginia),General purpose,128,m6a.32xlarge,512 GiB,EBS only,50000 Megabit,Windows,General Purpose,Windows,NA,No License required
+AYPJKSTN4WJQRZAK.JRTCKXETXF.6YS6EN2CT7,0.0162000000,US East (N. Virginia),General purpose,1,t2.micro,1 GiB,EBS only,Low to Moderate,Windows,General Purpose,Windows,NA,No License required
+9Q4SMRNHDR2B7M96.JRTCKXETXF.6YS6EN2CT7,0.5270000000,US East (N. Virginia),Storage optimized,4,i4i.xlarge,32 GiB,1 x 937 NVMe SSD,Up to 10 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+5U2P54JKY25MBJTG.JRTCKXETXF.6YS6EN2CT7,1.7840000000,US East (N. Virginia),Memory optimized,16,r5ad.4xlarge,128 GiB,2 x 300 NVMe SSD,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+A5E3R8VRN2MMMED8.JRTCKXETXF.6YS6EN2CT7,0.2590000000,US East (N. Virginia),Memory optimized,2,r5dn.large,16 GiB,1 x 75 NVMe SSD,Up to 25 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+A65KQW6TM9ZUWZJX.JRTCKXETXF.6YS6EN2CT7,0.3180000000,US East (N. Virginia),Storage optimized,2,i3en.large,16 GiB,1 x 1250 NVMe SSD,Up to 25 Gigabit,Windows,Storage Optimized,Windows,NA,No License required
+94NWZVF44EURSHFC.JRTCKXETXF.6YS6EN2CT7,0.8426000000,US East (N. Virginia),General purpose,8,m6id.2xlarge,32 GiB,1 x 474 NVMe SSD,Up to 12500 Megabit,Windows,General Purpose,Windows,NA,No License required
+Q2H7KZTPYNBU2ABJ.JRTCKXETXF.6YS6EN2CT7,3.2060000000,US East (N. Virginia),GPU instance,32,g4ad.8xlarge,128 GiB,1200 GB NVMe SSD,15 Gigabit,Windows,Accelerated Computing,Windows,NA,No License required
+P3FBC83RTJWJ8W93.JRTCKXETXF.6YS6EN2CT7,12.0537600000,US East (N. Virginia),General purpose,96,m6idn.24xlarge,384 GiB,4 x 1425 NVMe SSD,150000 Megabit,Windows,General Purpose,Windows,NA,No License required
+GSFR5KSGZUT24Z75.JRTCKXETXF.6YS6EN2CT7,0.2180000000,US East (N. Virginia),Memory optimized,2,r5.large,16 GiB,EBS only,Up to 10 Gigabit,Windows,Memory Optimized,Windows,NA,No License required
+P4TPDGNQH5SAQPSP.JRTCKXETXF.6YS6EN2CT7,1.5360000000,US East (N. Virginia),General purpose,16,m4.4xlarge,64 GiB,EBS only,High,Windows,General Purpose,Windows,NA,No License required

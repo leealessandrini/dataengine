@@ -3,11 +3,21 @@ This module contains all DataBricks interactive functionality.
 """
 import os
 import base64
+import datetime
 import json
 import requests
+import pandas as pd
 from databricks_cli.sdk.api_client import ApiClient
 from databricks_cli.sdk.service import WorkspaceService
 from databricks_cli.dbfs.cli import DbfsApi
+
+
+DATABRICKS_PRICING_DF = pd.read_csv(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "data",
+    "databricks_pricing.csv"))
+AWS_EC2_PRICING_DF = pd.read_csv(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "data",
+    "aws_ec2_pricing.csv"))
 
 
 def update_global_init_script(host, token, script_text, script_id, name):
@@ -287,3 +297,137 @@ def put_file(host, token, src_path, dbfs_path):
         dbfs_api.client.close(handle)
 
     return
+
+
+def get_cluster_specs(run_details, cluster_key=None):
+    """
+    This method will get the cluster specs given the details of a run and
+    the cluster key.
+    """
+    # Setup cluster
+    if cluster_key:
+        cluster = [
+            i for i in run_details["job_clusters"]
+            if i["job_cluster_key"] == cluster_key
+        ][0]
+    else:
+        cluster = run_details["cluster_spec"]
+    # Pull the node types and number of nodes
+    node_type_id = cluster["new_cluster"]["node_type_id"]
+    if "autoscale" in cluster["new_cluster"]:
+        number_of_nodes = cluster["new_cluster"]["autoscale"]["max_workers"]
+    else:
+        number_of_nodes = cluster["new_cluster"]["num_workers"]
+    if "driver_node_type_id" in cluster:
+        driver_node_type_id = cluster["new_cluster"]["driver_node_type_id"]  
+    else:
+        driver_node_type_id = node_type_id
+    
+    return driver_node_type_id, node_type_id, number_of_nodes
+
+
+def get_job_runs(host, token, job_id, start_date, end_date):
+    """
+    Fetch job runs within a specified time range
+    """
+    url = f'{host}/api/2.0/jobs/runs/list'
+    headers = {'Authorization': f'Bearer {token}'}
+    params = {
+        'job_id': job_id,
+        'start_time_from': int(start_date.timestamp() * 1000),
+        'start_time_to': int(end_date.timestamp() * 1000)}
+    response = requests.get(url, headers=headers, params=params)
+    return response.json().get('runs', [])
+
+
+def get_dbu_given_instance(
+        instance, compute="Jobs Compute", plan="Enterprise"
+    ):
+    return DATABRICKS_PRICING_DF.loc[
+        (DATABRICKS_PRICING_DF["compute"] == compute) &
+        (DATABRICKS_PRICING_DF["plan"] == plan) &
+        (DATABRICKS_PRICING_DF["instance"] == instance)
+    ]["dburate"].values[0]
+
+
+def get_aws_cost_given(instance):
+    return AWS_EC2_PRICING_DF.loc[
+        AWS_EC2_PRICING_DF["Instance Type"] == instance
+    ]["price"].values[0]
+
+
+def get_cluster_details_by_run(run_details):
+    """
+    This method will collect the cluster details given run details.
+    """
+    cluster_details = []
+    # If there are multiple tasks go through each
+    if "tasks" in run_details:
+        for task in run_details["tasks"]:
+            if 'job_cluster_key' in task:
+                cluster_key = task['job_cluster_key']
+                start_time = datetime.datetime.fromtimestamp(task['start_time'] / 1000)
+                end_time = datetime.datetime.fromtimestamp(task['end_time'] / 1000)
+                if not any(cluster_key == i["cluster_key"] for i in cluster_details):
+                    # Get cluster specs
+                    driver_node_type_id, node_type_id, number_of_nodes = get_cluster_specs(
+                        run_details, cluster_key=cluster_key)
+                    # Append Details
+                    cluster_details.append({
+                        "cluster_key": cluster_key,
+                        "start": start_time,
+                        "end": end_time,
+                        "driver_node_type_id": driver_node_type_id,
+                        "node_type_id": node_type_id,
+                        "number_of_nodes": number_of_nodes})
+                else:
+                    i = 0
+                    for i in range(len(cluster_details)):
+                        if cluster_key == cluster_details[i]["cluster_key"]:
+                            break
+                    cluster_details[i]['start'] = min(cluster_details[i]['start'], start_time)
+                    cluster_details[i]['end'] = max(cluster_details[i]['end'], end_time)
+    # Otherwise pull the corresonding info from the single job cluster
+    else:
+        # Get cluster specs
+        driver_node_type_id, node_type_id, number_of_nodes = get_cluster_specs(run_details)
+        # Organize cluster details
+        cluster_details.append({
+            # Set the cluster key to just job cluster
+            "cluster_key": "job_cluster",
+            # Convert millisecond unix time to datetime objects
+            "start": datetime.datetime.fromtimestamp(
+                run_details["start_time"] / 1000),
+            "end": datetime.datetime.fromtimestamp(
+                run_details["end_time"] / 1000),
+            "driver_node_type_id": driver_node_type_id,
+            "node_type_id": node_type_id,
+            "number_of_nodes": number_of_nodes})
+    # Cast to DataFrame and add additional values
+    cluster_details = pd.DataFrame(cluster_details)
+    cluster_details["hours_on"] = cluster_details.apply(
+        lambda x: round((x["end"] - x["start"]).total_seconds() / 3600, 2), axis=1)
+    cluster_details["run_name"] = run_details["run_name"]
+    cluster_details["job_id"] = run_details["job_id"]
+    cluster_details["run_id"] = run_details["run_id"]
+    # Add DataBricks and EC2 instance cost
+    cluster_details["dbu"] = 0
+    cluster_details["databricks_cost"] = 0
+    for index, row in cluster_details.iterrows():
+        # Calculate DBU Usage for Driver and Workers
+        dbu = row["hours_on"] * float(
+            get_dbu_given_instance(row["driver_node_type_id"]))
+        dbu += row["hours_on"] * row["number_of_nodes"] * float(
+            get_dbu_given_instance(row["node_type_id"]))
+        cluster_details.loc[index, "dbu"] = dbu
+        # Calculate EC2 Cost for Driver and Workers
+        ec2_cost = row["hours_on"] * float(
+            get_aws_cost_given(row["driver_node_type_id"]))
+        ec2_cost += row["hours_on"] * row["number_of_nodes"] * float(
+            get_aws_cost_given(row["node_type_id"]))
+        cluster_details.loc[index, "ec2_cost"] = ec2_cost
+    # Calculate Cost
+    cost_per_dbu = 0.2 # Assume enterprise cost for job compute
+    cluster_details["databricks_cost"] = cluster_details["dbu"] * cost_per_dbu
+
+    return cluster_details
