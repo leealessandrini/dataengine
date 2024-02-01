@@ -57,6 +57,6 @@ setup(
     install_requires=required_packages,
     include_package_data=True,
     package_data={
-        'dataengine': ["utilites/data/*.csv"],
+        'dataengine': ["utilities/data/*.csv"],
     },
 )
