@@ -22,6 +22,7 @@ class BaseDatasetSchema(AssetSchema):
     """
     file_path_list = fields.List(fields.Str(), required=True)
     file_format = fields.Str(load_default="csv")
+    location = fields.Str(load_default="local")
     bucket_asset_name = fields.Str()
     header = fields.Bool(load_default=True)
     schema = fields.Dict(keys=fields.Str(), values=fields.Str())
@@ -79,6 +80,7 @@ class BaseDataset(Asset):
             asset_name: str,
             file_path_list: list,
             file_format: str = "csv",
+            location: str = "local",
             bucket_asset_name: str = None,
             header: bool = True,
             schema: Optional[Dict[str, str]] = None
@@ -88,12 +90,12 @@ class BaseDataset(Asset):
         self.file_format = file_format
         self.header = header
         self.schema = schema
-        # Setup location
+        # Override location to s3 if bucket name is provided
         self.bucket_asset_name = bucket_asset_name
         if self.bucket_asset_name:
             self.location = "s3"
         else:
-            self.location = "local"
+            self.location = location
         # Initially, the dataset is not in any bucket
         self.bucket: Optional[Bucket] = None
 
