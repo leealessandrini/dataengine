@@ -25,7 +25,7 @@ class BaseDatasetSchema(AssetSchema):
     location = fields.Str(load_default="local")
     bucket_asset_name = fields.Str()
     header = fields.Bool(load_default=True)
-    schema = fields.Dict(keys=fields.Str(), values=fields.Str())
+    schema = fields.Dict()
     
     @validates("file_format")
     def validate_file_format(self, file_format):
@@ -38,6 +38,20 @@ class BaseDatasetSchema(AssetSchema):
                 f"Invalid file_format '{file_format}' provided, "
                 "please choose among the list: [{}]".format(
                     ", ".join(valid_args)))
+
+    @validates("schema")
+    def validate_schema(self, schema):
+        """
+        Validate the 'schema' field to ensure it's a dictionary of key-value
+        pairs where both keys and values are strings.
+        """
+        if not isinstance(schema, dict):
+            raise ValidationError("Schema must be a dictionary.")
+
+        for key, value in schema.items():
+            if not isinstance(key, str) or not isinstance(value, str):
+                raise ValidationError(
+                    "Schema keys and values must be strings.")
     
     @post_load
     def make_dataset(self, data, **kwargs):
