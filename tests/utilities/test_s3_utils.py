@@ -1,7 +1,7 @@
 import tempfile
 import pytest
 import boto3
-from moto import mock_s3
+from moto import mock_aws
 import numpy as np
 import pandas as pd
 from dataengine.utilities import s3_utils
@@ -24,7 +24,7 @@ def aws_credentials():
 
 @pytest.fixture
 def s3_client(aws_credentials):
-    with mock_s3():
+    with mock_aws():
         conn = boto3.client("s3", region_name="us-east-1")
         yield conn
 

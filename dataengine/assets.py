@@ -4,7 +4,7 @@ from typing import List, Optional, Dict, Union, Any
 import logging
 import yaml
 from marshmallow import Schema, fields, validates, post_load, ValidationError
-from .utilities import mysql_utils, postgresql_utils
+from .utilities import mysql_utils, postgresql_utils, general_utils
 
 ENVIRONMENT_VAR_REGEX = re.compile(r"\{\{(.+?)\}\}")
 
@@ -20,8 +20,9 @@ class BaseDatasetSchema(AssetSchema):
     """
     Schema for BaseDataset class.
     """
-    file_path_list = fields.List(fields.Str(), required=True)
+    file_path = general_utils.StringOrListField(required=True)
     file_format = fields.Str(load_default="csv")
+    separator = fields.String(load_default=",")
     location = fields.Str(load_default="local")
     bucket_asset_name = fields.Str()
     header = fields.Bool(load_default=True)
@@ -54,7 +55,7 @@ class BaseDatasetSchema(AssetSchema):
                     "Schema keys and values must be strings.")
     
     @post_load
-    def make_dataset(self, data, **kwargs):
+    def make_base_dataset(self, data, **kwargs):
         return BaseDataset(**data)
 
 
@@ -92,15 +93,22 @@ class BaseDataset(Asset):
     def __init__(
             self,
             asset_name: str,
-            file_path_list: list,
+            file_path: Union[str, List[str]],
             file_format: str = "csv",
+            separator: str = ",",
             location: str = "local",
             bucket_asset_name: str = None,
             header: bool = True,
             schema: Optional[Dict[str, str]] = None
     ):
+        # Setup asset name
         super().__init__(asset_name)
-        self.file_path_list = file_path_list
+        # Setup filepath
+        if isinstance(file_path, str):
+            file_path = [file_path]
+        self.file_path_list = file_path
+        # Set base dataset parameters
+        self.separator = separator
         self.file_format = file_format
         self.header = header
         self.schema = schema

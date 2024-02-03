@@ -4,6 +4,7 @@ import datetime
 from marshmallow import Schema, fields, post_load, validates, ValidationError
 import pandas as pd
 from .utilities import s3_utils, spark_utils, general_utils
+from assets import BaseDatasetSchema, BaseDataset
 
 S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
 S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
@@ -45,94 +46,87 @@ class TimestampConversionSchema(Schema):
     new_column_header = fields.String()
 
 
-class DatasetSchema(Schema):
+class DatasetSchema(BaseDatasetSchema):
     """
         Dataset marshmallow validation schema.
     """
+    # TODO: Phase out required fields
     spark = fields.Raw(required=True)
     dt = fields.DateTime(required=True)
     hour = fields.String(required=True)
-    file_path = general_utils.StringOrListField(required=True)
     bucket = fields.String(required=True)
     format_args = fields.Dict()
-    file_format = fields.String()
-    column_headers = fields.List(fields.String())
-    column_types = fields.List(fields.String())
-    separator = fields.String()
-    header = fields.Boolean()
     time_delta = fields.Nested(TimeDeltaSchema)
     timestamp_conversion = fields.List(
         fields.Nested(TimestampConversionSchema))
     dt_delta = fields.Nested(DtDeltaSchema)
     exclude_hours = fields.List(fields.String())
     rename = fields.Dict()
-    location = fields.String(default="s3")
-
-    @validates("file_format")
-    def validate_file_format(self, file_format):
-        valid_args = ["csv", "parquet", "delta", "avro", "json"]
-        if file_format not in valid_args:
-            raise ValidationError(
-                f"Invalid file_format '{file_format}' provided, "
-                "please choose among the list: [{}]".format(
-                    ", ".join(valid_args)))
-
-    @validates("location")
-    def validate_location(self, location):
-        valid_args = ["s3", "local"]
-        if location not in valid_args:
-            raise ValidationError(
-                f"Invalid location '{location}' provided, "
-                "please choose among the list: [{}]".format(
-                    ", ".join(valid_args)))
 
     @post_load
-    def create_dataset(self, input_data, **kwargs):
-        return Dataset(**input_data)
+    def make_dataset(self, data, **kwargs):
+        return Dataset(**data)
 
 
-class Dataset(object):
+class Dataset(BaseDataset):
     """
     Dataset class.
     """
 
     def __init__(
-            self, spark, dt, hour, file_path, bucket,
-            format_args={}, file_format="csv", column_headers=[],
-            column_types=[], separator=",", header=False,
+            self,
+            # BaseDataset fields
+            asset_name, file_path, file_format="csv", separator=",",
+            location="local", bucket_asset_name=None, header=True,
+            schema=None,
+            # Additional Dataset specific fields
+            spark=None, dt=datetime.datetime.utcnow(), hour="*",
+            bucket=None, format_args={},
             time_delta={"days": 0, "hours": 0, "weeks": 0},
             timestamp_conversion=[], dt_delta={}, exclude_hours=[],
-            rename={}, location="s3", **kwargs
+            rename={}, **kwargs
         ):
         """
         Dataset constructor.
         """
+        # Setup BaseDataset arguments
+        super.__init__(
+            asset_name, file_path, file_format, separator, location,
+            bucket_asset_name, header, schema)
+        # Setup additional Dataset arguments
         self.spark = spark
-        self.file_format = file_format
         # Get all unique permutations of the format arguments
         format_args_permutations = general_utils.get_dict_permutations(
             format_args)
-        # Convert file path to list if a string was passed in
-        if isinstance(file_path, str):
-            file_path = [file_path]
         # Load data from s3 if that is what the location is set to
         if location == "s3":
             self.file_path_list = self._setup_s3_path(
-                file_path, dt, hour, time_delta, bucket, 
+                self.file_path_list, dt, hour, time_delta, bucket, 
                 format_args_permutations, dt_delta, exclude_hours)
             # Load data into a pyspark DataFrame
             self.df = self._load_data_from_s3(
-                column_headers, column_types, file_format, separator, header,
-                rename=rename)
+                schema, file_format, separator, header, rename=rename)
             # Convert timestamp if applicable
             if timestamp_conversion:
                 for params in timestamp_conversion:
                     self.df = spark_utils.convert_timestamp(self.df, **params)
         # Otherwise assume the data is a local csv file
         else:
-            self.file_path_list = file_path
-            self.df = spark_utils.pandas_to_spark(spark, pd.concat([
-                pd.read_csv(path) for path in file_path], ignore_index=True))
+            self.df = spark_utils.pandas_to_spark(
+                spark, pd.concat(
+                    [pd.read_csv(path) for path in self.file_path_list],
+                    ignore_index=True))
+    
+    @classmethod
+    def from_base_dataset(cls, base_dataset, **additional_fields):
+        # Create a new Dataset instance using attributes from base_dataset
+        # and any additional fields specific to Dataset
+        return cls(
+            base_dataset.asset_name, base_dataset.file_path_list,
+            base_dataset.file_format, base_dataset.separator,
+            base_dataset.location, base_dataset.bucket_asset_name,
+            base_dataset.header, base_dataset.schema,
+            **additional_fields)
 
     def _setup_s3_path(
             self, s3_path, dt, hour, time_delta, bucket, format_args,
@@ -257,8 +251,7 @@ class Dataset(object):
 
 
     def _load_data_from_s3(
-            self, column_headers, column_types, file_format, separator,
-            header, rename={}):
+            self, schema, file_format, separator, header, rename={}):
         """
         This method will load the dataset into a pyspark DataFrame object
         and set corresponding meta data.
@@ -275,7 +268,7 @@ class Dataset(object):
             df = self.spark.read.load(
                 self.file_path_list, format=file_format, sep=separator,
                 header=header, schema=spark_utils.create_spark_schema(
-                    column_headers, column_types))
+                    schema.keys(), schema.values()))
         elif file_format in ("parquet", "delta", "avro"):
             df = self.spark.read.load(
                 self.file_path_list, format=file_format, mergeSchema=True)
