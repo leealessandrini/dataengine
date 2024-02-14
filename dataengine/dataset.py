@@ -4,7 +4,7 @@ import datetime
 from marshmallow import Schema, fields, post_load, validates, ValidationError
 import pandas as pd
 from .utilities import s3_utils, spark_utils, general_utils
-from assets import BaseDatasetSchema, BaseDataset
+from .assets import BaseDatasetSchema, BaseDataset
 
 S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
 S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
