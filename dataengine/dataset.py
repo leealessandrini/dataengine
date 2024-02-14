@@ -90,7 +90,7 @@ class Dataset(BaseDataset):
         Dataset constructor.
         """
         # Setup BaseDataset arguments
-        super.__init__(
+        super().__init__(
             asset_name, file_path, file_format, separator, location,
             bucket_asset_name, header, schema)
         # Setup additional Dataset arguments
