@@ -14,6 +14,7 @@ class AssetSchema(Schema):
     Base Asset Schema.
     """
     asset_name = fields.Str(required=True)
+    dirname = fields.Str(required=True)
 
 
 class BaseDatasetSchema(AssetSchema):
@@ -77,8 +78,9 @@ class Asset:
     The Asset class will function as our parent class for all different types
     of assets.
     """
-    def __init__(self, asset_name: str):
+    def __init__(self, asset_name: str, dirname: str):
         self.asset_name = asset_name
+        self.dirname = dirname
 
 
 # Forward declaration for type hinting
@@ -93,6 +95,7 @@ class BaseDataset(Asset):
     def __init__(
             self,
             asset_name: str,
+            dirname: str,
             file_path: Union[str, List[str]],
             file_format: str = "csv",
             separator: str = ",",
@@ -102,7 +105,7 @@ class BaseDataset(Asset):
             schema: Optional[Dict[str, str]] = None
     ):
         # Setup asset name
-        super().__init__(asset_name)
+        super().__init__(asset_name, dirname)
         # Setup filepath
         if isinstance(file_path, str):
             file_path = [file_path]
@@ -118,6 +121,11 @@ class BaseDataset(Asset):
             self.location = "s3"
         else:
             self.location = location
+        # Get the relative normal path of for the local files
+        if self.location == "local":
+            self.file_path_list = [
+                os.path.normpath(os.path.join(dirname, i))
+                for i in self.file_path_list]
         # Initially, the dataset is not in any bucket
         self.bucket: Optional[Bucket] = None
 
@@ -188,6 +196,7 @@ class Database(Asset):
     def __init__(
                 self,
                 asset_name: str,
+                dirname: str,
                 database_type,
                 host,
                 port,
@@ -197,7 +206,7 @@ class Database(Asset):
         """
         Setup database interface arguments.
         """
-        super().__init__(asset_name)
+        super().__init__(asset_name, dirname)
         self.database_type = database_type
         self.host = host
         self.port = port
@@ -343,9 +352,16 @@ def load_asset_config_files(
     asset_config = {}
     # Iterate over input asset configuration paths
     for path in asset_config_path_list:
+        # Pull dirname from asset config file
+        dirname = os.path.dirname(os.path.realpath(path))
         # Use a context manager for file I/O
         with open(path, "r") as f:
-            asset_config.update(yaml.safe_load(f))
+            config = yaml.safe_load(f)
+            # Add the file dirname for each 
+            for key in config.keys():
+                config[key]["dirname"] = dirname
+            # Update asset config with new assets
+            asset_config.update(config)
     
     return asset_config
 

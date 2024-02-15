@@ -3,11 +3,14 @@ import pytest
 from unittest.mock import patch
 from dataengine import assets
 
+DIRNAME = os.path.dirname(os.path.realpath(__file__))
+
 # Mock BaseDataset Inputs
 @pytest.fixture
 def valid_input_data():
     return {
         "asset_name": "MyAsset",
+        "dirname": DIRNAME,
         "file_path": "data/file.csv",
         "file_format": "csv",
         "separator": ",",
@@ -65,7 +68,7 @@ def test_deserialize_valid_input(valid_input_data):
     result = schema.load(valid_input_data)
     assert isinstance(result, assets.BaseDataset)
     assert result.asset_name == "MyAsset"
-    assert result.file_path_list == ["data/file.csv"]
+    assert result.file_path_list == [os.path.join(DIRNAME, "data/file.csv")]
 
 
 def test_deserialize_invalid_file_format(valid_input_data):
@@ -86,7 +89,9 @@ def test_base_dataset_instantiation_via_schema(valid_input_data):
     # Assertions to verify the BaseDataset instance is correctly instantiated
     assert isinstance(result, assets.BaseDataset), "Resulting object is not an instance of BaseDataset"
     assert result.asset_name == valid_input_data["asset_name"], "Asset name was not set correctly"
-    assert result.file_path_list == [valid_input_data["file_path"]], "File paths were not set correctly"
+    assert result.file_path_list == [
+        os.path.join(DIRNAME, valid_input_data["file_path"])
+    ], "File paths were not set correctly"
     assert result.file_format == valid_input_data["file_format"], "File format was not set correctly"
     assert result.separator == valid_input_data["separator"], "Separator was not set correctly"
     assert result.location == valid_input_data["location"], "Location was not set correctly"
