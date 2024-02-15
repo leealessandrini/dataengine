@@ -76,7 +76,7 @@ class Dataset(BaseDataset):
     def __init__(
             self,
             # BaseDataset fields
-            asset_name, file_path, file_format="csv", separator=",",
+            asset_name, dirname, file_path, file_format="csv", separator=",",
             location="local", bucket_asset_name=None, header=True,
             schema=None,
             # Additional Dataset specific fields
@@ -91,7 +91,7 @@ class Dataset(BaseDataset):
         """
         # Setup BaseDataset arguments
         super().__init__(
-            asset_name, file_path, file_format, separator, location,
+            asset_name, dirname, file_path, file_format, separator, location,
             bucket_asset_name, header, schema)
         # Setup additional Dataset arguments
         self.spark = spark
@@ -122,11 +122,11 @@ class Dataset(BaseDataset):
         # Create a new Dataset instance using attributes from base_dataset
         # and any additional fields specific to Dataset
         return cls(
-            base_dataset.asset_name, base_dataset.file_path_list,
-            base_dataset.file_format, base_dataset.separator,
-            base_dataset.location, base_dataset.bucket_asset_name,
-            base_dataset.header, base_dataset.schema,
-            **additional_fields)
+            base_dataset.asset_name, base_dataset.dirname,
+            base_dataset.file_path_list, base_dataset.file_format,
+            base_dataset.separator, base_dataset.location,
+            base_dataset.bucket_asset_name, base_dataset.header,
+            base_dataset.schema, **additional_fields)
 
     def _setup_s3_path(
             self, s3_path, dt, hour, time_delta, bucket, format_args,
