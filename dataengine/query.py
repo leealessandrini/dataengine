@@ -227,7 +227,7 @@ class Query(object):
         if "format_args" in sql_info:
             self.format_args = sql_info["format_args"]
         self.sql = self._load_sql(
-            date_str, dt_str, hour, self.file_path_list, self.format_args)
+            dt, date_str, dt_str, hour, self.file_path_list, self.format_args)
         # Setup intermittent tables if provided
         if "intermittent_tables" in sql_info:
             self.intermittent_tables = sql_info["intermittent_tables"]
@@ -241,7 +241,7 @@ class Query(object):
                     format_args)
 
 
-    def _load_sql(self, date_str, dt_str, hour, file_path_list, format_args):
+    def _load_sql(self, dt, date_str, dt_str, hour, file_path_list, format_args):
         """
         This method will load the query and format all arguments.
 
@@ -262,7 +262,7 @@ class Query(object):
             # Format string using custom formatter
             fmt = MyFormatter()
             query = fmt.format(
-                query, date_str=date_str, dt_str=dt_str, hour=hour,
+                query, dt=dt, date_str=date_str, dt_str=dt_str, hour=hour,
                 **format_args)
             # Append to list
             sql_list.append(query)
