@@ -237,7 +237,7 @@ class Query(object):
                 else:
                     format_args = {}
                 self.intermittent_tables[i]["sql"] = self._load_sql(
-                    date_str, dt_str, hour, [self.intermittent_tables[i]["filename"]],
+                    dt, date_str, dt_str, hour, [self.intermittent_tables[i]["filename"]],
                     format_args)
 
 
