@@ -56,22 +56,23 @@ def run_athena_query(
     # If the query is successful, parse the result into a Pandas DataFrame
     if query_status == 'SUCCEEDED':
         success = True
-        # Fetch the query results using get_query_results()
-        results = athena_client.get_query_results(
-            QueryExecutionId=query_execution_id)
-        # Parse the results into a Pandas DataFrame
-        df = pd.DataFrame(
-            [
-                [
-                    value.get('VarCharValue', np.nan)
-                    for value in row['Data']
-                ]
-                for row in results['ResultSet']['Rows']
-            ],
-            columns=[col['Name'] for col in results[
-                'ResultSet']['ResultSetMetadata']['ColumnInfo']]
-        )
+        #Paginator object to retrieve the results of the query using pagination
+        paginator = athena_client.get_paginator('get_query_results')
+        result_iterator = paginator.paginate(QueryExecutionId=query_execution_id)
+        #Iterate over the result pages and extract the rows of data from each page.
+        rows = []
+        for result in result_iterator:
+            for row in result['ResultSet']['Rows']:
+                rows.append(row['Data'])
+        if rows:
+            column_info = result['ResultSet']['ResultSetMetadata']['ColumnInfo']
+            column_names = [col['Name'] for col in column_info]
+            data = [
+                [value.get('VarCharValue', np.nan) for value in row]
+                for row in rows[1:]  # Skip header row
+            ]
+            df = pd.DataFrame(data, columns=column_names)
     else:
-        print(f"Query failed: {query_execution_id}")
+      print(f"Query failed with status '{query_status}': {query_execution_id}")
 
     return df, success
