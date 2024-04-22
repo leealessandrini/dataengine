@@ -56,16 +56,20 @@ def run_athena_query(
     # If the query is successful, parse the result into a Pandas DataFrame
     if query_status == 'SUCCEEDED':
         success = True
-        #Paginator object to retrieve the results of the query using pagination
+        # Paginator object to retrieve the results of the query using
+        # pagination
         paginator = athena_client.get_paginator('get_query_results')
-        result_iterator = paginator.paginate(QueryExecutionId=query_execution_id)
-        #Iterate over the result pages and extract the rows of data from each page.
+        result_iterator = paginator.paginate(
+            QueryExecutionId=query_execution_id)
+        # Iterate over the result pages and extract the rows of data from each
+        # page.
         rows = []
         for result in result_iterator:
             for row in result['ResultSet']['Rows']:
                 rows.append(row['Data'])
         if rows:
-            column_info = result['ResultSet']['ResultSetMetadata']['ColumnInfo']
+            column_info = result[
+                'ResultSet']['ResultSetMetadata']['ColumnInfo']
             column_names = [col['Name'] for col in column_info]
             data = [
                 [value.get('VarCharValue', np.nan) for value in row]
