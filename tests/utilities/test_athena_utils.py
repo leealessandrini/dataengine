@@ -1,54 +1,52 @@
 import pytest
 from unittest.mock import patch, MagicMock
-import pandas as pd
 from dataengine.utilities import athena_utils
 
-# Mock data to simulate a query result
-mock_result_data = [
-    {'Data': [{'VarCharValue': '1'}, {'VarCharValue': 'apple'}]},
-    {'Data': [{'VarCharValue': '2'}, {'VarCharValue': 'banana'}]}
-]
+@pytest.fixture
+def athena_client():
+    with patch('boto3.client', autospec=True) as mock:
+        yield mock.return_value
 
-mock_column_info = [
-    {'Name': 'id'},
-    {'Name': 'fruit'}
-]
+def configure_mock_for_success(mock_athena_client):
+    # Setup paginator to simulate success
+    paginator = MagicMock()
+    mock_athena_client.get_paginator.return_value = paginator
+    paginator.paginate.return_value = [
+        {'ResultSet': {
+            'Rows': [{'Data': [{'VarCharValue': 'id'}, {'VarCharValue': 'description'}]},
+                     {'Data': [{'VarCharValue': '1'}, {'VarCharValue': 'Test'}]},
+                     {'Data': [{'VarCharValue': '2'}, {'VarCharValue': 'Example'}]}],
+            'ResultSetMetadata': {'ColumnInfo': [{'Name': 'id'}, {'Name': 'description'}]}
+        }}]
+    mock_athena_client.start_query_execution.return_value = {'QueryExecutionId': '12345'}
+    mock_athena_client.get_query_execution.side_effect = [
+        {'QueryExecution': {'Status': {'State': 'RUNNING'}}},
+        {'QueryExecution': {'Status': {'State': 'SUCCEEDED'}}}]
 
-# Function to mock get_query_results
-def mock_get_query_results(*args, **kwargs):
-    return {
-        'ResultSet': {
-            'Rows': mock_result_data,
-            'ResultSetMetadata': {
-                'ColumnInfo': mock_column_info
-            }
-        }
-    }
+def configure_mock_for_failure(mock_athena_client):
+    # Setup to simulate a failure
+    mock_athena_client.start_query_execution.return_value = {'QueryExecutionId': '12345'}
+    mock_athena_client.get_query_execution.return_value = {
+        'QueryExecution': {'Status': {'State': 'FAILED'}}}
 
-# Function to mock get_query_execution
-def mock_get_query_execution(*args, **kwargs):
-    return {
-        'QueryExecution': {
-            'Status': {
-                'State': 'SUCCEEDED'
-            }
-        }
-    }
+def test_run_athena_query_success(athena_client):
+    configure_mock_for_success(athena_client)
+    df, success = athena_utils.run_athena_query(
+        None, None, 'SELECT * FROM test_table',
+        'test_database', 'primary', 'us-west-2')
+    assert success
+    assert not df.empty
+    assert df.shape[0] == 2  # Two data rows
+    assert list(df.columns) == ['id', 'description']
+    assert df.iloc[0]['id'] == '1'
+    assert df.iloc[0]['description'] == 'Test'
+    assert df.iloc[1]['id'] == '2'
+    assert df.iloc[1]['description'] == 'Example'
 
-def test_run_athena_query_succeeded():
-    with patch('boto3.client') as mock_boto_client:  # Replace 'your_module' with the actual module name
-        mock_athena = MagicMock()
-        mock_boto_client.return_value = mock_athena
-        mock_athena.start_query_execution.return_value = {
-            'QueryExecutionId': 'mock_id'}
-        mock_athena.get_query_execution.side_effect = mock_get_query_execution
-        mock_athena.get_query_results.side_effect = mock_get_query_results
-        # Read data from mocked athena
-        df, success = athena_utils.run_athena_query(
-            'fake_access_key', 'fake_secret_key', 'SELECT * FROM table',
-            'test_db', 'primary')
-        # Assert equivalence
-        assert success == True
-        assert not df.empty
-        assert list(df.columns) == ['id', 'fruit']
-        assert df.shape == (2, 2)
+def test_run_athena_query_failure(athena_client):
+    configure_mock_for_failure(athena_client)
+    df, success = athena_utils.run_athena_query(
+        None, None, 'SELECT * FROM test_table',
+        'test_database', 'primary', 'us-west-2')
+    assert not success
+    assert df.empty
