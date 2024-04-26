@@ -328,6 +328,32 @@ class Database(Asset):
 
         return success
 
+    def drop_table(self, schema_name: str, table_name: str):
+        """
+        This method will allow users to drop tables from a database provided
+        schema and table names.
+
+        Args:
+            schema_name (str): name of database schema
+            table_name (str): name of database table            
+
+        Returns:
+            success boolean
+        """
+        # Connect to database
+        conn = self.get_connection(schema_name)
+        try:
+            with conn.cursor() as cur:
+                cur.execute(f"DROP TABLE IF EXISTS {table_name};")
+            conn.commit()
+            logging.info(f"Successfully dropped {schema_name}.{table_name}")
+            conn.close()
+        except Exception as e:
+            logging.error(f"Failed to drop table: {e}")
+            return False
+
+        return True
+
 
 def load_asset_config_files(
         asset_config_path_list: List[str]
