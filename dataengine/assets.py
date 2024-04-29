@@ -383,7 +383,10 @@ class Database(Asset):
         with conn.cursor() as cur:
             cur.execute(query)
             result = cur.fetchone()
-            return result[0] if result else False
+            if self.database_type == 'mysql':
+                return result is not None
+            else:
+                return result[0]
 
 
 def load_asset_config_files(
