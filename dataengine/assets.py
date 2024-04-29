@@ -354,6 +354,37 @@ class Database(Asset):
 
         return True
 
+    def check_table_existence(self, schema_name: str, table_name: str):
+        """
+        This method will check whether a table exists in a provided schema.
+
+        Args:
+            schema_name (str): name of database schema
+            table_name (str): name of database table            
+
+        Returns:
+            boolean for whether the table exists
+        """
+        conn = self.get_connection(schema_name)
+        if self.database_type == "mysql":
+            # MySQL query
+            query = f"SHOW TABLES LIKE '{table_name}'"
+        else:
+            # PostgreSQL query
+            query = f"""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE
+                    table_schema = '{schema_name}' AND
+                    table_name = '{table_name}'
+            );
+            """
+        # Connect to database and execute table existence check
+        with conn.cursor() as cur:
+            cur.execute(query)
+            result = cur.fetchone()
+            return result[0] if result else False
+
 
 def load_asset_config_files(
         asset_config_path_list: List[str]
