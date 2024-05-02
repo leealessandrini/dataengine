@@ -6,6 +6,18 @@ from dataengine import dataset
 from .utilities import general_utils
 
 
+class SingleOrListField(fields.Field):
+    def __init__(self, cls_or_instance, **kwargs):
+        super().__init__(**kwargs)
+        self.inner_field = fields.List(cls_or_instance) if not isinstance(
+            cls_or_instance, fields.List) else cls_or_instance
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        if isinstance(value, dict):
+            value = [value]  # Convert dict to list
+        return self.inner_field.deserialize(value, attr, data)
+
+
 class MyFormatter(string.Formatter):
     """
     Custom formatter class from stackoverflow.com/questions/17215400
@@ -142,7 +154,7 @@ class QuerySchema(Schema):
     """
     dt = fields.DateTime(required=True)
     hour = fields.String(required=True)
-    sql_info = fields.Nested(SqlInfoSchema, required=True)
+    sql_info = SingleOrListField(SqlInfoSchema, required=True)
     # TODO: Move ouput arguments to Nested schema
     output = fields.String(required=True)
     file_format = fields.String()
@@ -218,32 +230,42 @@ class Query(object):
                 replace_where, date_str, dt_str)
         else:
             self.replace_where = replace_where
-        # Load SQL file and format query
-        if isinstance(sql_info["filename"], str):
-            self.file_path_list = [sql_info["filename"]]
-        else:
-            self.file_path_list = sql_info["filename"]
-        self.format_args = {}
-        if "format_args" in sql_info:
-            self.format_args = sql_info["format_args"]
-        self.sql = self._load_sql(
-            dt, date_str, dt_str, hour, self.file_path_list, self.format_args)
-        # Setup intermittent tables if provided
-        if "intermittent_tables" in sql_info:
-            self.intermittent_tables = sql_info["intermittent_tables"]
-            for i in range(len(self.intermittent_tables)):
-                if "format_args" in self.intermittent_tables[i]:
-                    format_args = self.intermittent_tables[i]["format_args"]
-                else:
-                    format_args = {}
-                self.intermittent_tables[i]["sql"] = self._load_sql(
-                    dt, date_str, dt_str, hour, [self.intermittent_tables[i]["filename"]],
-                    format_args)
+        # Setup sql arguments
+        self.sql = self._setup_sql_arguments(
+            sql_info, dt, date_str, dt_str, hour)
+    
+    def _setup_sql_arguments(self, sql_info, dt, date_str, dt_str, hour):
+        """
+        This method will setup the primary sql statement for the query.
+        """
+        self.file_path_list = []
+        sql_list = []
+        # If sql_info isn't a list make it a list
+        if not isinstance(sql_info, list):
+            sql_info = [sql_info]
+        # Iterate over each set and setup the corresponding information
+        sql_list = []
+        for values in sql_info:
+            # Add formatted sql to sql list
+            sql_list.append(self._load_sql(
+                dt, date_str, dt_str, hour,
+                [values["filename"]] if isinstance(values["filename"], str) else values["filename"],
+                values["format_args"] if "format_args" in values else {}))
+            # TODO: Update intermittent tables to be outside of sql_info object
+            # Setup intermittent tables if provided
+            if "intermittent_tables" in values:
+                self.intermittent_tables = values["intermittent_tables"]
+                for index, value in enumerate(self.intermittent_tables):
+                    self.intermittent_tables[index]["sql"] = self._load_sql(
+                        dt, date_str, dt_str, hour, [value["filename"]],
+                        format_args=value["format_args"] if "format_args" in value else {})
 
+        return "\n\nUNION ALL\n\n".join(sql_list)
 
     def _load_sql(self, dt, date_str, dt_str, hour, file_path_list, format_args):
         """
         This method will load the query and format all arguments.
+        TODO: Remove this once setup function is working as expected
 
         Args:
             base_dir (str): base file directory
