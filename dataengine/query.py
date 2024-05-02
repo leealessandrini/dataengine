@@ -9,12 +9,16 @@ from .utilities import general_utils
 class SingleOrListField(fields.Field):
     def __init__(self, cls_or_instance, **kwargs):
         super().__init__(**kwargs)
-        self.inner_field = fields.List(cls_or_instance) if not isinstance(
-            cls_or_instance, fields.List) else cls_or_instance
+        # Ensure the inner field is always a list of nested fields
+        if isinstance(cls_or_instance, fields.Field):
+            self.inner_field = fields.List(cls_or_instance)
+        else:
+            # This assumes cls_or_instance is a Schema class or an instance of a Schema
+            self.inner_field = fields.List(fields.Nested(cls_or_instance))
 
     def _deserialize(self, value, attr, data, **kwargs):
         if isinstance(value, dict):
-            value = [value]  # Convert dict to list
+            value = [value]  # Convert dict to list if not already a list
         return self.inner_field.deserialize(value, attr, data)
 
 
