@@ -90,6 +90,7 @@ class DependencySchema(Schema):
         fields.Nested(dataset.TimestampConversionSchema))
     dt_delta = fields.Nested(dataset.DtDeltaSchema)
     exclude_hours = fields.List(fields.String())
+    check_path = fields.Boolean(load_default=True)
 
 
 class DeleteInfoSchema(Schema):
