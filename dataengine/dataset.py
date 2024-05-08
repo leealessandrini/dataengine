@@ -62,6 +62,7 @@ class DatasetSchema(BaseDatasetSchema):
     dt_delta = fields.Nested(DtDeltaSchema)
     exclude_hours = fields.List(fields.String())
     rename = fields.Dict()
+    check_path = fields.Boolean(load_default=True)
 
     @post_load
     def make_dataset(self, data, **kwargs):
@@ -84,7 +85,7 @@ class Dataset(BaseDataset):
             bucket=None, format_args={},
             time_delta={"days": 0, "hours": 0, "weeks": 0},
             timestamp_conversion=[], dt_delta={}, exclude_hours=[],
-            rename={}, **kwargs
+            rename={}, check_path=True, **kwargs
         ):
         """
         Dataset constructor.
@@ -102,7 +103,8 @@ class Dataset(BaseDataset):
         if location == "s3":
             self.file_path_list = self._setup_s3_path(
                 self.file_path_list, dt, hour, time_delta, bucket, 
-                format_args_permutations, dt_delta, exclude_hours)
+                format_args_permutations, dt_delta, exclude_hours,
+                check_path)
             # Load data into a pyspark DataFrame
             self.df = self._load_data_from_s3(
                 schema, file_format, separator, header, rename=rename)
@@ -130,7 +132,7 @@ class Dataset(BaseDataset):
 
     def _setup_s3_path(
             self, s3_path, dt, hour, time_delta, bucket, format_args,
-            dt_delta, exclude_hours):
+            dt_delta, exclude_hours, check_path):
         """
         This method will setup the s3 path for the dataset.
 
@@ -196,15 +198,20 @@ class Dataset(BaseDataset):
                             hour=dt_object.hour,
                             lz_hour=general_utils.leading_zero(dt_object.hour),
                             bucket=bucket, **unique_format_args)
-                        # Only check whether path exists if the bucket matches
-                        # TODO: Update this once bucket asset is setup properly
-                        if bucket in dt_path:
-                            exist_status = s3_utils.check_s3_path(
-                                S3_ACCESS_KEY, S3_SECRET_KEY, dt_path, bucket)
-                        else:
-                            # Assume we are using IAM role to read
-                            exist_status = s3_utils.check_s3_path(
-                                None, None, *s3_utils.parse_url(dt_path))
+                        # If the check_path field is True then make sure the
+                        # path exists before attempting to load it.
+                        # Note: this is optional in case keys or iam role
+                        # don't have read access to the bucket for any reason
+                        exist_status = True
+                        if check_path:
+                            # TODO: Update this once bucket asset is setup properly
+                            if bucket in dt_path:
+                                exist_status = s3_utils.check_s3_path(
+                                    S3_ACCESS_KEY, S3_SECRET_KEY, dt_path, bucket)
+                            else:
+                                # Assume we are using IAM role to read
+                                exist_status = s3_utils.check_s3_path(
+                                    None, None, *s3_utils.parse_url(dt_path))
                         # Verify whether path exists if bucket matches and is
                         # new then append
                         if (
