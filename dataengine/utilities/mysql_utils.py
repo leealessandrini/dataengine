@@ -106,7 +106,8 @@ def load_from_s3(
     # Setup list of headers if applicable
     header_info = ""
     if header_list:
-        header_info = " " + str(tuple(f"`{i}`" for i in header_list))
+        header_info = "\n({})".format(
+            ", ".join([f'`{header}`' for header in header_list]))
     # Fill parameters
     query = f"""
         LOAD DATA FROM S3 PREFIX '{s3_prefix}'
