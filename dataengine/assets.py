@@ -28,6 +28,7 @@ class BaseDatasetSchema(AssetSchema):
     bucket_asset_name = fields.Str()
     header = fields.Bool(load_default=True)
     schema = fields.Dict()
+    options = fields.Dict()
     
     @validates("file_format")
     def validate_file_format(self, file_format):
@@ -102,7 +103,8 @@ class BaseDataset(Asset):
             location: str = "local",
             bucket_asset_name: str = None,
             header: bool = True,
-            schema: Optional[Dict[str, str]] = None
+            schema: Optional[Dict[str, str]] = None,
+            options: Optional[Dict[str, str]] = None
     ):
         # Setup asset name
         super().__init__(asset_name, dirname)
@@ -115,6 +117,7 @@ class BaseDataset(Asset):
         self.file_format = file_format
         self.header = header
         self.schema = schema
+        self.options = options
         # Override location to s3 if bucket name is provided
         self.bucket_asset_name = bucket_asset_name
         if self.bucket_asset_name:

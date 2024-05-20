@@ -79,7 +79,7 @@ class Dataset(BaseDataset):
             # BaseDataset fields
             asset_name, dirname, file_path, file_format="csv", separator=",",
             location="local", bucket_asset_name=None, header=True,
-            schema=None,
+            schema=None, options=None,
             # Additional Dataset specific fields
             spark=None, dt=datetime.datetime.utcnow(), hour="*",
             bucket=None, format_args={},
@@ -107,7 +107,8 @@ class Dataset(BaseDataset):
                 check_path)
             # Load data into a pyspark DataFrame
             self.df = self._load_data_from_s3(
-                schema, file_format, separator, header, rename=rename)
+                schema, file_format, separator, header, rename=rename,
+                options=options)
             # Convert timestamp if applicable
             if timestamp_conversion:
                 for params in timestamp_conversion:
@@ -258,7 +259,8 @@ class Dataset(BaseDataset):
 
 
     def _load_data_from_s3(
-            self, schema, file_format, separator, header, rename={}):
+            self, schema, file_format, separator, header, rename={},
+            options={}):
         """
         This method will load the dataset into a pyspark DataFrame object
         and set corresponding meta data.
@@ -277,8 +279,11 @@ class Dataset(BaseDataset):
                 header=header, schema=spark_utils.create_spark_schema(
                     schema.keys(), schema.values()))
         elif file_format in ("parquet", "delta", "avro"):
-            df = self.spark.read.load(
-                self.file_path_list, format=file_format, mergeSchema=True)
+            # Add merge schema as default value
+            options["mergeSchema"] = True
+            # Load data provided options dict
+            df = self.spark.read.format(file_format).options(
+                **options).load(self.file_path_list)
         elif file_format == "json":
             df = self.spark.read.json(self.file_path_list)
         # Rename columns if applicable
