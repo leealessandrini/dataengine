@@ -104,7 +104,7 @@ class BaseDataset(Asset):
             bucket_asset_name: str = None,
             header: bool = True,
             schema: Optional[Dict[str, str]] = None,
-            options: Optional[Dict[str, str]] = None
+            options: Optional[Dict[str, str]] = {}
     ):
         # Setup asset name
         super().__init__(asset_name, dirname)

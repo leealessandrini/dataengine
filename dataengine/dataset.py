@@ -79,7 +79,7 @@ class Dataset(BaseDataset):
             # BaseDataset fields
             asset_name, dirname, file_path, file_format="csv", separator=",",
             location="local", bucket_asset_name=None, header=True,
-            schema=None, options=None,
+            schema=None, options={},
             # Additional Dataset specific fields
             spark=None, dt=datetime.datetime.utcnow(), hour="*",
             bucket=None, format_args={},
@@ -93,7 +93,7 @@ class Dataset(BaseDataset):
         # Setup BaseDataset arguments
         super().__init__(
             asset_name, dirname, file_path, file_format, separator, location,
-            bucket_asset_name, header, schema)
+            bucket_asset_name, header, schema, options)
         # Setup additional Dataset arguments
         self.spark = spark
         # Get all unique permutations of the format arguments
@@ -129,7 +129,7 @@ class Dataset(BaseDataset):
             base_dataset.file_path_list, base_dataset.file_format,
             base_dataset.separator, base_dataset.location,
             base_dataset.bucket_asset_name, base_dataset.header,
-            base_dataset.schema, **additional_fields)
+            base_dataset.schema, base_dataset.options, **additional_fields)
 
     def _setup_s3_path(
             self, s3_path, dt, hour, time_delta, bucket, format_args,
