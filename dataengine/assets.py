@@ -357,40 +357,49 @@ class Database(Asset):
 
         return True
 
-    def check_table_existence(self, schema_name: str, table_name: str):
+    def check_table_existence(
+            self, database_name: str, table_name: str,
+            schema_name: str = 'public'):
         """
         This method will check whether a table exists in a provided schema.
 
         Args:
-            schema_name (str): name of database schema
-            table_name (str): name of database table            
+            database_name (str): name of the database
+            table_name (str): name of the table
+            schema_name (str, optional): name of the schema
 
         Returns:
             boolean for whether the table exists
         """
-        conn = self.get_connection(schema_name)
-        if self.database_type == "mysql":
-            # MySQL query
-            query = f"SHOW TABLES LIKE '{table_name}'"
-        else:
-            # PostgreSQL query
-            query = f"""
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables 
-                WHERE
-                    table_schema = '{schema_name}' AND
-                    table_name = '{table_name}'
-            );
-            """
-        # Connect to database and execute table existence check
-        with conn.cursor() as cur:
-            cur.execute(query)
-            result = cur.fetchone()
-            if self.database_type == 'mysql':
-                return result is not None
-            else:
-                return result[0]
+        conn = self.get_connection(database_name)
+        exists = False
+        try:
+            with conn.cursor() as cur:
+                if self.database_type == "mysql":
+                    # MySQL query
+                    query = f"SHOW TABLES LIKE '{table_name}'"
+                    cur.execute(query)
+                    result = cur.fetchone()
+                    exists = result is not None
+                else:
+                    # PostgreSQL / Redshift query
+                    query = f"""
+                    SELECT EXISTS (
+                        SELECT 1
+                        FROM information_schema.tables 
+                        WHERE table_schema = '{schema_name}' AND
+                        table_name = '{table_name}'
+                    );
+                    """
+                    cur.execute(query)
+                    result = cur.fetchone()
+                    exists = result[0]
+        except Exception as e:
+            print(f"Error checking table existence: {e}")
+        finally:
+            conn.close()
+
+        return exists
 
 
 def load_asset_config_files(
