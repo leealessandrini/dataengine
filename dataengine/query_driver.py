@@ -77,28 +77,3 @@ def execute_query(conn, cur, query, message=None):
             logging.error(message + " failed.", exc_info=True)
 
     return success
-
-
-def collect_query_result(conn, query, message):
-    """
-        This method will safely collect the result of a query and return it as
-        a pandas DataFrame.
-
-        Args:
-            conn (psycopg2.extensions.connection): db connection
-            query (str): sql query string
-            message (str): logging message corresponging to query
-
-        Returns:
-            query result and success boolean
-    """
-    success = True
-    try:
-        result = pd.read_sql(query, con=conn)
-        logging.info(message + " success.")
-    except Exception:
-        success = False
-        result = pd.DataFrame()
-        logging.error(message + " failed.", exc_info=True)
-
-    return result, success
