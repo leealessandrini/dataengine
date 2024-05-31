@@ -238,14 +238,11 @@ class Dataset(BaseDataset):
                             hour=hour,
                             lz_hour=general_utils.leading_zero(hour),
                             bucket=bucket, **unique_format_args)
-                        # Only check whether path exists if the bucket matches
-                        exist_status = True
-                        if bucket in dataset_s3_path:
-                            exist_status = s3_utils.check_s3_path(
-                                S3_ACCESS_KEY, S3_SECRET_KEY, dataset_s3_path,
-                                bucket)
-                        # Set to previous date if the path isn't valid
-                        if exist_status:
+                        # Exit the loop if the path exists
+                        if s3_utils.check_s3_path(
+                            S3_ACCESS_KEY, S3_SECRET_KEY,
+                            *s3_utils.parse_url(dt_path)
+                        ):
                             break
                         i += 1
                     if i == n:
