@@ -279,8 +279,11 @@ class Dataset(BaseDataset):
                 header=header, schema=spark_utils.create_spark_schema(
                     schema.keys(), schema.values()))
         elif file_format in ("parquet", "delta", "avro"):
+            # TODO: Remove this once the datasets that need it have it added
+            # to their definition
             # Add merge schema as default value
-            options["mergeSchema"] = True
+            if "mergeSchema" not in options:
+                options["mergeSchema"] = True
             # Load data provided options dict
             df = self.spark.read.format(file_format).options(
                 **options).load(self.file_path_list)
