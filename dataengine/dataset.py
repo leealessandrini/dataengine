@@ -241,7 +241,7 @@ class Dataset(BaseDataset):
                         # Exit the loop if the path exists
                         if s3_utils.check_s3_path(
                             S3_ACCESS_KEY, S3_SECRET_KEY,
-                            *s3_utils.parse_url(dt_path)
+                            *s3_utils.parse_url(dataset_s3_path)
                         ):
                             break
                         i += 1
