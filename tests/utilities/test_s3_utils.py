@@ -1,4 +1,5 @@
 import tempfile
+import datetime
 import pytest
 import boto3
 from moto import mock_aws
@@ -301,3 +302,61 @@ def test_copy_s3_files_partial_failure(s3_client):
         ACCESS_KEY, SECRET_KEY, key_map, BUCKET_NAME, worker_count=2,
         max_retries=1
     ) == False
+
+
+def test_find_latest_s3_path_no_data(s3_client):
+    bucket_name = "test-bucket"
+    s3_client.create_bucket(Bucket=bucket_name)
+    # Define parameters
+    dt = datetime.datetime.now()
+    hour = 16
+    path = f"s3://{bucket_name}/data/{{date_str}}/{{hour}}/file.csv"
+    # Run test
+    paths = s3_utils.find_latest_s3_path(
+        path=path, dt=dt, hour=hour,
+        aws_access_key=ACCESS_KEY, aws_secret_key=SECRET_KEY)
+    # Assert
+    assert paths == []
+
+
+def test_find_latest_s3_path_with_data(s3_client):
+    # Setup
+    bucket_name = "test-bucket"
+    s3_client.create_bucket(Bucket=bucket_name)
+    # Create mock objects
+    dt = datetime.datetime.now()
+    hour = 16
+    path = f"s3://{bucket_name}/data/{{date_str}}/{{hour}}/file.csv"
+    formatted_path = path.format(
+        date_str=dt.date().isoformat(), hour=f"{hour:02d}")
+    s3_client.put_object(
+        Bucket=bucket_name, Key=f"data/{dt.date().isoformat()}/{hour:02d}/file.csv",
+        Body="")
+    # Run test
+    paths = s3_utils.find_latest_s3_path(
+        path=path, dt=dt, hour=hour,
+        aws_access_key=ACCESS_KEY, aws_secret_key=SECRET_KEY)
+    # Assert
+    assert paths == [formatted_path]
+
+
+def test_find_latest_s3_path_with_star_hour(s3_client):
+    # Setup
+    bucket_name = "test-bucket"
+    s3_client.create_bucket(Bucket=bucket_name)
+    # Create mock objects
+    dt = datetime.datetime.now()
+    path = f"s3://{bucket_name}/data/{{date_str}}/{{hour}}/file.csv"
+    hour_to_create = 15
+    formatted_path = path.format(
+        date_str=dt.date().isoformat(), hour=f"{hour_to_create:02d}")
+    s3_client.put_object(
+        Bucket=bucket_name, Key=f"data/{dt.date().isoformat()}/{hour_to_create:02d}/file.csv",
+        Body="")
+    # Run test
+    paths = s3_utils.find_latest_s3_path(
+        path=path, dt=dt, hour="*",
+        aws_access_key=ACCESS_KEY, aws_secret_key=SECRET_KEY)
+    # Assert
+    assert formatted_path in paths
+    assert len(paths) == 1

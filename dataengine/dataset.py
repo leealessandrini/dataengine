@@ -222,33 +222,11 @@ class Dataset(BaseDataset):
                             dataset_s3_path_list.append(dt_path)
                 # Otherwise, get latest valid path
                 elif dt_delta["delta_type"] == "latest":
-                    # Default to one
-                    latest_days = 1
-                    if "days" in dt_delta:
-                        latest_days = dt_delta["days"]
-                    n = 1 + latest_days
-                    i = 0
-                    for day_diff in range(n):
-                        dataset_s3_path = path.format(
-                            date_str=dt.date() - datetime.timedelta(
-                                days=day_diff),
-                            dt=dt - datetime.timedelta(days=day_diff),
-                            dt_m1=dt - datetime.timedelta(days=day_diff + 1),
-                            dt_p1=dt - datetime.timedelta(days=day_diff - 1),
-                            hour=hour,
-                            lz_hour=general_utils.leading_zero(hour),
-                            bucket=bucket, **unique_format_args)
-                        # Exit the loop if the path exists
-                        if s3_utils.check_s3_path(
-                            S3_ACCESS_KEY, S3_SECRET_KEY,
-                            *s3_utils.parse_url(dataset_s3_path)
-                        ):
-                            break
-                        i += 1
-                    if i == n:
-                        logging.error(f"No latest path exists for {dataset_s3_path}\n")
-                    else:
-                        dataset_s3_path_list.append(dataset_s3_path)
+                    dataset_s3_path_list += s3_utils.find_latest_s3_path(
+                        path, dt, hour, format_args=unique_format_args, **{
+                            key: value for key, value in dt_delta.items()
+                            if key in ["days", "hours"]},
+                        aws_access_key=S3_ACCESS_KEY, aws_secret_key=S3_SECRET_KEY)
                 else:
                     logging.error("Invalid dt_delta arguments provided.\n")
 

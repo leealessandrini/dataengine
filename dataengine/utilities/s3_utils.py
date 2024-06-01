@@ -2,6 +2,7 @@
 AWS S3 Blob Storage Utility Methods
 """
 import io
+import datetime
 import logging
 from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor
@@ -11,6 +12,7 @@ import yaml
 import boto3
 import numpy as np
 import pandas as pd
+from . import general_utils
 
 # Setup logging
 logging.basicConfig(
@@ -436,3 +438,72 @@ def create_manifest_for_parquet(
     s3.put_object(Bucket=s3_bucket, Key=manifest_key, Body=json.dumps(manifest))
 
     return manifest_key
+
+
+def find_latest_s3_path(
+        path, dt, hour, format_args={}, days=None, hours=None,
+        aws_access_key=None, aws_secret_key=None
+    ):
+    """
+    Find the latest S3 path based on the given parameters.
+
+    Args:
+        path (str): The S3 path template.
+        dt (datetime.datetime): The reference datetime.
+        hour (Union[str, int]): The hour to check or "*" to check all hours.
+        format_args (dict, optional): Additional format arguments for the path.
+        days (int, optional): The number of days to check. Defaults to None.
+        hours (int, optional): The number of hours to check. Defaults to None.
+        aws_access_key (str, optional): AWS access key. Defaults to None.
+        aws_secret_key (str, optional): AWS secret key. Defaults to None.
+
+    Returns:
+        list: List of found S3 paths.
+    """
+    bucket = urlparse(path).netloc
+    # Set default values based on the provided rules
+    if days is None and hours is None:
+        if hour == "*":
+            days = 1
+            hours = 0
+        else:
+            days = 0
+            hours = 24
+    elif hours is not None and days is None:
+        days = 0
+    found = False
+    s3_path_list = []
+    # Iterate over days and check whether the path exists
+    for day_diff in range(days + 1):
+        # Setup the hours to check based on the hour parameter
+        if hour == "*":
+            hours_to_check = range(24)
+        else:
+            hours_to_check = [hour - i for i in range(hours)]
+        # Iterate over the hours to check and format the s3 path
+        for hour_diff in hours_to_check:
+            adjusted_hour = (hour_diff % 24)
+            adjusted_day = day_diff + (hour_diff // 24)
+            # String format the s3 path
+            s3_path = path.format(
+                date_str=dt.date() - datetime.timedelta(days=adjusted_day),
+                dt=dt - datetime.timedelta(days=adjusted_day, hours=hour_diff),
+                dt_m1=dt - datetime.timedelta(days=adjusted_day + 1, hours=hour_diff),
+                dt_p1=dt - datetime.timedelta(days=adjusted_day - 1, hours=hour_diff),
+                hour=adjusted_hour, lz_hour=f"{adjusted_hour:02d}",
+                bucket=bucket, **format_args)
+            # Check if the path exists in S3
+            if check_s3_path(
+                aws_access_key, aws_secret_key, *parse_url(s3_path)
+            ):
+                # Append valid path to path list and set found to True
+                s3_path_list.append(s3_path)
+                found = True
+                # If the hour is not "*" then break the loop
+                if hour != "*":
+                    break
+        # If the hour is "*" but 
+        if found:
+            break
+    
+    return s3_path_list
