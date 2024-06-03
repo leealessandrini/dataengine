@@ -223,7 +223,9 @@ class Dataset(BaseDataset):
                 # Otherwise, get latest valid path
                 elif dt_delta["delta_type"] == "latest":
                     dataset_s3_path_list += s3_utils.find_latest_s3_path(
-                        path, dt, hour, format_args=unique_format_args, **{
+                        path, dt, hour, format_args=unique_format_args,
+                        bucket=bucket if "{bucket}" in path else None,
+                        **{
                             key: value for key, value in dt_delta.items()
                             if key in ["days", "hours"]},
                         aws_access_key=S3_ACCESS_KEY, aws_secret_key=S3_SECRET_KEY)

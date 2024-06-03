@@ -441,8 +441,8 @@ def create_manifest_for_parquet(
 
 
 def find_latest_s3_path(
-        path, dt, hour, format_args={}, days=None, hours=None,
-        aws_access_key=None, aws_secret_key=None
+        path, dt, hour, bucket=None, format_args={}, days=None,
+        hours=None, aws_access_key=None, aws_secret_key=None
     ):
     """
     Find the latest S3 path based on the given parameters.
@@ -459,49 +459,53 @@ def find_latest_s3_path(
 
     Returns:
         list: List of found S3 paths.
-    """
-    bucket = urlparse(path).netloc
-    # Set default values based on the provided rules
-    if days is None and hours is None:
-        days = 1 if hour == "*" else 0
-        hours = 0 if hour == "*" else 24
-    elif hours is None:
-        hours = 0 if hour == "*" else 24
-    elif days is None:
-        days = 0
-    found = False
-    s3_path_list = []
-    # Iterate over days and check whether the path exists
-    for day_diff in range(days + 1):
-        # Setup the hours to check based on the hour parameter
-        if hour == "*":
-            hours_to_check = range(24)
-        else:
-            hours_to_check = [hour - i for i in range(hours)]
-        # Iterate over the hours to check and format the s3 path
-        for hour_diff in hours_to_check:
-            adjusted_hour = (hour_diff % 24)
-            adjusted_day = day_diff + (hour_diff // 24)
-            # String format the s3 path
-            s3_path = path.format(
-                date_str=dt.date() - datetime.timedelta(days=adjusted_day),
-                dt=dt - datetime.timedelta(days=adjusted_day, hours=hour_diff),
-                dt_m1=dt - datetime.timedelta(days=adjusted_day + 1, hours=hour_diff),
-                dt_p1=dt - datetime.timedelta(days=adjusted_day - 1, hours=hour_diff),
-                hour=adjusted_hour, lz_hour=f"{adjusted_hour:02d}",
-                bucket=bucket, **format_args)
-            # Check if the path exists in S3
-            if check_s3_path(
-                aws_access_key, aws_secret_key, *parse_url(s3_path)
-            ):
-                # Append valid path to path list and set found to True
-                s3_path_list.append(s3_path)
-                found = True
-                # If the hour is not "*" then break the loop
-                if hour != "*":
-                    break
-        # If the hour is "*" but 
-        if found:
-            break
     
-    return s3_path_list
+    The function works in two modes based on the value of 'hour':
+    1. If `hour = "*"`:
+       - Only `days` can be provided.
+       - The function looks for the latest day with data and returns a list of all the hours for that day with data.
+    2. If `hour` is not `"*"`:
+       - Either `days` or `hours` can be provided.
+       - The function converts `days` into hours and looks backward for the specified number of hours.
+       - Returns the first valid path found within the specified time frame.
+    """
+    if bucket is None:
+        bucket = urlparse(path).netloc
+    if hour == "*":
+        # Default to 1 day if not specified
+        days = days or 1
+        for day_diff in range(days + 1):
+            adjusted_dt = dt - datetime.timedelta(days=day_diff)
+            daily_paths = []
+            for h in range(24):
+                s3_path = path.format(
+                    date_str=adjusted_dt.date(),
+                    dt=adjusted_dt.replace(hour=h, minute=0, second=0, microsecond=0),
+                    dt_m1=adjusted_dt - datetime.timedelta(days=1),
+                    dt_p1=adjusted_dt + datetime.timedelta(days=1),
+                    hour=h, lz_hour=f"{h:02d}",
+                    bucket=bucket, **format_args
+                )
+                if check_s3_path(aws_access_key, aws_secret_key, *parse_url(s3_path)):
+                    daily_paths.append(s3_path)
+            # Return paths for the latest day found with data
+            if daily_paths:
+                return daily_paths
+    else:
+        # Convert days to hours if only days are provided
+        total_hours = (days or 0) * 24 + (hours or 24)
+        for hour_diff in range(total_hours + 1):
+            adjusted_dt = dt - datetime.timedelta(hours=hour_diff)
+            s3_path = path.format(
+                date_str=adjusted_dt.date(),
+                dt=adjusted_dt,
+                dt_m1=adjusted_dt - datetime.timedelta(days=1),
+                dt_p1=adjusted_dt + datetime.timedelta(days=1),
+                hour=adjusted_dt.hour, lz_hour=f"{adjusted_dt.hour:02d}",
+                bucket=bucket, **format_args
+            )
+            if check_s3_path(aws_access_key, aws_secret_key, *parse_url(s3_path)):
+                # Return the first valid path found
+                return [s3_path]
+    # Return an empty list if no paths are found
+    return []
