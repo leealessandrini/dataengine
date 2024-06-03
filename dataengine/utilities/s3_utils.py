@@ -463,16 +463,12 @@ def find_latest_s3_path(
     bucket = urlparse(path).netloc
     # Set default values based on the provided rules
     if days is None and hours is None:
-        if hour == "*":
-            days = 1
-            hours = 0
-        else:
-            days = 0
-            hours = 24
-    elif hours is not None and days is None:
+        days = 1 if hour == "*" else 0
+        hours = 0 if hour == "*" else 24
+    elif hours is None:
+        hours = 0 if hour == "*" else 24
+    elif days is None:
         days = 0
-    elif days is not None and hours is None:
-        hours = 0
     found = False
     s3_path_list = []
     # Iterate over days and check whether the path exists
