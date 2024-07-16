@@ -177,6 +177,8 @@ class QuerySchema(Schema):
     load_info = fields.Nested(LoadInfoSchema)
     # Setup distict column values variables
     distinct_variables = fields.List(fields.Nested(DistinctVariableSchema))
+    # Allow the user to specify a AWS Glue Crawler to run after the query
+    crawler_name = fields.String()
 
     @post_load
     def create_query(self, input_data, **kwargs):
@@ -202,6 +204,7 @@ class Query(object):
             partition_by=[], repartition={}, replace_where=[],
             distinct_variables=[], mode="overwrite",
             max_records_per_file=None, exact_records_per_file=None,
+            crawler_name=None,
             **kwargs
         ):
         """
@@ -227,6 +230,7 @@ class Query(object):
         self.mode = mode
         self.max_records_per_file = max_records_per_file
         self.exact_records_per_file = exact_records_per_file
+        self.crawler_name = crawler_name
         # Setup partitioning arguments
         self.partition_by = partition_by
         self.repartition = repartition
