@@ -3,7 +3,48 @@ This is the main module for Data Engine.
 """
 import datetime
 import logging
-from . import assets, dataset
+from . import assets, dataset, query
+
+
+def generate_query_log_message(
+    query_name: str, 
+    query_object: query.Query, 
+    query: str, 
+    dependencies: dict
+) -> str:
+    """
+    Generate a neatly formatted log message for a query.
+
+    Args:
+        query_name (str): The name of the query.
+        query_object (query.Query): The query object instance.
+        query (str): The query string.
+        dependencies (dict): A dictionary mapping dependencies.
+
+    Returns:
+        A formatted log message.
+    """
+    intro = [f"Beginning execution of {query_name}\n"]
+    dependency_list = [
+        f"Dependencies:\n" +
+        "\n".join(
+            f"    {key}:\n        {value}"
+            for key, value in dependencies.items())]
+    intermittent_tables = query_object.intermittent_tables
+    if intermittent_tables:
+        it_list = [
+            "Intermittent Tables:\n" +
+            "\n".join(
+                f"    {itable['table_name']}:\n" +
+                "\n".join(f"        {line}" for line in itable["sql"].splitlines())
+                for itable in intermittent_tables)]
+    else:
+        it_list = []
+    query_list = [
+        "Query:\n" +
+        "\n".join(f"    {line}" for line in query.splitlines())]
+
+    return "\n".join(intro + dependency_list + it_list + query_list) + "\n"
 
 
 class Engine:
