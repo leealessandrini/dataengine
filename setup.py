@@ -59,4 +59,9 @@ setup(
     package_data={
         'dataengine': ["utilities/data/*.csv"],
     },
+    entry_points={
+        'console_scripts': [
+            'script_name=dataengine.deploy_package_to_databricks:main',
+        ],
+    },
 )
