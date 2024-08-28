@@ -325,7 +325,7 @@ def test_find_latest_s3_path_with_data(s3_client):
     s3_client.create_bucket(Bucket=bucket_name)
     # Create mock objects
     dt = datetime.datetime.now()
-    hour = 16
+    hour = dt.hour
     path = f"s3://{bucket_name}/data/{{date_str}}/{{hour}}/file.csv"
     formatted_path = path.format(
         date_str=dt.date().isoformat(), hour=f"{hour:02d}")
