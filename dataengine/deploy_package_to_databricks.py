@@ -47,7 +47,8 @@ def main():
         args["databricks_host"], args["databricks_token"], local_wheel_path,
         dbfs_path)
     # Generate basic shell init script to pip install the wheel
-    init_script_text = f"#!/bin/bash\ndatabricks/python/bin/pip install {dbfs_path}"
+    init_script_text = "#!/bin/bash\ndatabricks/python/bin/pip install {}".format(
+        dbfs_path.replace(":", ""))
     # Update the databricks global init script
     success = databricks_utils.update_global_init_script(
         args["databricks_host"], args["databricks_token"], init_script_text,
