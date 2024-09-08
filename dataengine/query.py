@@ -153,12 +153,10 @@ class Repartition(Schema):
     column_headers = fields.List(fields.String())
 
 
-class QuerySchema(Schema):
+class BaseQuerySchema(Schema):
     """
     Query marshmallow validation schema.
     """
-    dt = fields.DateTime(required=True)
-    hour = fields.String(required=True)
     sql_info = SingleOrListField(SqlInfoSchema, required=True)
     # TODO: Move ouput arguments to Nested schema
     output = fields.String(required=True)
@@ -194,7 +192,45 @@ class QuerySchema(Schema):
                     ", ".join(valid_args)))
 
 
-class Query(object):
+# Query Schema with dt and hour fields
+class QuerySchema(BaseQuerySchema):
+    dt = fields.DateTime(required=True)
+    hour = fields.String(required=True)
+
+    @post_load
+    def create_query(self, input_data, **kwargs):
+        return Query(**input_data)
+
+
+# Base Query Class (simple, only stores fields)
+class BaseQuery:
+    def __init__(
+        self, sql_info, output, dependencies, load_info={},
+        file_format="csv", separator=",", header=True, use_pandas=False,
+        partition_by=[], repartition={}, replace_where=[],
+        distinct_variables=[], mode="overwrite",
+        max_records_per_file=None, exact_records_per_file=None,
+        crawler_name=None, **kwargs
+    ):
+        self.sql_info = sql_info
+        self.output = output
+        self.file_format = file_format
+        self.separator = separator
+        self.use_pandas = use_pandas
+        self.header = header
+        self.dependencies = dependencies
+        self.load_info = load_info
+        self.partition_by = partition_by
+        self.repartition = repartition
+        self.replace_where = replace_where
+        self.distinct_variables = distinct_variables
+        self.mode = mode
+        self.max_records_per_file = max_records_per_file
+        self.exact_records_per_file = exact_records_per_file
+        self.crawler_name = crawler_name
+
+
+class Query(BaseQuery):
     """
     Query class.
     """
@@ -217,31 +253,33 @@ class Query(object):
         else:
             dt_str = str(datetime.datetime(
                 dt.year, dt.month, dt.day, int(hour)))
-        # Set default arguments
-        self.output = output.format(dt=dt, date_str=date_str, hour=hour)
-        self.file_format = file_format
-        self.separator = separator
-        self.use_pandas = use_pandas
-        self.header = header
-        self.dependencies = dependencies
-        self.load_info = load_info
-        self.intermittent_tables = []
-        self.distinct_variables = distinct_variables
-        self.mode = mode
-        self.max_records_per_file = max_records_per_file
-        self.exact_records_per_file = exact_records_per_file
-        self.crawler_name = crawler_name
-        # Setup partitioning arguments
-        self.partition_by = partition_by
-        self.repartition = repartition
-        if replace_where:
+        # Call the BaseQuery constructor to initialize shared attributes
+        super().__init__(
+            sql_info=sql_info,
+            output=output.format(dt=dt, date_str=date_str, hour=hour),
+            dependencies=dependencies,
+            load_info=load_info,
+            file_format=file_format,
+            separator=separator,
+            header=header,
+            use_pandas=use_pandas,
+            partition_by=partition_by,
+            repartition=repartition,
+            replace_where=replace_where,
+            distinct_variables=distinct_variables,
+            mode=mode,
+            max_records_per_file=max_records_per_file,
+            exact_records_per_file=exact_records_per_file,
+            crawler_name=crawler_name,
+            **kwargs
+        )
+        # Setup replace where
+        if self.replace_where:
             self.replace_where = self._setup_replace_where(
-                replace_where, date_str, dt_str)
-        else:
-            self.replace_where = replace_where
+                self.replace_where, date_str, dt_str)
         # Setup sql arguments
         self.sql = self._setup_sql_arguments(
-            sql_info, dt, date_str, dt_str, hour)
+            self.sql_info, dt, date_str, dt_str, hour)
     
     def _setup_sql_arguments(self, sql_info, dt, date_str, dt_str, hour):
         """
@@ -302,15 +340,15 @@ class Query(object):
 
     def _setup_replace_where(self, replace_where, date_str, dt_str):
         """
-            This method will setup the delta replace where argument.
+        This method will setup the delta replace where argument.
 
-            Args:
-                replace_where (list): replace where arguments
-                date_str (str): date string
-                dt_str (str): datetime string
+        Args:
+            replace_where (list): replace where arguments
+            date_str (str): date string
+            dt_str (str): datetime string
 
-            Returns:
-                formatted replace_where arguments
+        Returns:
+            formatted replace_where arguments
         """
         formatted_replace_where = []
         for key_value_pair in replace_where:

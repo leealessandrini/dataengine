@@ -6,12 +6,32 @@ import tarfile
 import io
 import re
 import datetime
+import dateutil
 import itertools
 import logging
 import math
 import numpy as np
 from scipy.stats import shapiro, normaltest
 from marshmallow import fields, ValidationError
+
+
+def format_dt(date_str):
+    """
+    Setup datetime given date string with or without leading zeros.
+
+    Args:
+        date_str (str): date string (e.g., 'YYYY-M-D' or 'YYYY-MM-DD')
+
+    Returns:
+        datetime object
+    """
+    try:
+        # Use dateutil.parser to handle different date formats
+        return dateutil.parser.parse(date_str)
+    except (ValueError, TypeError) as e:
+        raise ValueError(
+            f"Invalid date format: {date_str}. Expected format: YYYY-MM-DD."
+        ) from e
 
 
 class StringOrListField(fields.Field):
