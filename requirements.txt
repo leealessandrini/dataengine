@@ -15,3 +15,4 @@ PyGithub
 scipy
 marshmallow
 datadog_api_client
+pyspark
