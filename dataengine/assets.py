@@ -1,12 +1,8 @@
 import os
-import re
-from typing import List, Optional, Dict, Union, Any
+from typing import List, Optional, Dict, Union
 import logging
-import yaml
 from marshmallow import Schema, fields, validates, post_load, ValidationError
 from .utilities import mysql_utils, postgresql_utils, general_utils
-
-ENVIRONMENT_VAR_REGEX = re.compile(r"\{\{(.+?)\}\}")
 
 
 class AssetSchema(Schema):
@@ -15,6 +11,7 @@ class AssetSchema(Schema):
     """
     asset_name = fields.Str(required=True)
     dirname = fields.Str(required=True)
+    description = fields.Str()
 
 
 class BaseDatasetSchema(AssetSchema):
@@ -79,9 +76,10 @@ class Asset:
     The Asset class will function as our parent class for all different types
     of assets.
     """
-    def __init__(self, asset_name: str, dirname: str):
+    def __init__(self, asset_name: str, dirname: str, description: str = None):
         self.asset_name = asset_name
         self.dirname = dirname
+        self.description = description
 
 
 # Forward declaration for type hinting
@@ -104,10 +102,11 @@ class BaseDataset(Asset):
             bucket_asset_name: str = None,
             header: bool = True,
             schema: Optional[Dict[str, str]] = None,
-            options: Optional[Dict[str, str]] = {}
+            options: Optional[Dict[str, str]] = {},
+            **kwargs
     ):
-        # Setup asset name
-        super().__init__(asset_name, dirname)
+        # Setup generic asset variables
+        super().__init__(asset_name, dirname, description=kwargs.get("description"))
         # Setup filepath
         if isinstance(file_path, str):
             file_path = [file_path]
@@ -400,103 +399,3 @@ class Database(Asset):
             conn.close()
 
         return exists
-
-
-def load_asset_config_files(
-        asset_config_path_list: List[str]
-    ) -> Dict[str, Union[str, int, float, bool, list, dict]]:
-    """
-    Load asset configuration files from a list of file paths and merge them
-    into a single dictionary.
-    
-    Args:
-        asset_config_path_list (List[str]):
-            A list of file paths to asset configuration files in YAML format.
-    
-    Returns:
-        Dict[str, Union[str, int, float, bool, list, dict]]:
-            A dictionary containing the merged asset configurations.
-        
-    Example:
-        >>> load_asset_config_files(
-        >>>    ["path/to/config1.yaml", "path/to/config2.yaml"])
-        {'key1': 'value1', 'key2': 'value2'}
-    """
-    asset_config = {}
-    # Iterate over input asset configuration paths
-    for path in asset_config_path_list:
-        # Pull dirname from asset config file
-        dirname = os.path.dirname(os.path.realpath(path))
-        # Use a context manager for file I/O
-        with open(path, "r") as f:
-            config = yaml.safe_load(f)
-            # Add the file dirname for each 
-            for key in config.keys():
-                config[key]["dirname"] = dirname
-            # Update asset config with new assets
-            asset_config.update(config)
-    
-    return asset_config
-
-
-def load_assets(
-        asset_config: Dict[str, Dict[str, Union[str, int, float, bool]]]
-    ) -> Dict[str, Dict[str, Any]]:
-    """
-    Load assets from a configuration dictionary and organize them into
-    different types.
-
-    Args:
-        asset_config (Dict[str, Dict[str, Union[str, int, float, bool]]]):
-            A dictionary containing asset names as keys and another dictionary
-            as values. The inner dictionary contains asset parameters including
-            the asset type ('database', 'bucket', 'base_dataset') and other
-            configurations.
-
-    Returns:
-        Dict[str, Dict[str, Any]]:
-            A dictionary containing loaded assets organized into 'buckets',
-            'base_datasets', and 'databases'.
-    """
-    # Initialize asset map
-    asset_map = {"buckets": {}, "base_datasets": {}, "databases": {}}
-    # Iterate over each asset and load it accordingly
-    for asset_name, parameters in asset_config.items():
-        # Assume asset is base dataset
-        # TODO: Replace this when base datasets are updated
-        if "asset_type" not in parameters:
-            asset_type = "base_dataset"
-        else:
-            asset_type = parameters["asset_type"]
-        # Determine whether config parameter is an environment variable
-        # and if it is pull the value from the environment
-        config = {"asset_name": asset_name}
-        for key, value in parameters.items():
-            if key == "asset_type":
-                continue
-            match = ENVIRONMENT_VAR_REGEX.fullmatch(str(value))
-            if match:
-                value = os.getenv(match.group(1))
-            # If the input value is a port cast it to an integer
-            if key == "port":
-                if re.fullmatch(r"[0-9]+", str(value)):
-                    value = int(value)
-                else:
-                    value = 0
-            # If the value is still None cast it to an empty string
-            if value is None:
-                value = ""
-            # Set the final config value
-            config[key] = value
-        # Load asset
-        if asset_type == "database":
-            asset_map["databases"][asset_name] = DatabaseSchema().load(config)
-        elif asset_type == "bucket":
-            asset_map["buckets"][asset_name] = BucketSchema().load(config)
-        elif asset_type == "base_dataset":
-            asset_map["base_datasets"][asset_name] = BaseDatasetSchema().load(
-                config)
-    # Setup linkage between buckets and datasets
-    # TODO: Setup bucket / base_dataset linkage here
-
-    return asset_map

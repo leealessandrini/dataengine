@@ -3,6 +3,7 @@ import datetime
 import string
 from marshmallow import Schema, fields, post_load, validates, ValidationError
 from dataengine import dataset
+from .assets import AssetSchema, Asset
 from .utilities import general_utils
 
 
@@ -82,7 +83,7 @@ class DependencySchema(Schema):
     """
     Schema for specifying the dependencies of the Query object.
     """
-    table_name = fields.String(required=True)
+    table_name = fields.String()
     base_dataset = fields.String(required=True)
     format_args = fields.Dict()
     time_delta = fields.Nested(dataset.TimeDeltaSchema)
@@ -111,7 +112,7 @@ class LoadInfoSchema(Schema):
     table_name = fields.String(required=True)
     delete_info = fields.Nested(DeleteInfoSchema)
     replace = fields.Boolean()
-    truncate = fields.Boolean(missing=False)
+    truncate = fields.Boolean(load_default=False)
 
     # TODO: Validate load location using assets
     @validates("load_location")
@@ -153,7 +154,7 @@ class Repartition(Schema):
     column_headers = fields.List(fields.String())
 
 
-class BaseQuerySchema(Schema):
+class BaseQuerySchema(AssetSchema):
     """
     Query marshmallow validation schema.
     """
@@ -180,7 +181,7 @@ class BaseQuerySchema(Schema):
 
     @post_load
     def create_query(self, input_data, **kwargs):
-        return Query(**input_data)
+        return BaseQuery(**input_data)
 
     @validates("mode")
     def validate_mode(self, mode):
@@ -203,15 +204,18 @@ class QuerySchema(BaseQuerySchema):
 
 
 # Base Query Class (simple, only stores fields)
-class BaseQuery:
+class BaseQuery(Asset):
     def __init__(
-        self, sql_info, output, dependencies, load_info={},
+        self, asset_name, dirname, sql_info, output, dependencies, load_info={},
         file_format="csv", separator=",", header=True, use_pandas=False,
         partition_by=[], repartition={}, replace_where=[],
         distinct_variables=[], mode="overwrite",
         max_records_per_file=None, exact_records_per_file=None,
         crawler_name=None, **kwargs
     ):
+        # Setup generic asset variables
+        super().__init__(asset_name, dirname, description=kwargs.get("description"))
+        # Setup base query parameters
         self.sql_info = sql_info
         self.output = output
         self.file_format = file_format
@@ -253,10 +257,11 @@ class Query(BaseQuery):
         else:
             dt_str = str(datetime.datetime(
                 dt.year, dt.month, dt.day, int(hour)))
+        # Setup output path
+        self.output = output.format(dt=dt, date_str=date_str, hour=hour)
         # Call the BaseQuery constructor to initialize shared attributes
         super().__init__(
             sql_info=sql_info,
-            output=output.format(dt=dt, date_str=date_str, hour=hour),
             dependencies=dependencies,
             load_info=load_info,
             file_format=file_format,

@@ -1,0 +1,9 @@
+test_query_1:
+  asset_type: base_query
+  sql_info:
+    filename: sql/test_query.sql
+  output: result.csv
+  use_pandas: True
+  dependencies:
+    - table_name: test_table
+      base_dataset: test_base_dataset
