@@ -158,15 +158,16 @@ def load_assets(
                     if isinstance(primary_filepath_list, str):
                         primary_filepath_list = [primary_filepath_list]
                     sql_info[i]["filename"] = [
-                        os.path.join(parameters["dirname"], filepath)
-                        for filepath in primary_filepath_list]
+                        os.path.realpath(
+                            os.path.join(parameters["dirname"], filepath)
+                        ) for filepath in primary_filepath_list]
                     if "intermittent_tables" in info_value:
                         for j, list_value in enumerate(
                             info_value["intermittent_tables"]
                         ):
                             sql_info[i]["intermittent_tables"][j][
-                                "filename"] = os.path.join(
-                                    parameters["dirname"], list_value["filename"])
+                                "filename"] = os.path.realpath(os.path.join(
+                                    parameters["dirname"], list_value["filename"]))
                 # Reset sql info value
                 value = sql_info
             # Set the final config value
