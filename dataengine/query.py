@@ -195,8 +195,8 @@ class BaseQuerySchema(AssetSchema):
 
 # Query Schema with dt and hour fields
 class QuerySchema(BaseQuerySchema):
-    dt = fields.DateTime(required=True)
-    hour = fields.String(required=True)
+    dt = fields.DateTime()
+    hour = fields.String()
 
     @post_load
     def create_query(self, input_data, **kwargs):
@@ -239,12 +239,16 @@ class Query(BaseQuery):
     Query class.
     """
     def __init__(
-            self, dt, hour, sql_info, output, dependencies, load_info={},
+            self,
+            # BaseQuery fields
+            sql_info, output, dependencies, load_info={},
             file_format="csv", separator=",", header=True, use_pandas=False,
             partition_by=[], repartition={}, replace_where=[],
             distinct_variables=[], mode="overwrite",
             max_records_per_file=None, exact_records_per_file=None,
             crawler_name=None,
+            # Additional Query specific fields
+            dt=datetime.datetime.utcnow(), hour="*",
             **kwargs
         ):
         """
@@ -285,7 +289,21 @@ class Query(BaseQuery):
         # Setup sql arguments
         self.sql = self._setup_sql_arguments(
             self.sql_info, dt, date_str, dt_str, hour)
-    
+
+    @classmethod
+    def from_base_query(cls, base_query, **additional_fields):
+        # Create a new Dataset instance using attributes from base_dataset
+        # and any additional fields specific to Dataset
+        return cls(
+            base_query.sql_info, base_query.output, base_query.dependencies,
+            base_query.load_info, base_query.file_format,
+            base_query.separator, base_query.header,
+            base_query.use_pandas, base_query.partition_by,
+            base_query.repartition, base_query.replace_where,
+            base_query.distinct_variables, base_query.mode,
+            base_query.max_records_per_file, base_query.exact_records_per_file,
+            base_query.crawler_name, **additional_fields)
+
     def _setup_sql_arguments(self, sql_info, dt, date_str, dt_str, hour):
         """
         This method will setup the primary sql statement for the query.

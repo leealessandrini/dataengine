@@ -227,3 +227,25 @@ class Engine:
             logging.error(f"Invalid base dataset provided: {base_dataset}\n")
 
         return dataset_obj, load_success
+    
+    def load_query(
+            self, base_query, dt=datetime.datetime.utcnow(),
+            hour="*", **kwargs
+        ):
+        """
+        This method will load a query provided it's part of the available
+        options.
+        """
+        query_object = None
+        load_success = False
+        if base_query in self.assets["base_queries"]:
+            try:
+                query_object = query.Query.from_base_query(
+                    self.assets["base_queries"][base_query],
+                    dt=dt, hour=hour, **kwargs)
+            except Exception as e:
+                logging.error(f"Error loading query {base_query}:\n{e}\n")
+        else:
+            logging.error(f"Invalid base query provided: {base_query}\n")
+        
+        return query_object, load_success
