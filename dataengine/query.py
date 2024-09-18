@@ -241,7 +241,7 @@ class Query(BaseQuery):
     def __init__(
             self,
             # BaseQuery fields
-            sql_info, output, dependencies, load_info={},
+            asset_name, dirname, sql_info, output, dependencies, load_info={},
             file_format="csv", separator=",", header=True, use_pandas=False,
             partition_by=[], repartition={}, replace_where=[],
             distinct_variables=[], mode="overwrite",
@@ -265,7 +265,10 @@ class Query(BaseQuery):
         self.output = output.format(dt=dt, date_str=date_str, hour=hour)
         # Call the BaseQuery constructor to initialize shared attributes
         super().__init__(
+            asset_name=asset_name,
+            dirname=dirname,
             sql_info=sql_info,
+            output=output,
             dependencies=dependencies,
             load_info=load_info,
             file_format=file_format,
@@ -295,6 +298,7 @@ class Query(BaseQuery):
         # Create a new Dataset instance using attributes from base_dataset
         # and any additional fields specific to Dataset
         return cls(
+            base_query.asset_name, base_query.dirname,
             base_query.sql_info, base_query.output, base_query.dependencies,
             base_query.load_info, base_query.file_format,
             base_query.separator, base_query.header,
