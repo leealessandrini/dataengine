@@ -290,6 +290,7 @@ class Query(BaseQuery):
             self.replace_where = self._setup_replace_where(
                 self.replace_where, date_str, dt_str)
         # Setup sql arguments
+        self.intermittent_tables = []
         self.sql = self._setup_sql_arguments(
             self.sql_info, dt, date_str, dt_str, hour)
 
