@@ -197,8 +197,8 @@ class Engine:
             asset_config_path_list: list
     ):
         # Load assets
-        self.assets = assets.load_assets(
-            assets.load_asset_config_files(asset_config_path_list))
+        self.assets = load_assets(
+            load_asset_config_files(asset_config_path_list))
 
     def load_dataset(
             self, spark, base_dataset, dt=datetime.datetime.utcnow(),
