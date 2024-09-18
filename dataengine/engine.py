@@ -244,6 +244,7 @@ class Engine:
                 query_object = query.Query.from_base_query(
                     self.assets["base_queries"][base_query],
                     dt=dt, hour=hour, **kwargs)
+                load_success = True
             except Exception as e:
                 logging.error(f"Error loading query {base_query}:\n{e}\n")
         else:
