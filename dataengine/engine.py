@@ -72,7 +72,7 @@ def load_asset_config_files(
         >>>    ["path/to/config1.yaml", "path/to/config2.yaml"])
         {'key1': 'value1', 'key2': 'value2'}
     """
-    asset_config = {}
+    assets_config = {}
     # Iterate over input asset configuration paths
     for path in asset_config_path_list:
         # Pull dirname from asset config file
@@ -81,14 +81,24 @@ def load_asset_config_files(
         # Use a context manager for file I/O
         with open(path, "r") as f:
             config = yaml.safe_load(f)
-            # Add the file dirname for each 
-            for key in config.keys():
-                config[key]["dirname"] = dirname
-                config[key]["basename"] = basename
+            # Add the file dirname for each and add basename if the asset is
+            # a base_query
+            current_asset_config = {} 
+            for key, values in config.items():
+                asset_name = key
+                if (
+                    ("asset_type" in values) and
+                    values["asset_type"] == "base_query"
+                ):
+                    asset_name = f"{basename.split('.yaml')[0]}.{key}"
+                # Fill values
+                current_asset_config[asset_name] = {
+                    "dirname": dirname, "basename": basename,
+                    **values}
             # Update asset config with new assets
-            asset_config.update(config)
+            assets_config.update(current_asset_config)
 
-    return asset_config
+    return assets_config
 
 
 def load_assets(
@@ -122,10 +132,6 @@ def load_assets(
             asset_type = "base_dataset"
         else:
             asset_type = parameters["asset_type"]
-        # Setup asset name
-        asset_name = ".".join([
-                parameters["basename"].split(".yaml")[0], asset_name
-            ]) if asset_type == "base_query" else asset_name
         config = {"asset_name": asset_name}
         # Iterate over config parameters and organize them accordingly
         for key, value in parameters.items():
