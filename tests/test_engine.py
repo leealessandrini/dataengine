@@ -1,7 +1,8 @@
 import os
 import pytest
-from dataengine import engine
+from dataengine import engine, query
 
+DIRNAME = os.path.dirname(os.path.realpath(__file__))
 
 # Mock environment variables
 @pytest.fixture(scope='function')
@@ -46,8 +47,28 @@ def test_load_assets(mock_env_vars):
     assert db_map["databases"]['db2'].host == 'localhost2'
     assert db_map["databases"]['db2'].port == 5432
 
-def test_load_queries():
+def test_query_load_functionality():
+    # Test loading of base queries from configs
     queries = engine.load_assets(engine.load_asset_config_files([
         "./tests/sample_configs/sample_queries.yaml"]))
-    
     assert list(queries["base_queries"].keys()) == ["sample_queries.test_query_1"]
+
+
+def test_engine_instance():
+    """
+    Test the engine.Engine class.
+    """
+    # Instantiate the engine with the test config files
+    engine_instance = engine.Engine([
+        os.path.join(DIRNAME, "sample_configs/sample_queries.yaml")
+    ])
+    # Test loading a query from a base query
+    query_object, load_success = engine_instance.load_query(
+        "sample_queries.test_query_1")
+    assert isinstance(query_object, query.Query)
+    assert load_success == True
+    # Test loading invalid query
+    query_object, load_success = engine_instance.load_query(
+        "invalid_base_query_name")
+    assert query_object is None
+    assert load_success == False
