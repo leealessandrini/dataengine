@@ -261,8 +261,6 @@ class Query(BaseQuery):
         else:
             dt_str = str(datetime.datetime(
                 dt.year, dt.month, dt.day, int(hour)))
-        # Setup output path
-        self.output = output.format(dt=dt, date_str=date_str, hour=hour)
         # Call the BaseQuery constructor to initialize shared attributes
         super().__init__(
             asset_name=asset_name,
@@ -285,6 +283,9 @@ class Query(BaseQuery):
             crawler_name=crawler_name,
             **kwargs
         )
+        # Include timestamp formating information in the output path
+        self.output = self.output.format(
+            dt=dt, date_str=date_str, hour=hour)
         # Setup replace where
         if self.replace_where:
             self.replace_where = self._setup_replace_where(
