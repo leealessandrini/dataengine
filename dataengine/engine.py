@@ -5,10 +5,10 @@ import os
 import re
 import copy
 import yaml
-from typing import List, Optional, Dict, Union, Any
+from typing import List, Dict, Union, Any
 import datetime
 import logging
-from . import assets, dataset, query
+from . import assets, database, dataset, query
 
 
 def generate_query_log_message(
@@ -180,7 +180,7 @@ def load_assets(
             config[key] = value
         # Load asset
         if asset_type == "database":
-            asset_map["databases"][asset_name] = assets.DatabaseSchema().load(config)
+            asset_map["databases"][asset_name] = database.DatabaseSchema().load(config)
         elif asset_type == "bucket":
             asset_map["buckets"][asset_name] = assets.BucketSchema().load(config)
         elif asset_type == "base_dataset":
