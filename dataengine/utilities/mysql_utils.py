@@ -6,7 +6,8 @@ import pymysql
 from pymysql.constants import CLIENT
 
 
-def get_connection(schema_name, host, port, user, password):
+def get_connection(
+        schema_name, host, port, user, password, **kwargs):
     """
     Establish a database connection using the provided parameters.
 
@@ -39,7 +40,7 @@ def get_connection(schema_name, host, port, user, password):
     try:
         connection = pymysql.connect(
             db=schema_name, host=host, port=port, user=user, passwd=password,
-            client_flag=CLIENT.MULTI_STATEMENTS)
+            client_flag=CLIENT.MULTI_STATEMENTS, **kwargs)
         return connection
     # Handle operational errors like connection failure, etc.
     except pymysql.OperationalError as oe:

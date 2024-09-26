@@ -8,13 +8,13 @@ S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
 S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
 
 
-def get_connection(schema_name, host, port, user, password):
+def get_connection(schema_name, host, port, user, password, **kwargs):
     """
     This function will establish a database connection.
     """
     return psycopg2.connect(
         dbname=schema_name, host=host, port=port, user=user,
-        password=password)
+        password=password, **kwargs)
 
 
 def load_from_s3(

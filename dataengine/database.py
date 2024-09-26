@@ -59,6 +59,7 @@ class DatabaseSchema(AssetSchema):
     port = fields.Integer(required=True)
     user = fields.String(required=True)
     password = fields.String(required=True)
+    connection_kwargs = fields.Dict(keys=fields.Str(), values=fields.Raw())
 
     @validates("database_type")
     def validate_database_type(self, database_type):
@@ -87,7 +88,8 @@ class Database(Asset):
                 host,
                 port,
                 user,
-                password
+                password,
+                connection_kwargs={}
         ):
         """
         Setup database interface arguments.
@@ -98,6 +100,7 @@ class Database(Asset):
         self.port = port
         self.user = user
         self.password = password
+        self.connection_kwargs = connection_kwargs
 
     def get_connection(self, schema_name):
         """
@@ -105,9 +108,11 @@ class Database(Asset):
         """
         if self.database_type == "mysql":
             return mysql_utils.get_connection(
-                schema_name, self.host, self.port, self.user, self.password)
+                schema_name, self.host, self.port, self.user, self.password,
+                **self.connection_kwargs)
         return postgresql_utils.get_connection(
-            schema_name, self.host, self.port, self.user, self.password)
+            schema_name, self.host, self.port, self.user, self.password,
+            **self.connection_kwargs)
     
     def truncate(
             self, schema_name, table_name
