@@ -105,6 +105,10 @@ class Dataset(BaseDataset):
                 self.file_path_list, dt, hour, time_delta, bucket, 
                 format_args_permutations, dt_delta, exclude_hours,
                 check_path)
+            # If basePath option is provided add bucket to string formatting
+            if "basePath" in options:
+                options["basePath"] = options["basePath"].format(
+                    bucket=bucket)
             # Load data into a pyspark DataFrame
             self.df = self._load_data_from_s3(
                 schema, file_format, separator, header, rename=rename,
