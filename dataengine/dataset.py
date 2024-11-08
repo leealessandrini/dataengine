@@ -96,6 +96,14 @@ class Dataset(BaseDataset):
             bucket_asset_name, header, schema, options)
         # Setup additional Dataset arguments
         self.spark = spark
+        # Extract string formatting variables from file path
+        string_formatting_vars = set.union(*map(set, [
+            general_utils.extract_formatting_variables(path)
+            for path in self.file_path_list]))
+        # Update format args with missing string formatting variables
+        for variable in string_formatting_vars:
+            if variable not in format_args:
+                format_args[variable] = "*"
         # Get all unique permutations of the format arguments
         format_args_permutations = general_utils.get_dict_permutations(
             format_args)

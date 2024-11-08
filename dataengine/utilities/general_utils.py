@@ -365,3 +365,28 @@ def write_dict_to_tar_bytes(file_dict):
             tar.addfile(file_info, io.BytesIO(file_data))
     # Return the byte content of the tar archive
     return tar_stream.getvalue()
+
+
+def extract_formatting_variables(format_string):
+    """
+    Extract string formatting variables from a format string.
+
+    Args:
+        format_string (str): The format string to extract variables from.
+
+    Returns:
+        list: A list of extracted formatting variables.
+    """
+    # Matches {variable} and {object.attribute} syntax
+    pattern = r"{(\w+(?:\.\w+)?)}"
+    variables = re.findall(pattern, format_string)
+    # Simplify object references
+    simplified_variables = []
+    for var in variables:
+        if '.' in var:
+            obj, attr = var.split('.', 1)
+            simplified_variables.append(obj)
+        else:
+            simplified_variables.append(var)
+    # Remove duplicates
+    return list(set(simplified_variables))
