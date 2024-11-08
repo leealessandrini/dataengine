@@ -377,14 +377,16 @@ def extract_formatting_variables(format_string):
     Returns:
         list: A list of extracted formatting variables.
     """
-    # Matches {variable} and {object.attribute} syntax
-    pattern = r"{(\w+(?:\.\w+)?)}"
+    # Matches {variable}, {dt.attribute}, and {dt:format}
+    pattern = r"{(\w+(?:\.\w+|:[^}]+)?)}"
     variables = re.findall(pattern, format_string)
     # Simplify object references
     simplified_variables = []
     for var in variables:
-        if '.' in var:
-            obj, attr = var.split('.', 1)
+        if (
+            ('.' in var) or (':' in var)
+        ):
+            obj = var.split('.')[0].split(':')[0]
             simplified_variables.append(obj)
         else:
             simplified_variables.append(var)

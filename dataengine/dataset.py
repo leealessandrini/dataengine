@@ -104,7 +104,10 @@ class Dataset(BaseDataset):
         for variable in string_formatting_vars:
             if (
                 (variable not in format_args) and
-                (variable not in ("dt", "hour"))
+                (variable not in (
+                    "dt", "date_str", "dt_m1", "dt_p1", "hour", "lz_hour",
+                    "bucket"
+                ))
             ):
                 format_args[variable] = "*"
         # Get all unique permutations of the format arguments
