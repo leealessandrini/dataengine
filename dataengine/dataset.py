@@ -102,7 +102,10 @@ class Dataset(BaseDataset):
             for path in self.file_path_list]))
         # Update format args with missing string formatting variables
         for variable in string_formatting_vars:
-            if variable not in format_args:
+            if (
+                (variable not in format_args) and
+                (variable not in ("dt", "hour"))
+            ):
                 format_args[variable] = "*"
         # Get all unique permutations of the format arguments
         format_args_permutations = general_utils.get_dict_permutations(
