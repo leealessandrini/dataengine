@@ -26,7 +26,7 @@ class DtDeltaSchema(TimeDeltaSchema):
     delta_type = fields.String()
 
     @validates("delta_type")
-    def validate_delta_type(self, delta_type):
+    def validate_delta_type(self, delta_type, **kwargs):
         valid_args = ["latest", "rolling"]
         if delta_type not in valid_args:
             raise ValidationError(

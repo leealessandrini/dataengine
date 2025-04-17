@@ -46,7 +46,7 @@ class IntermittentTablesSchema(Schema):
     format_args = fields.Dict()
 
     @validates("filename")
-    def validate_filename(self, filename):
+    def validate_filename(self, filename, **kwargs):
         """
         Validate the SQL filepath by checking whether it exists.
         """
@@ -63,7 +63,7 @@ class SqlInfoSchema(Schema):
     intermittent_tables = fields.List(fields.Nested(IntermittentTablesSchema))
 
     @validates("filename")
-    def validate_filename(self, filename):
+    def validate_filename(self, filename, **kwargs):
         """
         Validate the SQL filepath by checking whether it exists.
         """
@@ -107,25 +107,13 @@ class LoadInfoSchema(Schema):
     """
     Schema for specifying the database load information.
     """
+    # TODO: Validate load location using assets
     load_location = fields.String(required=True)
     db_arg = fields.String(required=True)
     table_name = fields.String(required=True)
     delete_info = fields.Nested(DeleteInfoSchema)
     replace = fields.Boolean()
     truncate = fields.Boolean(load_default=False)
-
-    # TODO: Validate load location using assets
-    @validates("load_location")
-    def validate_load_location(self, load_location):
-        """
-        valid_args = []
-        if load_location not in valid_args:
-            raise ValidationError(
-                f"Invalid load_location '{load_location}' provided, "
-                "please choose among the list: [{}]".format(
-                    ", ".join(valid_args)))
-        """
-        pass
 
 
 class DistinctVariableSchema(Schema):
@@ -184,7 +172,7 @@ class BaseQuerySchema(AssetSchema):
         return BaseQuery(**input_data)
 
     @validates("mode")
-    def validate_mode(self, mode):
+    def validate_mode(self, mode, **kwargs):
         valid_args = ["overwrite", "append"]
         if mode not in valid_args:
             raise ValidationError(

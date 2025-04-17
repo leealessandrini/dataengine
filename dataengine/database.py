@@ -62,7 +62,7 @@ class DatabaseSchema(AssetSchema):
     connection_kwargs = fields.Dict(keys=fields.Str(), values=fields.Raw())
 
     @validates("database_type")
-    def validate_database_type(self, database_type):
+    def validate_database_type(self, database_type, **kwargs):
         """ This function will validate the database type """
         valid_args = ["postgresql", "mysql"]
         if database_type not in valid_args:

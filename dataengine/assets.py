@@ -27,7 +27,7 @@ class BaseDatasetSchema(AssetSchema):
     options = fields.Dict()
     
     @validates("file_format")
-    def validate_file_format(self, file_format):
+    def validate_file_format(self, file_format, **kwargs):
         """
         Validate the input file format.
         """
@@ -39,7 +39,7 @@ class BaseDatasetSchema(AssetSchema):
                     ", ".join(valid_args)))
 
     @validates("schema")
-    def validate_schema(self, schema):
+    def validate_schema(self, schema, **kwargs):
         """
         Validate the 'schema' field to ensure it's a dictionary of key-value
         pairs where both keys and values are strings.
